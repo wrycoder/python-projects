@@ -68,13 +68,13 @@ for state in states.keys():
     presidential_states[state] = []
 
 def center_and_star(text):
-    """Center the text, with asterisks at left and right"""
+    """Center the text, with asterisks at left and right."""
     print("*", end='')
     print("{:^93s}".format(text), end='')
     print("*")
 
 def ordinal(n: int):
-    """Convert a cardinal number to an ordinal"""
+    """Convert a cardinal number to an ordinal."""
     if 11 <= (n % 100) <= 13:
         suffix = 'th'
     else:
@@ -82,7 +82,7 @@ def ordinal(n: int):
     return str(n) + suffix
 
 def for_year(year):
-    """Find out who was president in the given year"""
+    """Find out who was president in the given year."""
     y = int(year)
     if (y < 1789) | (y > 2024):
         raise ValueError('Invalid year')
@@ -90,7 +90,6 @@ def for_year(year):
         if presidents[i].sworn_in > y:
             target_key = int(i) - 1
             return presidents[str(target_key)]
-
 
 class President:
     def __init__(self, key, name, year, state):
