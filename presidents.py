@@ -43,24 +43,34 @@ def ordinal(n: int):
     return str(n) + suffix
 
 class President:
-    def __init__(self, key, name, year):
+    def __init__(self, key, name, year, state):
         self.key = int(key)
         self.name = name
         self.sworn_in = int(year)
-    def display(self):
-        print("%s, %s president of the United States, was inaugurated in %d" %
-            (self.name, ordinal(self.key), self.sworn_in))
+        self.state = states[state]
 
-    
-presidents = {}
+    def display(self):
+        print("{:*^95}".format(""))
+        message =   "{0}, {1} president of the United States, "\
+                    "was inaugurated in {2}".format(self.name, ordinal(self.key), self.sworn_in)
+        center_and_star(message)
+        message = "{0} was a resident of {1} on Inauguration Day.".format(self.name, self.state)
+        center_and_star(message)
+        print("{:*^95}".format(""))
+
+#
+# 1. Initialize the system
+#
 
 for line in fileinput.input():
     stats = line.rstrip().split('\t')
     key = stats[0]
-    p = President(key, stats[1], stats[2])
+    p = President(key, stats[1], stats[2], stats[3])
     presidents[key] = p
 
+
 def for_year(year):
+    """Find out who was president in the given year"""
     y = int(year)
     if (y < 1789) | (y > 2024):
         raise ValueError('Invalid year')
@@ -69,6 +79,9 @@ def for_year(year):
             target_key = int(i) - 1
             return presidents[str(target_key)]
 
+#
+# 2. Enter an endless loop with a prompt
+#
 while(True):
     result = input(prompt)
     president = 0
