@@ -3,33 +3,71 @@ import fileinput
 prompt = """
 To select a president by ordinal number, enter 'o'
 To select a president by year, enter 'y'
+To select a president by state, enter 's'
 To quit, enter 'q'
 """
 
 presidents = {}
 
-states = { 'AR': 'Arkansas',
+states = { 'AL': 'Alabama',
+    'AK': 'Alaska',
+    'AZ': 'Arizona',
+    'AR': 'Arkansas',
     'CA': 'California',
+    'CO': 'Colorado',
+    'CT': 'Connecticut',
     'DC': 'The District of Columbia',
     'DE': 'Delaware',
+    'FL': 'Florida',
     'GA': 'Georgia',
+    'HI': 'Hawaii',
+    'ID': 'Idaho',
     'IL': 'Illinois',
     'IN': 'Indiana',
+    'KS': 'Kansas',
+    'KY': 'Kentucky',
     'LA': 'Louisiana',
+    'ME': 'Maine',
+    'MD': 'Maryland',
     'MA': 'Massachusetts',
     'MI': 'Michigan',
+    'MN': 'Minnesota',
     'MO': 'Missouri',
+    'MS': 'Mississippi',
+    'MT': 'Montana',
+    'NE': 'Nebraska',
+    'NV': 'Nevada',
     'NH': 'New Hampshire',
     'NJ': 'New Jersey',
+    'NM': 'New Mexico',
     'NY': 'New York',
+    'NC': 'North Carolina',
+    'ND': 'North Dakota',
+    'OK': 'Oklahoma',
     'OH': 'Ohio',
+    'OR': 'Oregon',
     'PA': 'Pennsylvania',
+    'RI': 'Rhode Island',
+    'SC': 'South Carolina',
+    'SD': 'South Dakota',
     'TN': 'Tennessee',
     'TX': 'Texas',
-    'VA': 'Virginia'
+    'UT': 'Utah',
+    'VT': 'Vermont',
+    'VA': 'Virginia',
+    'WA': 'Washington',
+    'WV': 'West Virginia',
+    'WI': 'Wisconsin',
+    'WY': 'Wyoming'
     }
 
+presidential_states = {}
+
+for state in states.keys():
+    presidential_states[state] = []
+
 def center_and_star(text):
+    """Center the text, with asterisks at left and right"""
     print("*", end='')
     print("{:^93s}".format(text), end='')
     print("*")
