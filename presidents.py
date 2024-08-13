@@ -73,23 +73,13 @@ def center_and_star(text):
     print("{:^93s}".format(text), end='')
     print("*")
 
-def ordinal(n: int):
+def ordinal(n: int) -> str:
     """Convert a cardinal number to an ordinal."""
     if 11 <= (n % 100) <= 13:
         suffix = 'th'
     else:
         suffix = ['th', 'st', 'nd', 'rd', 'th'][min(n % 10, 4)]
     return str(n) + suffix
-
-def for_year(year):
-    """Find out who was president in the given year."""
-    y = int(year)
-    if (y < 1789) | (y > 2024):
-        raise ValueError('Invalid year')
-    for i in presidents.keys():
-        if presidents[i].sworn_in > y:
-            target_key = int(i) - 1
-            return presidents[str(target_key)]
 
 class President:
     def __init__(self, key, name, year, state):
@@ -98,12 +88,22 @@ class President:
         self.sworn_in = int(year)
         self.state = states[state]
 
-    def display(self):
+    def display(self) -> None:
         message =   "{0}, {1} president of the United States, "\
                     "was inaugurated in {2}.".format(self.name, ordinal(self.key), self.sworn_in)
         center_and_star(message)
         message = "{0} was a resident of {1} on Inauguration Day.".format(self.name, self.state)
         center_and_star(message)
+
+def for_year(year) -> President:
+    """Find out who was president in the given year."""
+    y = int(year)
+    if (y < 1789) | (y > 2024):
+        raise ValueError('Invalid year')
+    for i in presidents.keys():
+        if presidents[i].sworn_in > y:
+            target_key = int(i) - 1
+            return presidents[str(target_key)]
 
 #
 # 1. Initialize the system
@@ -127,7 +127,7 @@ while(True):
             break
         case 'o':
             onum = input("Enter the number: ")
-            if(int(onum) < presidents.__len__()):
+            if(int(onum) <= presidents.__len__()):
                 president_list.append(presidents[onum])
             else:
                 print("You only have %d presidents to choose from" %
