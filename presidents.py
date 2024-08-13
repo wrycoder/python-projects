@@ -6,7 +6,36 @@ To select a president by year, enter 'y'
 To quit, enter 'q'
 """
 
+presidents = {}
+
+states = { 'AR': 'Arkansas',
+    'CA': 'California',
+    'DC': 'The District of Columbia',
+    'DE': 'Delaware',
+    'GA': 'Georgia',
+    'IL': 'Illinois',
+    'IN': 'Indiana',
+    'LA': 'Louisiana',
+    'MA': 'Massachusetts',
+    'MI': 'Michigan',
+    'MO': 'Missouri',
+    'NH': 'New Hampshire',
+    'NJ': 'New Jersey',
+    'NY': 'New York',
+    'OH': 'Ohio',
+    'PA': 'Pennsylvania',
+    'TN': 'Tennessee',
+    'TX': 'Texas',
+    'VA': 'Virginia'
+    }
+
+def center_and_star(text):
+    print("*", end='')
+    print("{:^93s}".format(text), end='')
+    print("*")
+
 def ordinal(n: int):
+    """Convert a cardinal number to an ordinal"""
     if 11 <= (n % 100) <= 13:
         suffix = 'th'
     else:
