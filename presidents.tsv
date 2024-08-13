@@ -1,46 +1,46 @@
-1	George Washington	1789
-2	John Adams	1797
-3	Thomas Jefferson	1801
-4	James Madison	1809
-5	James Monroe	1817
-6	John Quincy Adams	1825
-7	Andrew Jackson	1829
-8	Martin Van Buren	1837
-9	William Henry Harrison	1841
-10	John Tyler	1841
-11	James K. Polk	1845
-12	Zachary Taylor	1849
-13	Millard Fillmore	1850
-14	Franklin Pierce	1853
-15	James Buchanan	1857
-16	Abraham Lincoln	1861
-17	Andrew Johnson	1865
-18	Ulysses S. Grant	1869
-19	Rutherford B. Hayes	1877
-20	James A. Garfield	1881
-21	Chester A. Arthur	1881
-22	Grover Cleveland	1885
-23	Benjamin Harrison	1889
-24	Grover Cleveland	1893
-25	William McKinley	1897
-26	Theodore Roosevelt	1901
-27	William Howard Taft	1909
-28	Woodrow Wilson	1913
-29	Warren G. Harding	1921
-30	Calvin Coolidge	1923
-31	Herbert Hoover	1929
-32	Franklin D. Roosevelt	1933
-33	Harry S. Truman	1945
-34	Dwight D. Eisenhower	1953
-35	John F. Kennedy	1961
-36	Lyndon B. Johnson	1963
-37	Richard Nixon	1969
-38	Gerald Ford	1974
-39	Jimmy Carter	1977
-40	Ronald Reagan	1981
-41	George H. W. Bush	1989
-42	Bill Clinton	1993
-43	George W. Bush	2001
-44	Barack Obama	2009
-45	Donald Trump	2017
-46	Joe Biden	2021
+1	George Washington	1789	VA
+2	John Adams	1797	MA
+3	Thomas Jefferson	1801	VA
+4	James Madison	1809	VA
+5	James Monroe	1817	VA
+6	John Quincy Adams	1825	MA
+7	Andrew Jackson	1829	TN
+8	Martin Van Buren	1837	NY
+9	William Henry Harrison	1841	OH
+10	John Tyler	1841	VA
+11	James K. Polk	1845	TN
+12	Zachary Taylor	1849	LA
+13	Millard Fillmore	1850	NY
+14	Franklin Pierce	1853	NH
+15	James Buchanan	1857	PA
+16	Abraham Lincoln	1861	IL
+17	Andrew Johnson	1865	TN
+18	Ulysses S. Grant	1869	IL
+19	Rutherford B. Hayes	1877	OH
+20	James A. Garfield	1881	OH
+21	Chester A. Arthur	1881	NY
+22	Grover Cleveland	1885	NY
+23	Benjamin Harrison	1889	IN
+24	Grover Cleveland	1893	NY
+25	William McKinley	1897	OH
+26	Theodore Roosevelt	1901	NY
+27	William Howard Taft	1909	OH
+28	Woodrow Wilson	1913	NJ
+29	Warren G. Harding	1921	OH
+30	Calvin Coolidge	1923	MA
+31	Herbert Hoover	1929	DC
+32	Franklin D. Roosevelt	1933	NY
+33	Harry S. Truman	1945	MO
+34	Dwight D. Eisenhower	1953	NY
+35	John F. Kennedy	1961	MA
+36	Lyndon B. Johnson	1963	TX
+37	Richard Nixon	1969	CA
+38	Gerald Ford	1974	MI
+39	Jimmy Carter	1977	GA
+40	Ronald Reagan	1981	CA
+41	George H. W. Bush	1989	TX
+42	Bill Clinton	1993	AR
+43	George W. Bush	2001	TX
+44	Barack Obama	2009	IL
+45	Donald Trump	2017	NY
+46	Joe Biden	2021	DE
