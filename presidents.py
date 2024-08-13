@@ -128,14 +128,14 @@ while(True):
         case 'o':
             onum = input("Enter the number: ")
             if(int(onum) < presidents.__len__()):
-                president = presidents[onum]
+                president_list.append(presidents[onum])
             else:
                 print("You only have %d presidents to choose from" %
                     presidents.__len__());
         case 'y':
             year = input("Enter the year: ")
             try:
-                president = for_year(year)
+                president_list.append(for_year(year))
             except ValueError:
                 if(int(year) < 1789):
                     print(  "The office of President of the United States "\
@@ -144,8 +144,33 @@ while(True):
                     print(  "We do not know who will be president in {0}".format(int(year)))
                 else:
                     print("That is not a valid entry")
+        case 's':
+            state = input("Enter the two-letter abbreviation for the state: ")
+            results = []
+            try:
+                results = presidential_states[state.upper()]
+            except(KeyError):
+                print("\nThat is not a valid state")
+                continue
+
+            if(len(results) == 0):
+                print("\nNo presidents have come from " + states[state.upper()])
+            else:
+                print("{:*^95}".format(""))
+                if(len(results) == 1):
+                    verbiage = "president has come from"
+                else:
+                    verbiage = "presidents have come from"
+                center_and_star("{0} {1} {2}"
+                    .format(len(results), verbiage, states[state.upper()]))
+                for key in results:
+                    president_list.append(presidents[key])
+
         case _:
-            print("\nYou can only enter 'o', 'y', or 'q'")
-    if(president != 0):
-        president.display()
+            print("\nYou can only enter 'o', 'y', 's', or 'q'")
+    if(len(president_list) != 0):
+        print("{:*^95}".format(""))
+        for pres in president_list:
+            pres.display()
+        print("{:*^95}".format(""))
 
