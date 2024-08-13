@@ -103,12 +103,13 @@ while(True):
             except ValueError:
                 if(int(year) < 1789):
                     print(  "The office of President of the United States "\
-                            "did not exist in {0}".format(int(year)))
+                            "did not exist in the year {0}".format(int(year)))
                 elif(int(year) > 2024):
                     print(  "We do not know who will be president in {0}".format(int(year)))
                 else:
                     print("That is not a valid entry")
-
+        case _:
+            print("\nYou can only enter 'o', 'y', or 'q'")
     if(president != 0):
         president.display()
 
