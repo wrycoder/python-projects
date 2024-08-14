@@ -108,7 +108,7 @@ def for_year(year) -> President:
 #
 # 1. Initialize the system
 #
-for line in fileinput.input():
+for line in fileinput.input('presidents.tsv'):
     stats = line.rstrip().split('\t')
     key = stats[0]
     p = President(key, stats[1], stats[2], stats[3])
