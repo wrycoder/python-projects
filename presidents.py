@@ -81,18 +81,27 @@ def ordinal(n: int) -> str:
         suffix = ['th', 'st', 'nd', 'rd', 'th'][min(n % 10, 4)]
     return str(n) + suffix
 
+def pronoun(p_string, p_case):
+    """Find appropriate pronoun for a given case"""
+    cases = ['subject', 'object', 'possessive']
+    pronouns = p_string.split('/')
+    p_table = dict(zip(cases, pronouns))
+    return p_table[p_case]
+
 class President:
-    def __init__(self, key, name, year, state):
+    def __init__(self, key, name, year, state, pronouns):
         self.key = int(key)
         self.name = name
         self.sworn_in = int(year)
         self.state = states[state]
+        self.pronouns = pronouns
 
     def display(self) -> None:
         message =   "{0}, {1} president of the United States, "\
                     "was inaugurated in {2}.".format(self.name, ordinal(self.key), self.sworn_in)
         center_and_star(message)
-        message = "{0} was a resident of {1} on Inauguration Day.".format(self.name, self.state)
+        message = "{0} was a resident of {1} on Inauguration Day.".format(
+            pronoun(self.pronouns, 'subject').capitalize(), self.state)
         center_and_star(message)
 
 def for_year(year) -> President:
