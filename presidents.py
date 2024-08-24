@@ -120,7 +120,7 @@ def for_year(year) -> President:
 for line in fileinput.input('presidents.tsv'):
     stats = line.rstrip().split('\t')
     key = stats[0]
-    p = President(key, stats[1], stats[2], stats[3])
+    p = President(key, stats[1], stats[2], stats[3], stats[4])
     presidents[key] = p
     presidential_states[stats[3]].append(key)
 
