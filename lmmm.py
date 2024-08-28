@@ -1,6 +1,6 @@
 """lmmm (Least, Most, Median, Mean)
 
-This script processes data in a tab-separated input file.
+This module processes data in a tab-separated input file.
 It is assumed that the input file has two columns, that the 
 first line of the input file contains the labels of the two
 fields being examined, and that the second column in each 
@@ -47,36 +47,35 @@ def mean(data):
     return sum(values) / len(values)
 
 
-#
-# Process input
-#
+def lmmm(filename):
+    inputfile = io.open(filename)
+    current_table = {}
+    labels = { 'column_1': None, 'column_2': None }
+    for line in inputfile.readlines():
+        if labels['column_1'] == None:
+            data = line.rstrip().split('\t')
+            labels['column_1'] = data[0]
+            labels['column_2'] = data[1]
+            continue
+        if len(line.rstrip()) > 0:
+            data = line.rstrip().split('\t')
+            current_table[data[0]] = float(data[1])
 
-if len(sys.argv) != 2:
-    raise FileNotFoundError("Please specify a valid input file")
+    inputfile.close()
 
-inputfile = io.open(sys.argv[1])
-current_table = {}
-labels = { 'column_1': None, 'column_2': None }
-for line in inputfile.readlines():
-    if labels['column_1'] == None:
-        data = line.rstrip().split('\t')
-        labels['column_1'] = data[0]
-        labels['column_2'] = data[1]
-        continue
-    if len(line.rstrip()) > 0:
-        data = line.rstrip().split('\t')
-        current_table[data[0]] = float(data[1])
+    ascending_values = sort(current_table, 'value')
+    for item in ascending_values.items():
+        print("LEAST: {0}".format(item))
+        break
+    descending_values = sort(current_table, 'value', True)
+    for item in descending_values.items():
+        print("MOST: {0}".format(item))
+        break
+    print("MEDIAN: {0}".format(median(ascending_values)))
+    print("MEAN: {0}".format(mean(ascending_values)))
+    sorted_keys = sort(current_table, 'key')
 
-inputfile.close()
-
-ascending_values = sort(current_table, 'value')
-for item in ascending_values.items():
-    print("LEAST: {0}".format(item))
-    break
-descending_values = sort(current_table, 'value', True)
-for item in descending_values.items():
-    print("MOST: {0}".format(item))
-    break
-print("MEDIAN: {0}".format(median(ascending_values)))
-print("MEAN: {0}".format(mean(ascending_values)))
-sorted_keys = sort(current_table, 'key')
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        raise FileNotFoundError("Please specify a valid input file")
+    lmmm(sys.argv[1])
