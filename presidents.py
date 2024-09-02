@@ -112,7 +112,7 @@ class President:
             pronoun(self.pronouns, 'subject').capitalize(), self.state)
         center_and_star(message)
 
-def for_year(year) -> President:
+def for_year(year: int) -> President:
     """Find out who was president in the given year."""
     y = int(year)
     if (y < 1789) | (y > 2024):
