@@ -89,7 +89,15 @@ def pronoun(p_string, p_case):
     return p_table[p_case]
 
 class President:
-    def __init__(self, key, name, year, state, pronouns):
+    """A President of the United States.
+
+    Properties of a president include the name, the year of inauguration,
+    the state of residence at the time of inauguration, the preferred
+    pronouns, and the key (which is simply the ordinal number of a
+    given president in the historical record).
+    """
+    def __init__(self, key: str, name: str, year: str,
+                 state: str, pronouns: str):
         self.key = int(key)
         self.name = name
         self.sworn_in = int(year)
