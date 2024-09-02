@@ -132,62 +132,66 @@ for line in fileinput.input('presidents.tsv'):
     presidents[key] = p
     presidential_states[stats[3]].append(key)
 
-#
-# 2. Enter an endless loop with a prompt
-#
-while(True):
-    result = input(prompt)
-    president_list = []
-    onum = 0
-    match result:
-        case 'q':
-            break
-        case 'o':
-            onum = input("Enter the number: ")
-            if(int(onum) <= presidents.__len__()):
-                president_list.append(presidents[onum])
-            else:
-                print("You only have %d presidents to choose from" %
-                    presidents.__len__());
-        case 'y':
-            year = input("Enter the year: ")
-            try:
-                president_list.append(for_year(year))
-            except ValueError:
-                if(int(year) < 1789):
-                    print(  "The office of President of the United States "\
-                            "did not exist in the year {0}".format(int(year)))
-                elif(int(year) > 2024):
-                    print(  "We do not know who will be president in {0}".format(int(year)))
+
+def do_loop():
+    #
+    # Enter an endless loop with a prompt
+    #
+    while(True):
+        result = input(prompt)
+        president_list = []
+        onum = 0
+        match result:
+            case 'q':
+                break
+            case 'o':
+                onum = input("Enter the number: ")
+                if(int(onum) <= presidents.__len__()):
+                    president_list.append(presidents[onum])
                 else:
-                    print("That is not a valid entry")
-        case 's':
-            state = input("Enter the two-letter abbreviation for the state: ")
-            results = []
-            try:
-                results = presidential_states[state.upper()]
-            except(KeyError):
-                print("\nThat is not a valid state")
-                continue
+                    print("You only have %d presidents to choose from" %
+                        presidents.__len__());
+            case 'y':
+                year = input("Enter the year: ")
+                try:
+                    president_list.append(for_year(year))
+                except ValueError:
+                    if(int(year) < 1789):
+                        print(  "The office of President of the United States "\
+                                "did not exist in the year {0}".format(int(year)))
+                    elif(int(year) > 2024):
+                        print(  "We do not know who will be president in {0}".format(int(year)))
+                    else:
+                        print("That is not a valid entry")
+            case 's':
+                state = input("Enter the two-letter abbreviation for the state: ")
+                results = []
+                try:
+                    results = presidential_states[state.upper()]
+                except(KeyError):
+                    print("\nThat is not a valid state")
+                    continue
 
-            if(len(results) == 0):
-                print("\nNo presidents have come from " + states[state.upper()])
-            else:
-                print("{:*^95}".format(""))
-                if(len(results) == 1):
-                    verbiage = "president has come from"
+                if(len(results) == 0):
+                    print("\nNo presidents have come from " + states[state.upper()])
                 else:
-                    verbiage = "presidents have come from"
-                center_and_star("{0} {1} {2}"
-                    .format(len(results), verbiage, states[state.upper()]))
-                for key in results:
-                    president_list.append(presidents[key])
+                    print("{:*^95}".format(""))
+                    if(len(results) == 1):
+                        verbiage = "president has come from"
+                    else:
+                        verbiage = "presidents have come from"
+                    center_and_star("{0} {1} {2}"
+                        .format(len(results), verbiage, states[state.upper()]))
+                    for key in results:
+                        president_list.append(presidents[key])
 
-        case _:
-            print("\nYou can only enter 'o', 'y', 's', or 'q'")
-    if(len(president_list) != 0):
-        print("{:*^95}".format(""))
-        for pres in president_list:
-            pres.display()
-        print("{:*^95}".format(""))
+            case _:
+                print("\nYou can only enter 'o', 'y', 's', or 'q'")
+        if(len(president_list) != 0):
+            print("{:*^95}".format(""))
+            for pres in president_list:
+                pres.display()
+            print("{:*^95}".format(""))
 
+if __name__ == "__main__":
+    do_loop()
