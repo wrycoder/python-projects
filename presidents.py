@@ -4,6 +4,7 @@ prompt = """
 To select a president by ordinal number, enter 'o'
 To select a president by year, enter 'y'
 To select a president by state, enter 's'
+To list all presidents in a given party, enter 'p'
 To quit, enter 'q'
 """
 
