@@ -108,18 +108,18 @@ class President:
 
     def display(self) -> str:
         """Show the president's details."""
-        message =   "{0}, {1} president of the United States, "\
-                    "was inaugurated in {2}.".format(self.name, ordinal(self.key), self.sworn_in)
+        message = f"{self.name}, {ordinal(self.key)} president of the United " + \
+                  f"States, was inaugurated in {str(self.sworn_in)}."
         center_and_star(message)
-        message = "{0} was a resident of {1} on Inauguration Day.".format(
-            pronoun(self.pronouns, 'subject').capitalize(), self.state)
+        message = f"{pronoun(self.pronouns, 'subject').capitalize()} was a resident of " + \
+                  f"{self.state} on Inauguration Day."
         center_and_star(message)
         if self.party != 'None':
-            message = "{0} was a member of the {1} Party.".format(
-                pronoun(self.pronouns, 'subject').capitalize(), self.party)
+            message = f"{pronoun(self.pronouns, 'subject').capitalize()} was a member of the " + \
+                      f"{self.party} Party."
         else:
-            message = "{0} was not affiliated with any party.".format(
-                pronoun(self.pronouns, 'subject').capitalize())
+            message = f"{pronoun(self.pronouns, 'subject').capitalize()} was not affiliated with any " + \
+                        "political party."
         center_and_star(message)
 
 def for_year(year: int) -> President:
