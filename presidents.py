@@ -132,13 +132,41 @@ def for_year(year: int) -> President:
             target_key = int(i) - 1
             return presidents[str(target_key)]
 
+def choose_party() -> str:
+    """Enable user to choose a party from a menu of possible choices."""
+    parties = {}
+    menu_option = 1
+    for president in presidents.values():
+        if president.party not in parties.values():
+            parties[menu_option] = president.party
+            menu_option += 1
+    print("Please choose one of the following options...")
+    for option in parties.keys():
+        print("{0}. {1}".format(option, parties[option]))
+    party = ""
+    while len(party) == 0:
+        try:
+            choice = int(input("Your choice: "))
+            party = parties[choice]
+            break
+        except KeyError:
+            party = ""
+            print("That is not an option.")
+    return party
+
+def by_party(party: str) -> list:
+    """Find out which presidents belonged to a given party"""
+    for key in presidents.keys():
+        if presidents[key].party == party:
+            yield presidents[key]
+
 #
 # Initialize the system
 #
 for line in fileinput.input('presidents.tsv'):
     stats = line.rstrip().split('\t')
     key = stats[0]
-    p = President(key, stats[1], stats[2], stats[3], stats[4])
+    p = President(key, stats[1], stats[2], stats[3], stats[4], stats[5])
     presidents[key] = p
     presidential_states[stats[3]].append(key)
 
