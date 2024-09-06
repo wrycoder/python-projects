@@ -1,46 +1,46 @@
-1	George Washington	1789	VA	he/him/his
-2	John Adams	1797	MA	he/him/his
-3	Thomas Jefferson	1801	VA	he/him/his
-4	James Madison	1809	VA	he/him/his
-5	James Monroe	1817	VA	he/him/his
-6	John Quincy Adams	1825	MA	he/him/his
-7	Andrew Jackson	1829	TN	he/him/his
-8	Martin Van Buren	1837	NY	he/him/his
-9	William Henry Harrison	1841	OH	he/him/his
-10	John Tyler	1841	VA	he/him/his
-11	James K. Polk	1845	TN	he/him/his
-12	Zachary Taylor	1849	LA	he/him/his
-13	Millard Fillmore	1850	NY	he/him/his
-14	Franklin Pierce	1853	NH	he/him/his
-15	James Buchanan	1857	PA	he/him/his
-16	Abraham Lincoln	1861	IL	he/him/his
-17	Andrew Johnson	1865	TN	he/him/his
-18	Ulysses S. Grant	1869	IL	he/him/his
-19	Rutherford B. Hayes	1877	OH	he/him/his
-20	James A. Garfield	1881	OH	he/him/his
-21	Chester A. Arthur	1881	NY	he/him/his
-22	Grover Cleveland	1885	NY	he/him/his
-23	Benjamin Harrison	1889	IN	he/him/his
-24	Grover Cleveland	1893	NY	he/him/his
-25	William McKinley	1897	OH	he/him/his
-26	Theodore Roosevelt	1901	NY	he/him/his
-27	William Howard Taft	1909	OH	he/him/his
-28	Woodrow Wilson	1913	NJ	he/him/his
-29	Warren G. Harding	1921	OH	he/him/his
-30	Calvin Coolidge	1923	MA	he/him/his
-31	Herbert Hoover	1929	DC	he/him/his
-32	Franklin D. Roosevelt	1933	NY	he/him/his
-33	Harry S. Truman	1945	MO	he/him/his
-34	Dwight D. Eisenhower	1953	NY	he/him/his
-35	John F. Kennedy	1961	MA	he/him/his
-36	Lyndon B. Johnson	1963	TX	he/him/his
-37	Richard Nixon	1969	CA	he/him/his
-38	Gerald Ford	1974	MI	he/him/his
-39	Jimmy Carter	1977	GA	he/him/his
-40	Ronald Reagan	1981	CA	he/him/his
-41	George H. W. Bush	1989	TX	he/him/his
-42	Bill Clinton	1993	AR	he/him/his
-43	George W. Bush	2001	TX	he/him/his
-44	Barack Obama	2009	IL	he/him/his
-45	Donald Trump	2017	NY	he/him/his
-46	Joe Biden	2021	DE	he/him/his
+1	George Washington	1789	VA	he/him/his	None
+2	John Adams	1797	MA	he/him/his	Federalist
+3	Thomas Jefferson	1801	VA	he/him/his	Democratic-Republican
+4	James Madison	1809	VA	he/him/his	Democratic-Republican
+5	James Monroe	1817	VA	he/him/his	Democratic-Republican
+6	John Quincy Adams	1825	MA	he/him/his	Democratic-Republican
+7	Andrew Jackson	1829	TN	he/him/his	Democratic
+8	Martin Van Buren	1837	NY	he/him/his	Democratic
+9	William Henry Harrison	1841	OH	he/him/his	Whig
+10	John Tyler	1841	VA	he/him/his	Whig
+11	James K. Polk	1845	TN	he/him/his	Democratic
+12	Zachary Taylor	1849	LA	he/him/his	Whig
+13	Millard Fillmore	1850	NY	he/him/his	Whig
+14	Franklin Pierce	1853	NH	he/him/his	Democratic
+15	James Buchanan	1857	PA	he/him/his	Democratic
+16	Abraham Lincoln	1861	IL	he/him/his	Republican
+17	Andrew Johnson	1865	TN	he/him/his	National Union
+18	Ulysses S. Grant	1869	IL	he/him/his	Republican
+19	Rutherford B. Hayes	1877	OH	he/him/his	Republican
+20	James A. Garfield	1881	OH	he/him/his	Republican
+21	Chester A. Arthur	1881	NY	he/him/his	Republican
+22	Grover Cleveland	1885	NY	he/him/his	Democratic
+23	Benjamin Harrison	1889	IN	he/him/his	Republican
+24	Grover Cleveland	1893	NY	he/him/his	Democratic
+25	William McKinley	1897	OH	he/him/his	Republican
+26	Theodore Roosevelt	1901	NY	he/him/his	Republican
+27	William Howard Taft	1909	OH	he/him/his	Republican
+28	Woodrow Wilson	1913	NJ	he/him/his	Democratic
+29	Warren G. Harding	1921	OH	he/him/his	Republican
+30	Calvin Coolidge	1923	MA	he/him/his	Republican
+31	Herbert Hoover	1929	DC	he/him/his	Republican
+32	Franklin D. Roosevelt	1933	NY	he/him/his	Democratic
+33	Harry S. Truman	1945	MO	he/him/his	Democratic
+34	Dwight D. Eisenhower	1953	NY	he/him/his	Republican
+35	John F. Kennedy	1961	MA	he/him/his	Democratic
+36	Lyndon B. Johnson	1963	TX	he/him/his	Democratic
+37	Richard Nixon	1969	CA	he/him/his	Republican
+38	Gerald Ford	1974	MI	he/him/his	Republican
+39	Jimmy Carter	1977	GA	he/him/his	Democratic
+40	Ronald Reagan	1981	CA	he/him/his	Republican
+41	George H. W. Bush	1989	TX	he/him/his	Republican
+42	Bill Clinton	1993	AR	he/him/his	Democratic
+43	George W. Bush	2001	TX	he/him/his	Republican
+44	Barack Obama	2009	IL	he/him/his	Democratic
+45	Donald Trump	2017	NY	he/him/his	Republican
+46	Joe Biden	2021	DE	he/him/his	Democratic
