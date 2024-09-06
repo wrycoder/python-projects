@@ -222,7 +222,18 @@ def do_loop():
                         .format(len(results), verbiage, states[state.upper()]))
                     for key in results:
                         president_list.append(presidents[key])
-
+            case 'p':
+                party = choose_party()
+                print("{:*^95}".format(""))
+                if party != 'None':
+                    message = "Presidents who belonged to the {0} "\
+                              "Party".format(party)
+                else:
+                    message = "Unaffiliated Presidents"
+                center_and_star(message.upper())
+                for president in by_party(party):
+                    center_and_star(president.name)
+                print("{:*^95}".format(""))
             case _:
                 print("\nYou can only enter 'o', 'y', 's', or 'q'")
         if(len(president_list) != 0):
