@@ -68,7 +68,7 @@ presidential_states = {}
 for state in states.keys():
     presidential_states[state] = []
 
-def center_and_star(text):
+def center_and_star(text) -> str:
     """Center the text, with asterisks at left and right."""
     print("*", end='')
     print("{:^93s}".format(text), end='')
@@ -82,7 +82,7 @@ def ordinal(n: int) -> str:
         suffix = ['th', 'st', 'nd', 'rd', 'th'][min(n % 10, 4)]
     return str(n) + suffix
 
-def pronoun(p_string, p_case):
+def pronoun(p_string, p_case) -> str:
     """Find appropriate pronoun for a given case"""
     cases = ['subject', 'object', 'possessive']
     pronouns = p_string.split('/')
