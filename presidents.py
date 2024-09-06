@@ -94,7 +94,7 @@ class President:
 
     Properties of a president include the name, the year of inauguration,
     the state of residence at the time of inauguration, the preferred
-    pronouns, party affiliation, and the key (which is simply the ordinal 
+    pronouns, party affiliation, and the key (which is simply the ordinal
     number of a given president in the historical record).
     """
     def __init__(self, key: str, name: str, year: str,
