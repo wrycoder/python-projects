@@ -94,23 +94,32 @@ class President:
 
     Properties of a president include the name, the year of inauguration,
     the state of residence at the time of inauguration, the preferred
-    pronouns, and the key (which is simply the ordinal number of a
-    given president in the historical record).
+    pronouns, party affiliation, and the key (which is simply the ordinal 
+    number of a given president in the historical record).
     """
     def __init__(self, key: str, name: str, year: str,
-                 state: str, pronouns: str):
+                 state: str, pronouns: str, party: str):
         self.key = int(key)
         self.name = name
         self.sworn_in = int(year)
         self.state = states[state]
         self.pronouns = pronouns
+        self.party = party
 
-    def display(self) -> None:
+    def display(self) -> str:
+        """Show the president's details."""
         message =   "{0}, {1} president of the United States, "\
                     "was inaugurated in {2}.".format(self.name, ordinal(self.key), self.sworn_in)
         center_and_star(message)
         message = "{0} was a resident of {1} on Inauguration Day.".format(
             pronoun(self.pronouns, 'subject').capitalize(), self.state)
+        center_and_star(message)
+        if self.party != 'None':
+            message = "{0} was a member of the {1} Party.".format(
+                pronoun(self.pronouns, 'subject').capitalize(), self.party)
+        else:
+            message = "{0} was not affiliated with any party.".format(
+                pronoun(self.pronouns, 'subject').capitalize())
         center_and_star(message)
 
 def for_year(year: int) -> President:
