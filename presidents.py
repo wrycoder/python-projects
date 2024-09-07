@@ -69,11 +69,11 @@ presidential_states = {}
 for state in states.keys():
     presidential_states[state] = []
 
-def center_and_star(text) -> str:
-    """Center the text, with asterisks at left and right."""
-    print("*", end='')
-    print("{:^93s}".format(text), end='')
-    print("*")
+def center(text, y_index, x_width, stdscr) -> None:
+    """Center the text"""
+    x_index = 0
+    fmtstring = "{:^" + str(x_width) + "s}"
+    stdscr.addstr(y_index, x_index, fmtstring.format(text))
 
 def ordinal(n: int) -> str:
     """Convert a cardinal number to an ordinal."""
