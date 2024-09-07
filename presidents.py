@@ -69,11 +69,12 @@ presidential_states = {}
 for state in states.keys():
     presidential_states[state] = []
 
-def center(text, y_index, x_width, stdscr) -> None:
+def center(text, y_index, x_width, stdscr, *, color=0, mode=curses.A_NORMAL) -> None:
     """Center the text"""
     x_index = 0
     fmtstring = "{:^" + str(x_width) + "s}"
-    stdscr.addstr(y_index, x_index, fmtstring.format(text))
+    attrs = curses.color_pair(color) | mode
+    stdscr.addstr(y_index, x_index, fmtstring.format(text), attrs)
 
 def ordinal(n: int) -> str:
     """Convert a cardinal number to an ordinal."""
@@ -145,20 +146,21 @@ def choose_party(y_index, x_width, stdscr) -> str:
             menu_option += 1
     stdscr.clear()
     center("Please choose one of the following options...",
-            y_index, x_width, stdscr)
+            y_index, x_width, stdscr, color=1)
     y_index += 1
     for option in parties.keys():
         center(f"{option}. {parties[option]}",
-                y_index, x_width, stdscr)
+                y_index, x_width, stdscr, color=1)
         y_index += 1
     party = ""
+    stdscr.border()
     y_index += 2
     while len(party) == 0:
         try:
             party_prompt = "Your choice: "
             stdscr.addstr(y_index,
                 (x_width // 2) - (len(party_prompt) // 2),
-                party_prompt)
+                party_prompt, curses.color_pair(1))
             curses.curs_set(1)
             curses.echo()
             key = stdscr.getstr(y_index,
@@ -217,8 +219,9 @@ def do_loop(stdscr):
         y_index = (height // 2) - (len(prompt_lines) // 2)
         # Draw the prompt
         for line in prompt_lines:
-            center(line, y_index, width, stdscr)
+            center(line, y_index, width, stdscr, color=1)
             y_index += 1
+        stdscr.border()
         president_list = []
         onum = 0
         if result == ord('o'):
@@ -226,15 +229,16 @@ def do_loop(stdscr):
             ordinal_prompt = "Enter the number: "
             stdscr.addstr((height // 2),
                 (width // 2) - (len(ordinal_prompt) // 2),
-                ordinal_prompt)
+                ordinal_prompt, curses.color_pair(1))
             curses.curs_set(1)
             curses.echo()
+            stdscr.border()
             key = stdscr.getstr((height // 2),
                     ((width // 2) + len(ordinal_prompt))).decode("utf-8")
+            stdscr.clear()
             if(int(key) <= presidents.__len__()):
                 president_list.append(presidents[key])
             else:
-                stdscr.clear()
                 error_prompt = f"You only have {presidents.__len__()} "\
                                 "presidents to choose from"
                 stdscr.addstr((height // 2),
@@ -242,6 +246,7 @@ def do_loop(stdscr):
                     error_prompt)
                 center("Press any key to continue...",
                         (height - 2), width, stdscr)
+                stdscr.border()
                 stdscr.getch()
                 continue
             curses.curs_set(0)
@@ -252,13 +257,15 @@ def do_loop(stdscr):
             year_prompt = "Enter the year: "
             stdscr.addstr((height // 2),
                 (width // 2) - (len(year_prompt) // 2),
-                year_prompt)
+                year_prompt, curses.color_pair(1))
+            stdscr.border()
             curses.curs_set(1)
             curses.echo()
             year = stdscr.getstr((height // 2),
                     ((width // 2) + len(year_prompt))).decode("utf-8")
             try:
                 president_list.append(for_year(int(year)))
+                stdscr.clear()
             except ValueError:
                 if(int(year) < 1789):
                     message = "The office of President of the "\
@@ -275,6 +282,7 @@ def do_loop(stdscr):
                     message)
                 center("Press any key to continue...",
                         (height - 2), width, stdscr)
+                stdscr.border()
                 stdscr.getch()
                 continue
         elif result == ord('s'):
@@ -282,8 +290,9 @@ def do_loop(stdscr):
             state_prompt = "Enter the two-letter abbreviation for the state: "
             stdscr.addstr((height // 2),
                 (width // 2) - (len(state_prompt) // 2),
-                state_prompt)
+                state_prompt, curses.color_pair(1))
             curses.curs_set(1)
+            stdscr.border()
             curses.echo()
             results = []
             state = stdscr.getstr().decode("utf-8")
@@ -297,6 +306,7 @@ def do_loop(stdscr):
                     message)
                 center("Press any key to continue...",
                         (height - 2), width, stdscr)
+                stdscr.border()
                 stdscr.getch()
                 continue
             if(len(results) == 0):
@@ -307,6 +317,7 @@ def do_loop(stdscr):
                     message)
                 center("Press any key to continue...",
                         (height - 2), width, stdscr)
+                stdscr.border()
                 stdscr.getch()
                 curses.curs_set(0)
                 result = 0
@@ -316,9 +327,12 @@ def do_loop(stdscr):
                     verbiage = "president has come from"
                 else:
                     verbiage = "presidents have come from"
-                center("{0} {1} {2}"
-                    .format(len(results), verbiage, states[state.upper()]),
-                        y_index, width, stdscr)
+                title_line = f"{len(results)} {verbiage} " + \
+                             f"{states[state.upper()]}"
+                stdscr.addstr(2, 
+                            (width // 2) - (len(title_line) // 2),
+                            title_line, curses.A_BOLD | curses.color_pair(1))
+                stdscr.refresh()
                 for key in results:
                     president_list.append(presidents[key])
         elif result == ord('p'):
@@ -329,17 +343,19 @@ def do_loop(stdscr):
                           "Party".format(party)
             else:
                 message = "Unaffiliated Presidents"
-            center(message.upper(), y_index, width, stdscr)
+            stdscr.addstr(y_index,
+                    (width // 2) - (len(message) // 2),
+                    message, curses.color_pair(1))
             y_index += 2
             for president in by_party(party):
                 center(president.name, y_index, width, stdscr)
                 y_index += 1
             center("Press 'c' to continue...", (height - 2), width, stdscr)
+            stdscr.border()
             if stdscr.getch() == ord('c'):
                 result = 0
                 continue
         if(len(president_list) != 0):
-            stdscr.clear()
             y_index = 5
             curses.curs_set(0)
             curses.noecho()
@@ -347,6 +363,7 @@ def do_loop(stdscr):
                 pres.display(y_index, width, stdscr)
                 y_index += 4
             center("Press 'c' to continue...", (height - 2), width, stdscr)
+            stdscr.border()
             stdscr.timeout(-20)
             if stdscr.getch() == ord('c'):
                 result = 0
