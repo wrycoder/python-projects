@@ -185,84 +185,175 @@ def by_party(party: str) -> list:
 #
 # Initialize the system
 #
-for line in fileinput.input('presidents.tsv'):
-    stats = line.rstrip().split('\t')
-    key = stats[0]
-    p = President(key, stats[1], stats[2], stats[3], stats[4], stats[5])
-    presidents[key] = p
-    presidential_states[stats[3]].append(key)
+def load_data() -> None:
+    for line in fileinput.input('presidents.tsv'):
+        stats = line.rstrip().split('\t')
+        key = stats[0]
+        p = President(key, stats[1], stats[2], stats[3], stats[4], stats[5])
+        presidents[key] = p
+        presidential_states[stats[3]].append(key)
 
+def do_loop(stdscr):
+    k = 0
+    cursor_x = 0
+    cursor_y = 0
 
-def do_loop():
-    #
-    # Enter an endless loop with a prompt
-    #
-    while(True):
-        result = input(prompt)
+    stdscr.clear()
+    stdscr.refresh()
+
+    curses.curs_set(0)
+    # Start colors in curses
+    curses.start_color()
+    curses.init_pair(1, curses.COLOR_CYAN, curses.COLOR_BLACK)
+    curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
+    curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_WHITE)
+    result = 0
+    while(result != ord('q')):
+        # Clear and refresh the screen for a blank canvas
+        stdscr.clear()
+        height, width = stdscr.getmaxyx()
+        prompt_lines = prompt.split('\n')
+        y_index = (height // 2) - (len(prompt_lines) // 2)
+        # Draw the prompt
+        for line in prompt_lines:
+            center(line, y_index, width, stdscr)
+            y_index += 1
         president_list = []
         onum = 0
-        match result:
-            case 'q':
-                break
-            case 'o':
-                onum = input("Enter the number: ")
-                if(int(onum) <= presidents.__len__()):
-                    president_list.append(presidents[onum])
+        if result == ord('o'):
+            stdscr.clear()
+            ordinal_prompt = "Enter the number: "
+            stdscr.addstr((height // 2),
+                (width // 2) - (len(ordinal_prompt) // 2),
+                ordinal_prompt)
+            curses.curs_set(1)
+            curses.echo()
+            key = stdscr.getstr((height // 2),
+                    ((width // 2) + len(ordinal_prompt))).decode("utf-8")
+            if(int(key) <= presidents.__len__()):
+                president_list.append(presidents[key])
+            else:
+                stdscr.clear()
+                error_prompt = f"You only have {presidents.__len__()} "\
+                                "presidents to choose from"
+                stdscr.addstr((height // 2),
+                    (width // 2) - (len(error_prompt) // 2),
+                    error_prompt)
+                center("Press any key to continue...",
+                        (height - 2), width, stdscr)
+                stdscr.getch()
+                continue
+            curses.curs_set(0)
+            curses.noecho()
+            stdscr.refresh()
+        elif result == ord('y'):
+            stdscr.clear()
+            year_prompt = "Enter the year: "
+            stdscr.addstr((height // 2),
+                (width // 2) - (len(year_prompt) // 2),
+                year_prompt)
+            curses.curs_set(1)
+            curses.echo()
+            year = stdscr.getstr((height // 2),
+                    ((width // 2) + len(year_prompt))).decode("utf-8")
+            try:
+                president_list.append(for_year(int(year)))
+            except ValueError:
+                if(int(year) < 1789):
+                    message = "The office of President of the "\
+                              "United States did not exist " + \
+                              f"in the year {year}."
+                elif(int(year) > 2024):
+                    message = "We do not know who will be president " + \
+                              f"in the year {year}."
                 else:
-                    print("You only have %d presidents to choose from" %
-                        presidents.__len__());
-            case 'y':
-                year = input("Enter the year: ")
-                try:
-                    president_list.append(for_year(year))
-                except ValueError:
-                    if(int(year) < 1789):
-                        print(  "The office of President of the United States "\
-                                "did not exist in the year {0}".format(int(year)))
-                    elif(int(year) > 2024):
-                        print(  "We do not know who will be president in {0}".format(int(year)))
-                    else:
-                        print("That is not a valid entry")
-            case 's':
-                state = input("Enter the two-letter abbreviation for the state: ")
-                results = []
-                try:
-                    results = presidential_states[state.upper()]
-                except(KeyError):
-                    print("\nThat is not a valid state")
-                    continue
-
-                if(len(results) == 0):
-                    print("\nNo presidents have come from " + states[state.upper()])
+                    message = "That is not a valid entry"
+                stdscr.clear()
+                stdscr.addstr((height // 2),
+                    (width // 2) - (len(message) // 2),
+                    message)
+                center("Press any key to continue...",
+                        (height - 2), width, stdscr)
+                stdscr.getch()
+                continue
+        elif result == ord('s'):
+            stdscr.clear()
+            state_prompt = "Enter the two-letter abbreviation for the state: "
+            stdscr.addstr((height // 2),
+                (width // 2) - (len(state_prompt) // 2),
+                state_prompt)
+            curses.curs_set(1)
+            curses.echo()
+            results = []
+            state = stdscr.getstr().decode("utf-8")
+            try:
+                stdscr.clear()
+                results = presidential_states[state.upper()]
+            except(KeyError):
+                message = "That is not a valid state"
+                stdscr.addstr((height // 2),
+                    (width // 2) - (len(message) // 2),
+                    message)
+                center("Press any key to continue...",
+                        (height - 2), width, stdscr)
+                stdscr.getch()
+                continue
+            if(len(results) == 0):
+                message = "No president resided in " + states[state.upper()] + \
+                          " at the time of inauguration."
+                stdscr.addstr((height // 2),
+                    (width // 2) - (len(message) // 2),
+                    message)
+                center("Press any key to continue...",
+                        (height - 2), width, stdscr)
+                stdscr.getch()
+                continue
+            else:
+                if(len(results) == 1):
+                    verbiage = "president has come from"
                 else:
-                    print("{:*^95}".format(""))
-                    if(len(results) == 1):
-                        verbiage = "president has come from"
-                    else:
-                        verbiage = "presidents have come from"
-                    center_and_star("{0} {1} {2}"
-                        .format(len(results), verbiage, states[state.upper()]))
-                    for key in results:
-                        president_list.append(presidents[key])
-            case 'p':
-                party = choose_party()
-                print("{:*^95}".format(""))
-                if party != 'None':
-                    message = "Presidents who belonged to the {0} "\
-                              "Party".format(party)
-                else:
-                    message = "Unaffiliated Presidents"
-                center_and_star(message.upper())
-                for president in by_party(party):
-                    center_and_star(president.name)
-                print("{:*^95}".format(""))
-            case _:
-                print("\nYou can only enter 'o', 'y', 's', or 'q'")
+                    verbiage = "presidents have come from"
+                center("{0} {1} {2}"
+                    .format(len(results), verbiage, states[state.upper()]),
+                        y_index, width, stdscr)
+                for key in results:
+                    president_list.append(presidents[key])
+        elif result == ord('p'):
+            y_index = height // 3
+            party = choose_party(y_index, width, stdscr)
+            if party != 'None':
+                message = "Presidents who belonged to the {0} "\
+                          "Party".format(party)
+            else:
+                message = "Unaffiliated Presidents"
+            center(message.upper(), y_index, width, stdscr)
+            y_index += 2
+            for president in by_party(party):
+                center(president.name, y_index, width, stdscr)
+                y_index += 1
+            center("Press 'c' to continue...", (height - 2), width, stdscr)
+            if stdscr.getch() == ord('c'):
+                result = 0
+                continue
         if(len(president_list) != 0):
-            print("{:*^95}".format(""))
+            stdscr.clear()
+            y_index = 5
+            curses.curs_set(0)
+            curses.noecho()
             for pres in president_list:
-                pres.display()
-            print("{:*^95}".format(""))
+                pres.display(y_index, width, stdscr)
+                y_index += 4
+            center("Press 'c' to continue...", (height - 2), width, stdscr)
+            stdscr.timeout(-20)
+            if stdscr.getch() == ord('c'):
+                result = 0
+                continue
+        stdscr.refresh()
+        result = stdscr.getch()
+
+def main():
+    load_data()
+    curses.wrapper(do_loop)
 
 if __name__ == "__main__":
-    do_loop()
+    main()
