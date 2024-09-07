@@ -135,26 +135,45 @@ def for_year(year: int) -> President:
             target_key = int(i) - 1
             return presidents[str(target_key)]
 
-def choose_party() -> str:
-    """Enable user to choose a party from a menu of possible choices."""
+def choose_party(y_index, x_width, stdscr) -> str:
+    """Enable user to choose a party from a menu."""
     parties = {}
     menu_option = 1
     for president in presidents.values():
         if president.party not in parties.values():
             parties[menu_option] = president.party
             menu_option += 1
-    print("Please choose one of the following options...")
+    stdscr.clear()
+    center("Please choose one of the following options...",
+            y_index, x_width, stdscr)
+    y_index += 1
     for option in parties.keys():
-        print("{0}. {1}".format(option, parties[option]))
+        center(f"{option}. {parties[option]}",
+                y_index, x_width, stdscr)
+        y_index += 1
     party = ""
+    y_index += 2
     while len(party) == 0:
         try:
-            choice = int(input("Your choice: "))
-            party = parties[choice]
+            party_prompt = "Your choice: "
+            stdscr.addstr(y_index,
+                (x_width // 2) - (len(party_prompt) // 2),
+                party_prompt)
+            curses.curs_set(1)
+            curses.echo()
+            key = stdscr.getstr(y_index,
+                ((x_width // 2) + len(party_prompt))).decode("utf-8")
+            party = parties[int(key)]
             break
         except KeyError:
             party = ""
-            print("That is not an option.")
+            curses.curs_set(0)
+            curses.curs_set(1)
+            stdscr.refresh()
+            pass
+    curses.noecho()
+    curses.curs_set(0)
+    stdscr.clear()
     return party
 
 def by_party(party: str) -> list:
