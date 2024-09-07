@@ -1,4 +1,5 @@
 import fileinput
+import curses
 
 prompt = """
 To select a president by ordinal number, enter 'o'
