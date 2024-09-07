@@ -307,6 +307,8 @@ def do_loop(stdscr):
                 center("Press any key to continue...",
                         (height - 2), width, stdscr)
                 stdscr.getch()
+                curses.curs_set(0)
+                result = 0
                 continue
             else:
                 if(len(results) == 1):
