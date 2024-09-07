@@ -192,6 +192,7 @@ def load_data() -> None:
         p = President(key, stats[1], stats[2], stats[3], stats[4], stats[5])
         presidents[key] = p
         presidential_states[stats[3]].append(key)
+    fileinput.close()
 
 def do_loop(stdscr):
     k = 0
