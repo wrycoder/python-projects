@@ -84,13 +84,6 @@ def ordinal(n: int) -> str:
         suffix = ['th', 'st', 'nd', 'rd', 'th'][min(n % 10, 4)]
     return str(n) + suffix
 
-def pronoun(p_string, p_case) -> str:
-    """Find appropriate pronoun for a given case"""
-    cases = ['subject', 'object', 'possessive']
-    pronouns = p_string.split('/')
-    p_table = dict(zip(cases, pronouns))
-    return p_table[p_case]
-
 class President:
     """A President of the United States.
 
@@ -99,14 +92,22 @@ class President:
     pronouns, party affiliation, and the key (which is simply the ordinal
     number of a given president in the historical record).
     """
-    def __init__(self, key: str, name: str, year: str,
+    def __init__(self, key: str, name: str, sworn_in: str,
                  state: str, pronouns: str, party: str):
         self.key = int(key)
         self.name = name
-        self.sworn_in = int(year)
+        self.sworn_in = int(sworn_in)
         self.state = states[state]
         self.pronouns = pronouns
         self.party = party
+
+    def pronoun(self, p_case: str) -> str:
+        """Find appropriate pronoun for a given case"""
+        cases = ['subject', 'object', 'possessive']
+        pronouns = self.pronouns.split('/')
+        p_table = dict(zip(cases, pronouns))
+        return p_table[p_case]
+
 
     def display(self, y_index, x_width, stdscr) -> None:
         """Show the president's details."""
@@ -114,15 +115,15 @@ class President:
                   f"States, was inaugurated in {str(self.sworn_in)}."
         center(message, y_index, x_width, stdscr)
         y_index += 1
-        message = f"{pronoun(self.pronouns, 'subject').capitalize()} was a resident of " + \
+        message = f"{self.pronoun('subject').capitalize()} was a resident of " + \
                   f"{self.state} on Inauguration Day."
         center(message, y_index, x_width, stdscr)
         y_index += 1
         if self.party != 'None':
-            message = f"{pronoun(self.pronouns, 'subject').capitalize()} was a member of the " + \
+            message = f"{self.pronoun('subject').capitalize()} was a member of the " + \
                       f"{self.party} Party."
         else:
-            message = f"{pronoun(self.pronouns, 'subject').capitalize()} was not affiliated with any " + \
+            message = f"{self.pronoun('subject').capitalize()} was not affiliated with any " + \
                         "political party."
         center(message, y_index, x_width, stdscr)
 
