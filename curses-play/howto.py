@@ -2,41 +2,34 @@ import curses
 from curses import wrapper
 import sys
 
+DEBUG_LIMIT = 5
+
 def more(current_page: int, lines_per_page: int,
-    data_length: int, forward: bool=True):
-    total_pages = data_length // lines_per_page
+    total_pages: int, forward: bool=True):
+    """Tell us if there is more data"""
     if forward == True:
-        return current_page <= lines_per_page
+        return current_page < total_pages
     else:
-        return current_page >= 1
+        return current_page > 0
 
 def main(stdscr):
-    if len(sys.argv) != 2:
-        raise Exception("Dude you must tell me how many pages to create")
+    """Display a multi-page document using a pad and a window"""
     window_height = curses.LINES - 5 
     window_width = curses.COLS - 10
-    total_pages = int(sys.argv[1])
-    current_page = 1
+    total_pages = DEBUG_LIMIT
+    total_chars = window_height * window_width * total_pages
+    current_page = 0
     pad = curses.newpad((window_height * total_pages), window_width)
-    prompt = curses.newwin(1, 75, window_height + 1, 0)
-    total_chars = 0
+    prompt = curses.newwin(1, 75, window_height, 0)
     # These loops fill the pad with letters
-    for y in range(0, ((window_height * total_pages)-1)):
-        total_chars += 1
+    for y in range(0, ((window_height * total_pages)- 1)):
         for x in range(0, (window_width - 1)):
             pad.addch(y, x, ord('a') + (x*x+y*y) % 26)
-            total_chars += 1
-    # Displays a section of the pad in the middle of the screen.
-    # (0,0) : coordinate of upper-left corner of pad area to display.
-    # (5,5) : coordinate of upper-left corner of window area to be filled
-    #         with pad content.
-    # (20, 75) : coordinate of lower-right corner of window area to be
-    #            filled with pad content
-    pad.refresh(0,0, 5,5, window_height,window_width)
+    pad.refresh(0,0, 5,5, (window_height - 1), (window_width - 1))
     while True:
         prompt.clear()
         menu_message = ''
-        if more(current_page, window_height, total_chars):
+        if current_page < total_pages - 1:
             menu_message += 'f: forward'
             if more(current_page, window_height, total_chars, forward=False):
                 menu_message += '; b: backward'
@@ -49,19 +42,17 @@ def main(stdscr):
         action = prompt.getch()
         match action:
             case 102: # 'f'
-                if more(current_page, window_height, total_chars):
+                if current_page < total_pages - 1:
                     current_page += 1
-                    pad.refresh(((current_page * window_height)-1),0, 5,5, window_height,window_width)
-                    prompt.clear()
+                    pad.refresh((current_page * window_height),0, 5,5,
+                                  window_height - 1, window_width - 1)
                 else:
                     continue
             case 98: # 'b'
-                if more(current_page, window_height,
-                        total_chars, forward=False):
-                    if current_page > 1:
-                        current_page -= 1
-                    pad.refresh(((current_page * window_height)-1),0, 5,5, window_height,window_width)
-                    prompt.clear()
+                if more(current_page, window_height, -1, forward=False):
+                    current_page -= 1
+                    pad.refresh((current_page * window_height),0, 5,5,
+                                window_height - 1, window_width - 1)
                 else:
                     continue
             case 113: # 'q'
