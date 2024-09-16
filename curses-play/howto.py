@@ -4,14 +4,6 @@ import sys
 
 DEBUG_LIMIT = 5
 
-def more(current_page: int, lines_per_page: int,
-    total_pages: int, forward: bool=True):
-    """Tell us if there is more data"""
-    if forward == True:
-        return current_page < total_pages
-    else:
-        return current_page > 0
-
 def main(stdscr):
     """Display a multi-page document using a pad and a window"""
     window_height = curses.LINES - 5 
@@ -20,7 +12,7 @@ def main(stdscr):
     total_chars = window_height * window_width * total_pages
     current_page = 0
     pad = curses.newpad((window_height * total_pages), window_width)
-    prompt = curses.newwin(1, 75, window_height, 0)
+    prompt = curses.newwin(1, window_width, window_height, 0)
     # These loops fill the pad with letters
     for y in range(0, ((window_height * total_pages)- 1)):
         for x in range(0, (window_width - 1)):
@@ -31,13 +23,17 @@ def main(stdscr):
         menu_message = ''
         if current_page < total_pages - 1:
             menu_message += 'f: forward'
-            if more(current_page, window_height, total_chars, forward=False):
+            if current_page > 0:
                 menu_message += '; b: backward'
         else:
-            if more(current_page, window_height, total_chars, forward=False):
+            if current_page > 0:
                 menu_message += 'b: backward'
         menu_message += '; q: quit'
-        prompt.addstr(0, 0, menu_message)
+        half_length_of_message = int(len(menu_message))
+        p_height, p_width = prompt.getmaxyx()
+        p_midpoint = int(p_width / 2)
+        x_position = p_midpoint - half_length_of_message
+        prompt.addstr(0, x_position, menu_message)
         prompt.refresh()
         action = prompt.getch()
         match action:
@@ -49,7 +45,7 @@ def main(stdscr):
                 else:
                     continue
             case 98: # 'b'
-                if more(current_page, window_height, -1, forward=False):
+                if current_page > 0:
                     current_page -= 1
                     pad.refresh((current_page * window_height),0, 5,5,
                                 window_height - 1, window_width - 1)
