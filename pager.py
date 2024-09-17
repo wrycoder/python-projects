@@ -1,19 +1,22 @@
 import curses
 import sys
 
-def pager(stdscr, /, total_pages):
+HORIZONTAL_MARGIN = 3
+VERTICAL_MARGIN = 3
+
+def pager(stdscr, /, data):
     """Display a multi-page document using a pad and a window"""
-    window_height = curses.LINES - 5
-    window_width = curses.COLS - 10
-    total_chars = window_height * window_width * total_pages
+    window_height = curses.LINES - VERTICAL_MARGIN
+    window_width = curses.COLS - HORIZONTAL_MARGIN
+    curses.curs_set(0)
     current_page = 0
-    pad = curses.newpad((window_height * total_pages), window_width)
+    total_pages = len(data) // window_height
+    pad = curses.newpad(len(data) + 1, window_width)
     prompt = curses.newwin(1, window_width, window_height, 0)
-    # These loops fill the pad with letters
-    for y in range(0, ((window_height * total_pages)- 1)):
-        for x in range(0, (window_width - 1)):
-            pad.addch(y, x, ord('a') + (x*x+y*y) % 26)
-    pad.refresh(0,0, 5,5, (window_height - 1), (window_width - 1))
+    for line in data:
+        pad.addstr(line[:window_width])
+    pad.refresh(0,0, VERTICAL_MARGIN, HORIZONTAL_MARGIN,
+                (window_height - 1), (window_width - 1))
     while True:
         prompt.clear()
         menu_message = ''
@@ -36,14 +39,16 @@ def pager(stdscr, /, total_pages):
             case 102: # 'f'
                 if current_page < total_pages - 1:
                     current_page += 1
-                    pad.refresh((current_page * window_height),0, 5,5,
+                    pad.refresh((current_page * window_height),0,
+                                 VERTICAL_MARGIN, HORIZONTAL_MARGIN,
                                   window_height - 1, window_width - 1)
                 else:
                     continue
             case 98: # 'b'
                 if current_page > 0:
                     current_page -= 1
-                    pad.refresh((current_page * window_height),0, 5,5,
+                    pad.refresh((current_page * window_height),0,
+                                VERTICAL_MARGIN, HORIZONTAL_MARGIN,
                                 window_height - 1, window_width - 1)
                 else:
                     continue
@@ -51,13 +56,21 @@ def pager(stdscr, /, total_pages):
                 break
             case _:
                 continue
+    curses.curs_set(1)
 
 if __name__ == "__main__":
     total_pages = 0
     try:
-        total_pages = int(sys.argv[1])
+        total_lines = int(sys.argv[1])
     except(IndexError):
-        print("Please tell me how many pages of data to generate")
+        print("Please tell me how many lines of data to generate")
         sys.exit()
-    curses.wrapper(pager, total_pages)
+    data = []
+    line_length = 110
+    # These loops fill the array with letters
+    for y in range(0, total_lines):
+        data.append('')
+        for x in range(0, (line_length - 1)):
+            data[y] += chr(ord('a') + (x*x+y*y) % 26)
+    curses.wrapper(pager, data)
 
