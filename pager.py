@@ -66,7 +66,7 @@ if __name__ == "__main__":
         print("Please tell me how many lines of data to generate")
         sys.exit()
     data = []
-    line_length = 110
+    line_length = 500
     # These loops fill the array with letters
     for y in range(0, total_lines):
         data.append('')
