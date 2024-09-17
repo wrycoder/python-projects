@@ -8,6 +8,7 @@ To select a president by state, enter 's'
 To list all presidents in a given party, enter 'p'
 To quit, enter 'q'
 """
+MINIMUM_HEIGHT = 45
 
 presidents = {}
 
@@ -216,6 +217,10 @@ def do_loop(stdscr):
         # Clear and refresh the screen for a blank canvas
         stdscr.clear()
         height, width = stdscr.getmaxyx()
+        if height < MINIMUM_HEIGHT:
+            raise Exception("Your display needs to be at least " +
+                            f"{MINIMUM_HEIGHT} lines high"
+            )
         prompt_lines = prompt.split('\n')
         y_index = (height // 2) - (len(prompt_lines) // 2)
         # Draw the prompt
