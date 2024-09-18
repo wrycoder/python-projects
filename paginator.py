@@ -123,5 +123,6 @@ if __name__ == "__main__":
         data.append('')
         for x in range(0, (line_length - 1)):
             data[y] += chr(ord('a') + (x*x+y*y) % 26)
-    curses.wrapper(paginate, data)
+    p = Paginator(wait_on_error = True)
+    curses.wrapper(p.paginate, data)
 
