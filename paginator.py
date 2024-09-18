@@ -4,6 +4,34 @@ import sys
 HORIZONTAL_MARGIN = 3
 VERTICAL_MARGIN = 3
 
+class PaginatorException(Exception):
+    def __init__(self, msg):
+        super().__init__(msg)
+
+def load_data(stdscr, msg="Please specify source document"):
+    text = None
+    try:
+        book = sys.argv[1]        
+    except(IndexError):
+        errmsg = msg
+        curses.savetty()
+        msg_midpoint = len(errmsg) // 2
+        height, width = stdscr.getmaxyx()
+        curses.curs_set(0)
+        stdscr.addstr(
+            (height // 2),
+            (width // 2) - msg_midpoint,
+            errmsg
+        )
+        stdscr.refresh()
+        curses.napms(3000)
+        curses.resetty()
+        raise PaginatorException(msg=errmsg)
+    filename = f'war-and-peace-book-{book}.txt'
+    with open(filename) as f:
+        text = f.readlines()
+    paginate(stdscr, text)
+
 def paginate(stdscr, /, data):
     """Display a multi-page document using a pad and a window"""
     window_height = curses.LINES - VERTICAL_MARGIN
@@ -72,5 +100,5 @@ if __name__ == "__main__":
         data.append('')
         for x in range(0, (line_length - 1)):
             data[y] += chr(ord('a') + (x*x+y*y) % 26)
-    curses.wrapper(pager, data)
+    curses.wrapper(paginate, data)
 
