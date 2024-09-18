@@ -4,7 +4,7 @@ import sys
 HORIZONTAL_MARGIN = 3
 VERTICAL_MARGIN = 3
 
-def pager(stdscr, /, data):
+def paginate(stdscr, /, data):
     """Display a multi-page document using a pad and a window"""
     window_height = curses.LINES - VERTICAL_MARGIN
     window_width = curses.COLS - HORIZONTAL_MARGIN
