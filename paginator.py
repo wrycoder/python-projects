@@ -81,7 +81,9 @@ class Paginator:
             else:
                 if current_page > 0:
                     menu_message += 'b: backward'
-            menu_message += '; q: quit'
+            if total_pages > 1:
+                menu_message += '; '
+            menu_message += 'q: quit'
             half_length_of_message = int(len(menu_message) / 2)
             p_height, p_width = prompt.getmaxyx()
             p_midpoint = int(p_width / 2)
