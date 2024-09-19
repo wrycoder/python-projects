@@ -1,5 +1,6 @@
 import unittest
 from presidents import presidents, load_data, President
+import re
 
 class TestInitialization(unittest.TestCase):
 
@@ -34,6 +35,12 @@ class TestInitialization(unittest.TestCase):
         self.assertEqual(sven.pronoun('possessive'), 'their')
         self.assertEqual(bob.pronoun('subject'), 'he')
         self.assertEqual(hilda.pronoun('object'), 'her')
+
+    def test_index_method(self):
+        johnny = President('57', 'Johnny Rotten', '2028', 'AZ',
+                           'he/him/his', 'Punk')
+        johnny_re = re.compile('.+was inaugurated in 2028.$')
+        self.assertTrue(johnny_re.match(johnny[0]) != None)
 
 if __name__ == '__main__':
     unittest.main()
