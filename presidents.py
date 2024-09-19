@@ -182,15 +182,18 @@ def choose_party(y_index, x_width, stdscr) -> str:
                 ((x_width // 2) + len(party_prompt))).decode("utf-8")
             party = parties[int(key)]
             break
-        except KeyError:
+        except(ValueError, KeyError):
             party = ""
             curses.curs_set(0)
             curses.curs_set(1)
+            # Erase any invalid input
+            stdscr.addstr(y_index, ((x_width // 2) + len(party_prompt)), "   ")
             stdscr.refresh()
             pass
     curses.noecho()
     curses.curs_set(0)
     stdscr.clear()
+    stdscr.refresh()
     return party
 
 def by_party(party: str) -> list:
@@ -230,10 +233,7 @@ def do_loop(stdscr):
         # Clear and refresh the screen for a blank canvas
         stdscr.clear()
         height, width = stdscr.getmaxyx()
-        if height < MINIMUM_HEIGHT:
-            raise Exception("Your display needs to be at least " +
-                            f"{MINIMUM_HEIGHT} lines high"
-            )
+        paging_win = curses.newwin(height - 1, width - 1, 0, 0)
         prompt_lines = prompt.split('\n')
         y_index = (height // 2) - (len(prompt_lines) // 2)
         # Draw the prompt
@@ -285,6 +285,7 @@ def do_loop(stdscr):
             try:
                 president_list.append(for_year(int(year)))
                 stdscr.clear()
+                stdscr.refresh()
             except ValueError:
                 if(int(year) < 1789):
                     message = "The office of President of the "\
@@ -302,6 +303,7 @@ def do_loop(stdscr):
                 center("Press any key to continue...",
                         (height - 2), width, stdscr)
                 stdscr.border()
+                stdscr.refresh()
                 stdscr.getch()
                 continue
         elif result == ord('s'):
