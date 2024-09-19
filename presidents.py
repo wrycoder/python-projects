@@ -110,24 +110,36 @@ class President:
         p_table = dict(zip(cases, pronouns))
         return p_table[p_case]
 
+    def __getitem__(self, key):
+        result = ""
+        match key:
+            case 0:
+                result = f"{self.name}, {ordinal(self.key)} " + \
+                          "president of the United " + \
+                         f"States, was inaugurated in {str(self.sworn_in)}."
+            case 1:
+                result = f"{self.pronoun('subject').capitalize()} " + \
+                          "was a resident of " + \
+                         f"{self.state} on Inauguration Day."
+            case 2:
+                if self.party != 'None':
+                    result = f"{self.pronoun('subject').capitalize()} " + \
+                               "was a member of the " + \
+                              f"{self.party} Party."
+                else:
+                    result = f"{self.pronoun('subject').capitalize()} " + \
+                               "was not affiliated with any " + \
+                               "political party."
+        return result
+
 
     def display(self, y_index, x_width, stdscr) -> None:
         """Show the president's details."""
-        message = f"{self.name}, {ordinal(self.key)} president of the United " + \
-                  f"States, was inaugurated in {str(self.sworn_in)}."
-        center(message, y_index, x_width, stdscr)
+        center(self[0], y_index, x_width, stdscr)
         y_index += 1
-        message = f"{self.pronoun('subject').capitalize()} was a resident of " + \
-                  f"{self.state} on Inauguration Day."
-        center(message, y_index, x_width, stdscr)
+        center(self[1], y_index, x_width, stdscr)
         y_index += 1
-        if self.party != 'None':
-            message = f"{self.pronoun('subject').capitalize()} was a member of the " + \
-                      f"{self.party} Party."
-        else:
-            message = f"{self.pronoun('subject').capitalize()} was not affiliated with any " + \
-                        "political party."
-        center(message, y_index, x_width, stdscr)
+        center(self[2], y_index, x_width, stdscr)
 
 def for_year(year: int) -> President:
     """Find out who was president in the given year."""
