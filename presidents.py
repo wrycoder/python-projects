@@ -1,5 +1,6 @@
 import fileinput
 import curses
+from paginator import Paginator
 
 prompt = """
 To select a president by ordinal number, enter 'o'
