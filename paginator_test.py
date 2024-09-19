@@ -62,5 +62,24 @@ class TestPaginator(unittest.TestCase):
             curses.endwin()
             os.remove('test.txt')
 
+    def test_two_pages(self):
+        p = Paginator()
+        data = []
+        try:
+            stdscr = curses.initscr()
+            screen_lines, screen_columns = stdscr.getmaxyx()
+            # The pad height should be 1.5 times the current screen height
+            pad_lines = screen_lines + (screen_lines // 2)
+            for y in range(0, pad_lines):
+                data.append('')
+                for x in range(0, (screen_columns - 1)):
+                    data[y] += chr(ord('a') + (x*x+y*y) % 26)
+                data[y] += '\n'
+            p.paginate(stdscr, data)
+            self.assertTrue(len(data) == pad_lines)
+        finally:
+            curses.endwin()
+
+
 if __name__ == '__main__':
     unittest.main()
