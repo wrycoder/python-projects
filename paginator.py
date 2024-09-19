@@ -57,11 +57,14 @@ class Paginator:
 
     def paginate(self, stdscr, /, data):
         """Display a multi-page document using a pad and a window"""
-        window_height = curses.LINES - VERTICAL_MARGIN
-        window_width = curses.COLS - HORIZONTAL_MARGIN
+        scr_height, scr_width = stdscr.getmaxyx()
+        window_height = scr_height - VERTICAL_MARGIN
+        window_width = scr_width - HORIZONTAL_MARGIN
         curses.curs_set(0)
         current_page = 0
         total_pages = len(data) // window_height
+        if len(data) % window_height:
+            total_pages += 1
         pad = curses.newpad(len(data) + 1, window_width)
         prompt = curses.newwin(1, window_width, window_height, 0)
         for line in data:
