@@ -95,6 +95,9 @@ class Paginator:
                 case 102: # 'f'
                     if current_page < total_pages - 1:
                         current_page += 1
+                        if current_page == total_pages - 1:
+                            stdscr.erase()
+                            stdscr.refresh()
                         pad.refresh((current_page * window_height),0,
                                      VERTICAL_MARGIN, HORIZONTAL_MARGIN,
                                       window_height - 1, window_width - 1)
