@@ -1,20 +1,36 @@
 import curses, sys, re
 
-HORIZONTAL_MARGIN  = 3
-VERTICAL_MARGIN    = 3
-ERROR_DELAY_TIME   = 2000
-DEFAULT_MSG        = "Unspecified paginator error"
-MISSING_SOURCE_MSG = "Source document not found"
-WRONG_FORMAT_MSG   = "Source document needs to be plain text, "\
-                     "with .txt extension"
+HORIZONTAL_MARGIN       = 3
+VERTICAL_MARGIN         = 3
+ERROR_DELAY_TIME        = 2000
+DEFAULT_FWD_PROMPT      = "f: forward"
+DEFAULT_FWD_CHAR        = 'f'
+DEFAULT_BWD_PROMPT      = "b: backward"
+DEFAULT_BWD_CHAR        = 'b'
+DEFAULT_QUIT_PROMPT     = "q: quit"
+DEFAULT_QUIT_CHAR       = 'q'
+DEFAULT_MSG             = "Unspecified paginator error"
+MISSING_SOURCE_MSG      = "Source document not found"
+WRONG_FORMAT_MSG        = "Source document needs to be plain text, "\
+                          "with .txt extension"
 
 class PaginatorException(Exception):
     def __init__(self, msg=DEFAULT_MSG):
         super().__init__(msg)
 
 class Paginator:
-    def __init__(self, wait_on_error=False):
+    def __init__(self, wait_on_error=False, centered=False,
+                fwd_prompt=DEFAULT_FWD_PROMPT, fwd_char=DEFAULT_FWD_CHAR,
+                bwd_prompt=DEFAULT_BWD_PROMPT, bwd_char=DEFAULT_BWD_CHAR,
+                quit_prompt=DEFAULT_QUIT_PROMPT, quit_char=DEFAULT_QUIT_CHAR):
         self.wait_on_error = wait_on_error
+        self.centered = centered
+        self.fwd_prompt = fwd_prompt
+        self.fwd_char = ord(fwd_char)
+        self.bwd_prompt = bwd_prompt
+        self.bwd_char = ord(bwd_char)
+        self.quit_prompt = quit_prompt
+        self.quit_char = ord(quit_char)
 
     def handle_error(self, stdscr, error_message):
         curses.savetty()
