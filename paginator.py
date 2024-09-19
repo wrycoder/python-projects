@@ -118,7 +118,7 @@ class Paginator:
             prompt.refresh()
             action = prompt.getch()
             match action:
-                case 102: # 'f'
+                case self.fwd_char:
                     if current_page < total_pages - 1:
                         current_page += 1
                         if current_page == total_pages - 1:
@@ -129,7 +129,7 @@ class Paginator:
                                       window_height - 1, window_width - 1)
                     else:
                         continue
-                case 98: # 'b'
+                case self.bwd_char:
                     if current_page > 0:
                         current_page -= 1
                         pad.refresh((current_page * window_height),0,
@@ -137,7 +137,7 @@ class Paginator:
                                     window_height - 1, window_width - 1)
                     else:
                         continue
-                case 113: # 'q'
+                case self.quit_char:
                     break
                 case _:
                     continue
