@@ -83,23 +83,33 @@ class Paginator:
             total_pages += 1
         pad = curses.newpad(len(data) + 1, window_width)
         prompt = curses.newwin(1, window_width, window_height, 0)
+        y_index = 0
         for line in data:
-            pad.addstr(line[:window_width])
+            if self.centered == True:
+                text_midpoint = len(line[:window_width]) // 2
+                line_midpoint = window_width // 2
+                pad.addstr(y_index,
+                    line_midpoint - text_midpoint,
+                    line[:window_width]
+                )
+            else:
+                pad.addstr(y_index, 0, line[:window_width])
+            y_index += 1
         pad.refresh(0,0, VERTICAL_MARGIN, HORIZONTAL_MARGIN,
                     (window_height - 1), (window_width - 1))
         while True:
             prompt.clear()
             menu_message = ''
             if current_page < total_pages - 1:
-                menu_message += 'f: forward'
+                menu_message += self.fwd_prompt
                 if current_page > 0:
-                    menu_message += '; b: backward'
+                    menu_message += '; ' + self.bwd_prompt
             else:
                 if current_page > 0:
-                    menu_message += 'b: backward'
+                    menu_message += self.bwd_prompt
             if total_pages > 1:
                 menu_message += '; '
-            menu_message += 'q: quit'
+            menu_message += self.quit_prompt
             half_length_of_message = int(len(menu_message) / 2)
             p_height, p_width = prompt.getmaxyx()
             p_midpoint = int(p_width / 2)
