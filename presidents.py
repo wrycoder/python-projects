@@ -350,15 +350,15 @@ def do_loop(stdscr):
                     verbiage = "presidents have come from"
                 title_line = f"{len(results)} {verbiage} " + \
                              f"{states[state.upper()]}"
-                stdscr.addstr(2, 
+                stdscr.addstr(0,
                             (width // 2) - (len(title_line) // 2),
                             title_line, curses.A_BOLD | curses.color_pair(1))
                 stdscr.refresh()
                 for key in results:
                     president_list.append(presidents[key])
         elif result == ord('p'):
-            y_index = height // 3
-            party = choose_party(y_index, width, stdscr)
+            p = Paginator(centered=True, quit_prompt="e: escape", quit_char='e')
+            party = choose_party(3, width, stdscr)
             if party != 'None':
                 message = "Presidents who belonged to the {0} "\
                           "Party".format(party)
@@ -367,28 +367,30 @@ def do_loop(stdscr):
             stdscr.addstr(y_index,
                     (width // 2) - (len(message) // 2),
                     message, curses.color_pair(1))
-            y_index += 2
+            details = []
             for president in by_party(party):
-                center(president.name, y_index, width, stdscr)
-                y_index += 1
-            center("Press 'c' to continue...", (height - 2), width, stdscr)
+                details.append(f"{president[0]}\n")
+            p.paginate(paging_win, details)
+            stdscr.timeout(-1)
             stdscr.border()
-            if stdscr.getch() == ord('c'):
-                result = 0
-                continue
+            result = 0
+            continue
         if(len(president_list) != 0):
-            y_index = 5
+            p = Paginator(centered=True, quit_prompt="e: escape", quit_char='e')
             curses.curs_set(0)
             curses.noecho()
-            for pres in president_list:
-                pres.display(y_index, width, stdscr)
-                y_index += 4
-            center("Press 'c' to continue...", (height - 2), width, stdscr)
+            details = []
             stdscr.border()
-            stdscr.timeout(-20)
-            if stdscr.getch() == ord('c'):
-                result = 0
-                continue
+            for pres in president_list:
+                details.append(f"{pres[0]}\n")
+                details.append(f"{pres[1]}\n")
+                details.append(f"{pres[2]}\n")
+                details.append("\n")
+            p.paginate(paging_win, details)
+            stdscr.timeout(-1)
+            stdscr.border()
+            result = 0
+            continue
         stdscr.refresh()
         result = stdscr.getch()
 
