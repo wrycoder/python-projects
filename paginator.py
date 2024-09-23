@@ -124,17 +124,27 @@ class Paginator:
                         if current_page == total_pages - 1:
                             stdscr.erase()
                             stdscr.refresh()
-                        pad.refresh((current_page * window_height),0,
-                                     VERTICAL_MARGIN, HORIZONTAL_MARGIN,
-                                      window_height - 1, window_width - 1)
+                        pad.refresh(
+                            ((current_page * window_height) - VERTICAL_MARGIN),
+                            0,
+                            0,
+                            HORIZONTAL_MARGIN,
+                            window_height - 1, window_width - 1
+                        )
                     else:
                         continue
                 case self.bwd_char:
                     if current_page > 0:
                         current_page -= 1
-                        pad.refresh((current_page * window_height),0,
-                                    VERTICAL_MARGIN, HORIZONTAL_MARGIN,
-                                    window_height - 1, window_width - 1)
+                        stdscr.erase()
+                        stdscr.refresh()
+                        pad.refresh(
+                            ((current_page * window_height) - VERTICAL_MARGIN),
+                            0,
+                            VERTICAL_MARGIN,
+                            HORIZONTAL_MARGIN,
+                            window_height - 1, window_width - 1
+                        )
                     else:
                         continue
                 case self.quit_char:
