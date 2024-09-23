@@ -365,15 +365,16 @@ def do_loop(stdscr):
                           "Party".format(party)
             else:
                 message = "Unaffiliated Presidents"
-            stdscr.addstr(y_index,
-                    (width // 2) - (len(message) // 2),
-                    message, curses.color_pair(1))
             details = []
             for president in by_party(party):
                 details.append(f"{president[0]}\n")
+            stdscr.addstr(0,
+                    (width // 2) - (len(message) // 2),
+                    message, curses.A_BOLD | curses.color_pair(1))
+            stdscr.refresh()
             p.paginate(paging_win, details)
             stdscr.timeout(-1)
-            stdscr.border()
+            stdscr.refresh()
             result = 0
             continue
         if(len(president_list) != 0):
