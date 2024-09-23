@@ -232,6 +232,7 @@ def do_loop(stdscr):
     while(result != ord('q')):
         # Clear and refresh the screen for a blank canvas
         stdscr.clear()
+        curses.curs_set(0)
         height, width = stdscr.getmaxyx()
         paging_win = curses.newwin(height - 1, width - 1, 0, 0)
         prompt_lines = prompt.split('\n')
