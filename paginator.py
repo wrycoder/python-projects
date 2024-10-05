@@ -59,7 +59,7 @@ class Paginator:
 
     def load_data(self, stdscr, filename):
         text = None
-        filename_re = re.compile('\S+\.txt$')
+        filename_re = re.compile(r'\S+\.txt$')
         if filename_re.match(filename) == None:
             self.handle_error(stdscr, WRONG_FORMAT_MSG)
             raise PaginatorException(WRONG_FORMAT_MSG)
