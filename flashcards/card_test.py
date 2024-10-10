@@ -95,6 +95,12 @@ class CardTest(unittest.TestCase):
             1867,
             "Incorrect value for specified key"
         )
+        birth_year = re.findall(
+            r'.+1867.+',
+            curie.display(js_data['display_template']),
+            re.MULTILINE
+        )
+        self.assertEqual(len(birth_year), 1, "Birth year not found in card display")
         test_list = [curie]
         scientists = Deck('scientist', SCIENTISTS)
         self.assertEqual(len(scientists), 1, "Incorrect number of cards")
