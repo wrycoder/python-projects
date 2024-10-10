@@ -13,12 +13,14 @@ class ConfigurationError(Exception):
 class Card:
     """A single flash card"""
     def __init__(self, title: str, **kwargs):
+        """Initialize the Card object"""
         self.details = {}
         self.title = title
         for k, v in kwargs.items():
             self.details[k] = v
 
     def __getitem__(self, key):
+        """Access a given property via subscript"""
         return self.details[key]
 
 class CardEncoder(json.JSONEncoder):
@@ -31,11 +33,14 @@ class CardEncoder(json.JSONEncoder):
 
 class Deck:
     """A collection of flash cards"""
-    def __init__(self, deck_name: str, display_template: str, data: str):
+    def __init__(self, deck_name: str, data: str):
+        """Initialize the deck"""
         try:
+            js_data = json.loads(data)
+#            print(json.dumps(js_data, indent=4))
             self.deck_name = deck_name
-            self.display_template = display_template
-            self.data = json.loads(data)
+            self.display_template = js_data['display_template']
+            self.data = js_data['data']
         except(json.decoder.JSONDecodeError):
             raise ConfigurationError(f"Invalid configuration data: {data}")
 
@@ -48,13 +53,11 @@ class Deck:
         return self.data[key]
 
     def display_all(self):
-        # eventually, some variant of this:
-        # marie = {'title': 'Marie Curie', 'birthplace': 'Warsaw', 'born_in': 1867, 'died_in': 1934}
-        # display_template = "{marie['title']} was born in {marie['birthplace']} in the year {marie['born_in']}"
-        # eval('f"' + display_template + '"')
         result = ""
         for card in self.data:
-            result += eval('f"' + self.display_template + '"')
+            for line in self.display_template:
+                result += eval('f"' + line + '"')
+                result += '\n'
         return result
 
 
