@@ -51,7 +51,10 @@ class Deck:
 #            print(json.dumps(js_data, indent=4))
             self.deck_name = deck_name
             self.display_template = js_data['display_template']
-            self.data = js_data['data']
+            raw_data = js_data['data']
+            self.data = []
+            for item in raw_data:
+                self.data.append(Card(item.pop('title'), **item))
         except(json.decoder.JSONDecodeError):
             raise ConfigurationError(f"Invalid configuration data: {data}")
 
