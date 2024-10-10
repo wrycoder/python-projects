@@ -21,7 +21,18 @@ class Card:
 
     def __getitem__(self, key):
         """Access a given property via subscript"""
-        return self.details[key]
+        if key != 'title':
+            return self.details[key]
+        else:
+            return self.title
+
+    def display(self, template):
+        result = ""
+        for line in template:
+            new_line = re.sub(r'\{card\[', '{self[', line)
+            result += eval('f"' + new_line + '"')
+            result += '\n'
+        return result
 
 class CardEncoder(json.JSONEncoder):
     def default(self, obj):
