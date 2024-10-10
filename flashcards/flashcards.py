@@ -4,7 +4,7 @@
 # A configurable learning tool.
 #
 
-import json
+import json, re
 
 class ConfigurationError(Exception):
     def __init__(self, message):
