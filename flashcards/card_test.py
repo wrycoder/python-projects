@@ -109,11 +109,11 @@ class CardTest(unittest.TestCase):
             "Title of test card not found"
         )
         birth_year = re.findall(r'.+1867.+', scientists.display_all(), re.MULTILINE)
-        self.assertEqual(len(birth_year), 1, "Detail not found")
+        self.assertEqual(len(birth_year), 1, "Birth year not found in deck display")
         death_year = re.findall(r'.+1934\.', scientists.display_all(), re.MULTILINE)
-        self.assertEqual(len(death_year), 1, "Detail not found")
+        self.assertEqual(len(death_year), 1, "Death year not found in deck display")
         birthplace = re.findall(r'.+Warsaw.+', scientists.display_all(), re.MULTILINE)
-        self.assertEqual(len(birthplace), 1, "Detail not found")
+        self.assertEqual(len(birthplace), 1, "Birthplace not found in deck display")
 
 if __name__ == "__main__":
     unittest.main()
