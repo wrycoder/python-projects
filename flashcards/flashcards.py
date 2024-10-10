@@ -69,9 +69,7 @@ class Deck:
     def display_all(self):
         result = ""
         for card in self.data:
-            for line in self.display_template:
-                result += eval('f"' + line + '"')
-                result += '\n'
+            result += card.display(self.display_template)
         return result
 
 
