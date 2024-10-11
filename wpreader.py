@@ -1,23 +1,24 @@
+#
+# Notes about the War and Peace Reader
+#
+# This work in progress is a customized reader for Leo Tolstoy's novel War and
+# Peace.
+#
+# The application includes a workaround for what appears to be a bug in
+# curses.newpad(). That function is supposed to return a pad object, which
+# can then be used for scrolling up and down in the text.
+#
+# Unfortunately, when I call newpad() with an array containing the entire
+# text (over 66000 lines), it returns NULL. After some testing, the maximum
+# size of the input array appears to be somewhere under 35000 or 40000 lines.
+#
+# To address that shortcoming, I create a hash containing the fifteen separate
+# books, and two epilogues, in Tolstoy's text.
+
 import paginator
 from curses import wrapper
 import curses, sys, re
 
-'''Notes about the War and Peace Reader
-
-This work in progress is a customized reader for Leo Tolstoy's novel War and
-Peace.
-
-The application includes a workaround for what appears to be a bug in
-curses.newpad(). That function is supposed to return a pad object, which
-can then be used for scrolling up and down in the text.
-
-Unfortunately, when I call newpad() with an array containing the entire
-text (over 66000 lines), it returns NULL. After some testing, the maximum
-size of the input array appears to be somewhere under 35000 or 40000 lines.
-
-To address that shortcoming, I create a hash containing the fifteen separate
-books, and two epilogues, in Tolstoy's text.
-'''
 
 SOURCE_FILENAME = 'war-and-peace.txt'
 MIN_DISPLAY_HEIGHT = 20
@@ -36,8 +37,8 @@ class ScreenSetupError(Exception):
 def do_setup():
     '''Initialize the system.'''
     result = 0
-    book_re = re.compile('^\s{4}BOOK.+')
-    epilogue_re = re.compile('^\s{4}(FIRST|SECOND) EPILOGUE')
+    book_re = re.compile(r'^\s{4}BOOK.+')
+    epilogue_re = re.compile(r'^\s{4}(FIRST|SECOND) EPILOGUE')
     with open(SOURCE_FILENAME) as txt:
         for line in txt.readlines():
             if(book_re.match(line)):
@@ -51,7 +52,7 @@ def do_setup():
         )
     for b in range(1, 18):
         books[b] = []
-    book_re = re.compile('^BOOK\s.+')
+    book_re = re.compile(r'^BOOK\s.+')
     epilogue_re = re.compile('^FIRST EPILOGUE')
     book_begin, book_end = 0, 0
     current_line = 0
