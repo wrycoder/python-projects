@@ -83,8 +83,8 @@ SCIENTISTS = '''
 class DeckTest(unittest.TestCase):
     def test_load_deck(self):
         with self.assertRaises(ConfigurationError):
-            colonies = Deck('foo', 'baz')
-        colonies = Deck('colony', COLONIES)
+            colonies = Deck('baz')
+        colonies = Deck(COLONIES)
         self.assertEqual(len(colonies), 13, "Incorrect number of cards")
         self.assertEqual(
             colonies['Massachusetts']['title'],
@@ -97,7 +97,7 @@ class DeckTest(unittest.TestCase):
         )
 
     def test_display_all(self):
-        scientists = Deck('scientist', SCIENTISTS)
+        scientists = Deck(SCIENTISTS)
         self.assertEqual(len(scientists), 1, "Incorrect number of cards")
         sample_text = '\n'.join(scientists.display_all())
         self.assertTrue(
@@ -112,7 +112,7 @@ class DeckTest(unittest.TestCase):
         self.assertEqual(len(birthplace), 1, "Birthplace not found in deck display")
 
     def test_display_all_filtered(self):
-        colonies = Deck('colony', COLONIES)
+        colonies = Deck(COLONIES)
         self.assertEqual(len(colonies), 13, "Incorrect number of cards")
         tobacconists = colonies.display_all(for_topic='tobacco')
         self.assertEqual( len(tobacconists), 9,
