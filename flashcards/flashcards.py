@@ -4,9 +4,13 @@
 # A configurable learning tool.
 #
 
-import json, re, sys, curses, screen_utils
+import json, re, sys, random, curses, screen_utils
 
 class ConfigurationError(Exception):
+    def __init__(self, message):
+        super().__init__(message)
+
+class CardNotFoundError(Exception):
     def __init__(self, message):
         super().__init__(message)
 
