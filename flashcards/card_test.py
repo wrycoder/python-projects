@@ -47,7 +47,14 @@ COLONIES = '''
   ],
   "display_template" : [
     "All about the {card['title']} Colony"
-  ]
+  ],
+  "topics" : [{
+     "tobacco" : {
+        "prompt" : "Colonies that Farmed Tobacco",
+        "detail" : ["{card['title']} was a tobacco-farming colony"],
+        "members" : ["North Carolina", "Virginia", "Maryland"]
+     }
+  }]
 }
 '''
 
