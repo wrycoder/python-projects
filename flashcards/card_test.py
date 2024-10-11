@@ -84,11 +84,11 @@ class DeckTest(unittest.TestCase):
         colonies = Deck('colony', COLONIES)
         self.assertEqual(len(colonies), 13, "Incorrect number of cards")
         self.assertEqual(
-            colonies[4]['title'],
+            colonies['Massachusetts']['title'],
             "Massachusetts",
             "Incorrect name for colony")
         self.assertEqual(
-            colonies[4]['capital'],
+            colonies['Massachusetts']['capital'],
             "Boston",
             "Incorrect capital for colony"
         )
