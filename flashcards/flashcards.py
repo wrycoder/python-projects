@@ -100,8 +100,18 @@ class Deck:
                 topic_list = js_data['topics']
                 for item in topic_list:
                     self.topics.update(item)
+            try:
+                self.numbered = js_data['numbered']
+            except:
+                self.numbered = False
         except(json.decoder.JSONDecodeError) as ex:
             raise ConfigurationError(f"Invalid configuration data: {data}")
+
+    def get_item(self, number):
+        if self.numbered == False:
+            raise ConfigurationError(f"You cannot access cards by number")
+        else:
+            return self.data[number - 1]
 
     def __len__(self):
         """The number of cards in this deck"""
@@ -109,7 +119,13 @@ class Deck:
 
     def __getitem__(self, key):
         """Get a specific card"""
-        return self.data[key]
+        count = 0
+        for card in self.data:
+            if card['title'] == key:
+                return self.data[count]
+            else:
+                count += 1
+        raise CardNotFoundError(f"Card not found for key '{key}'")
 
     def display_all(self, for_topic: str=None):
         """
@@ -133,6 +149,13 @@ class Deck:
                         self.topics
                     )
         return result
+
+    def random_card(self):
+        """
+        Pick a card at random
+        """
+        n = random.randint(0, len(self.data)-1)
+        return self.data[n]
 
 def do_loop(stdscr, cards):
     result = 0
