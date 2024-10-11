@@ -80,7 +80,13 @@ class CardEncoder(json.JSONEncoder):
 class Deck:
     """A collection of flash cards"""
     def __init__(self, deck_name: str, data: str):
-        """Initialize the deck"""
+        """
+        Initialize the deck
+
+        Parameters:
+            deck_name:      identifier for the deck
+            data:           data in JSON format
+        """
         try:
             js_data = json.loads(data)
             self.deck_name = deck_name
