@@ -160,14 +160,40 @@ class DeckTest(unittest.TestCase):
           "numbered" : false
         }
         '''
-        hosts = Deck('host', numbered_json_string)
+        hosts = Deck(numbered_json_string)
         card = hosts.get_item(2)
         self.assertEqual(card.title, 'Ryan Seacrest', "Incorrect card for given number")
         with self.assertRaises(ConfigurationError):
-          colonies = Deck('colony', COLONIES)
+          colonies = Deck(COLONIES)
           card = colonies.get_item(2)
-          tv_witches = Deck('witch', numbered_false_json_string)
+          tv_witches = Deck(numbered_false_json_string)
           card = tv_witches.get_item(2)
+
+    def test_main_menu(self):
+        scientists = Deck(SCIENTISTS)
+        menu = scientists.main_menu()
+        self.assertEqual(len(menu), 1, "Scientists main menu should have one option")
+        numbered_deck_json_string = '''
+        {
+          "name" : "Sesame Street Characters",
+          "data" : [
+            {
+              "title" : "Oscar the Grouch"
+            },
+            {
+              "title" : "Grover"
+            }
+          ],
+          "display_template" : [],
+          "numbered" : true
+        }
+        '''
+        muppets = Deck(numbered_deck_json_string)
+        menu = muppets.main_menu()
+        self.assertEqual(len(menu), 2, "Sesame Street Characters menu should have two options")
+        colonies = Deck(COLONIES)
+        menu = colonies.main_menu()
+        self.assertEqual(len(menu), 2, "Colonies menu should have two options")
 
 class CardTest(unittest.TestCase):
     def test_display_card(self):
