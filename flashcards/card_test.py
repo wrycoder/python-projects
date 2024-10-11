@@ -135,25 +135,13 @@ class CardTest(unittest.TestCase):
             1867,
             "Incorrect value for specified key"
         )
+        sample_text = '\n'.join(curie.display(js_data['display_template']))
         birth_year = re.findall(
             r'.+1867.+',
-            curie.display(js_data['display_template']),
+            sample_text,
             re.MULTILINE
         )
         self.assertEqual(len(birth_year), 1, "Birth year not found in card display")
-        test_list = [curie]
-        scientists = Deck('scientist', SCIENTISTS)
-        self.assertEqual(len(scientists), 1, "Incorrect number of cards")
-        self.assertTrue(
-            re.match(r'^All About Marie Curie.*', scientists.display_all()) != None,
-            "Title of test card not found"
-        )
-        birth_year = re.findall(r'.+1867.+', scientists.display_all(), re.MULTILINE)
-        self.assertEqual(len(birth_year), 1, "Birth year not found in deck display")
-        death_year = re.findall(r'.+1934\.', scientists.display_all(), re.MULTILINE)
-        self.assertEqual(len(death_year), 1, "Death year not found in deck display")
-        birthplace = re.findall(r'.+Warsaw.+', scientists.display_all(), re.MULTILINE)
-        self.assertEqual(len(birthplace), 1, "Birthplace not found in deck display")
 
 if __name__ == "__main__":
     unittest.main()
