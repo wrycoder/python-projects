@@ -125,13 +125,14 @@ class DeckTest(unittest.TestCase):
         self.assertTrue(formatted_string in tobacconists)
 
     def test_random_card(self):
-        colonies = Deck('colony', COLONIES)
+        colonies = Deck(COLONIES)
         card = colonies.random_card()
         self.assertEqual(type(card), type(colonies['Massachusetts']))
 
     def test_numbered_card(self):
         numbered_json_string = '''
         {
+          "name" : "TV Hosts",
           "data" : [
             {
               "title" : "Dick Clark"
@@ -146,6 +147,7 @@ class DeckTest(unittest.TestCase):
         '''
         numbered_false_json_string = '''
         {
+          "name" : "TV Witches",
           "data" : [
             {
               "title" : "Elizabeth Montgomery"
