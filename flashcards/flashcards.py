@@ -82,17 +82,16 @@ class CardEncoder(json.JSONEncoder):
 
 class Deck:
     """A collection of flash cards"""
-    def __init__(self, deck_name: str, data: str):
+    def __init__(self, data: str):
         """
         Initialize the deck
 
         Parameters:
-            deck_name:      identifier for the deck
             data:           data in JSON format
         """
         try:
             js_data = json.loads(data)
-            self.deck_name = deck_name
+            self.deck_name = js_data['name']
             self.display_template = js_data['display_template']
             raw_data = js_data['data']
             self.data = []
@@ -107,7 +106,9 @@ class Deck:
                 self.numbered = js_data['numbered']
             except:
                 self.numbered = False
-        except(json.decoder.JSONDecodeError) as ex:
+        except(KeyError) as key_ex:
+            raise ConfigurationError(f"System misconfigured: {str(key_ex)}")
+        except(json.decoder.JSONDecodeError) as json_ex:
             raise ConfigurationError(f"Invalid configuration data: {data}")
 
     def get_item(self, number):
