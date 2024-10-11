@@ -112,14 +112,57 @@ class DeckTest(unittest.TestCase):
         colonies = Deck('colony', COLONIES)
         self.assertEqual(len(colonies), 13, "Incorrect number of cards")
         tobacconists = colonies.display_all(for_topic='tobacco')
-        self.assertEqual( len(tobacconists), 6,
-                          "There should be two lines of text for each "\
-                          "tobacco-producing colony")
+        self.assertEqual( len(tobacconists), 9,
+                          "There should be 3 lines of text for each "\
+                          "of the 3 tobacco-producing colonies")
         js_data = json.loads(COLONIES)
         detail_string = js_data['topics'][0]['tobacco']['detail'][0]
         sample_member = js_data['topics'][0]['tobacco']['members'][0]
         formatted_string = re.sub(r'\{card\[\'title\'\]\}', sample_member, detail_string)
         self.assertTrue(formatted_string in tobacconists)
+
+    def test_random_card(self):
+        colonies = Deck('colony', COLONIES)
+        card = colonies.random_card()
+        self.assertEqual(type(card), type(colonies['Massachusetts']))
+
+    def test_numbered_card(self):
+        numbered_json_string = '''
+        {
+          "data" : [
+            {
+              "title" : "Dick Clark"
+            },
+            {
+              "title" : "Ryan Seacrest"
+            }
+          ],
+          "display_template" : [],
+          "numbered" : true
+        }
+        '''
+        numbered_false_json_string = '''
+        {
+          "data" : [
+            {
+              "title" : "Elizabeth Montgomery"
+            },
+            {
+              "title" : "Alyssa Milano"
+            }
+          ],
+          "display_template" : [],
+          "numbered" : false
+        }
+        '''
+        hosts = Deck('host', numbered_json_string)
+        card = hosts.get_item(2)
+        self.assertEqual(card.title, 'Ryan Seacrest', "Incorrect card for given number")
+        with self.assertRaises(ConfigurationError):
+          colonies = Deck('colony', COLONIES)
+          card = colonies.get_item(2)
+          tv_witches = Deck('witch', numbered_false_json_string)
+          card = tv_witches.get_item(2)
 
 class CardTest(unittest.TestCase):
     def test_display_card(self):
