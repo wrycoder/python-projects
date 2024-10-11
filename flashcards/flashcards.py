@@ -69,14 +69,18 @@ class Deck:
         """Initialize the deck"""
         try:
             js_data = json.loads(data)
-#            print(json.dumps(js_data, indent=4))
             self.deck_name = deck_name
             self.display_template = js_data['display_template']
             raw_data = js_data['data']
             self.data = []
             for item in raw_data:
                 self.data.append(Card(item.pop('title'), **item))
-        except(json.decoder.JSONDecodeError):
+            if 'topics' in js_data:
+                topic_list = js_data['topics']
+                self.topics = {}
+                for item in topic_list:
+                    self.topics.update(item)
+        except(json.decoder.JSONDecodeError) as ex:
             raise ConfigurationError(f"Invalid configuration data: {data}")
 
     def __len__(self):
