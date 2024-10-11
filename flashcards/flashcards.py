@@ -4,14 +4,20 @@
 # A configurable learning tool.
 #
 
-import json, re
+import json, re, sys, curses, screen_utils
 
 class ConfigurationError(Exception):
     def __init__(self, message):
         super().__init__(message)
 
 class Card:
-    """A single flash card"""
+    """
+    A single flash card
+
+    Parameters:
+        title:          the name of the subject of this card
+        kwargs:         dictionary containing details about the subject
+    """
     def __init__(self, title: str, **kwargs):
         """Initialize the Card object"""
         self.details = {}
@@ -20,18 +26,33 @@ class Card:
             self.details[k] = v
 
     def __getitem__(self, key):
-        """Access a given property via subscript"""
+        """
+        Access a given property via subscript
+
+        Parameters:
+            key:        dictionary key for the given property
+        """
         if key != 'title':
             return self.details[key]
         else:
             return self.title
 
     def display(self, template):
-        result = ""
+        """
+        Show this card, using fixed text with markup to be replaced by
+        properties of the current subject. The markup syntax for these
+        replaced values takes the form ``{card['property']}``, where
+        each *property* is a detail about the subject.
+
+        Parameters:
+            template:   the boilerplate text with embedded symbols
+                        (must be contained in a list of at least one
+                        element)
+        """
+        result = []
         for line in template:
             new_line = re.sub(r'\{card\[', '{self[', line)
-            result += eval('f"' + new_line + '"')
-            result += '\n'
+            result.append(eval('f"' + new_line + '"'))
         return result
 
 class CardEncoder(json.JSONEncoder):
