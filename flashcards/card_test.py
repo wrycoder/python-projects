@@ -46,7 +46,8 @@ COLONIES = '''
       }
   ],
   "display_template" : [
-    "All about the {card['title']} Colony"
+    "All about the {card['title']} Colony",
+    "The capital of {card['title']} was {card['capital']}"
   ],
   "topics" : [{
      "tobacco" : {
