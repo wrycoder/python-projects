@@ -211,9 +211,12 @@ def do_loop(stdscr, cards):
 if __name__ == "__main__":
     try:
         with open(sys.argv[1]) as sourcefile:
-            cards = Deck('flashcards', sourcefile.read())
-    except:
+            cards = Deck(sourcefile.read())
+    except(KeyError):
         print("ERROR: please specify a source file for the data")
+        quit()
+    except(Exception) as cfg_ex:
+        print(f"Error in source file: {str(cfg_ex)}")
         quit()
 
     curses.wrapper(do_loop, cards)
