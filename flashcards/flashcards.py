@@ -6,6 +6,9 @@
 
 import json, re, sys, random, curses, screen_utils
 
+DEFAULT_RANDOM_MENU_CHAR = 'r'
+DEFAULT_NUMBERED_MENU_CHAR = 'n'
+
 class ConfigurationError(Exception):
     def __init__(self, message):
         super().__init__(message)
