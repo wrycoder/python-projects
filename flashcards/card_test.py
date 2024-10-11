@@ -76,18 +76,51 @@ SCIENTISTS = '''
 }
 '''
 
-class CardTest(unittest.TestCase):
+class DeckTest(unittest.TestCase):
     def test_load_deck(self):
         with self.assertRaises(ConfigurationError):
             colonies = Deck('foo', 'baz')
         colonies = Deck('colony', COLONIES)
         self.assertEqual(len(colonies), 13, "Incorrect number of cards")
         self.assertEqual(
+            colonies[4]['title'],
+            "Massachusetts",
+            "Incorrect name for colony")
+        self.assertEqual(
             colonies[4]['capital'],
             "Boston",
             "Incorrect capital for colony"
         )
 
+    def test_display_all(self):
+        scientists = Deck('scientist', SCIENTISTS)
+        self.assertEqual(len(scientists), 1, "Incorrect number of cards")
+        sample_text = '\n'.join(scientists.display_all())
+        self.assertTrue(
+            re.match(r'^All About Marie Curie.*', sample_text) != None,
+            "Title of test card not found"
+        )
+        birth_year = re.findall(r'.+1867.+', sample_text, re.MULTILINE)
+        self.assertEqual(len(birth_year), 1, "Birth year not found in deck display")
+        death_year = re.findall(r'.+1934\.', sample_text, re.MULTILINE)
+        self.assertEqual(len(death_year), 1, "Death year not found in deck display")
+        birthplace = re.findall(r'.+Warsaw.+', sample_text, re.MULTILINE)
+        self.assertEqual(len(birthplace), 1, "Birthplace not found in deck display")
+
+    def test_display_all_filtered(self):
+        colonies = Deck('colony', COLONIES)
+        self.assertEqual(len(colonies), 13, "Incorrect number of cards")
+        tobacconists = colonies.display_all(for_topic='tobacco')
+        self.assertEqual( len(tobacconists), 6,
+                          "There should be two lines of text for each "\
+                          "tobacco-producing colony")
+        js_data = json.loads(COLONIES)
+        detail_string = js_data['topics'][0]['tobacco']['detail'][0]
+        sample_member = js_data['topics'][0]['tobacco']['members'][0]
+        formatted_string = re.sub(r'\{card\[\'title\'\]\}', sample_member, detail_string)
+        self.assertTrue(formatted_string in tobacconists)
+
+class CardTest(unittest.TestCase):
     def test_display_card(self):
         js_data = json.loads(SCIENTISTS)
 #        print(json.dumps(js_data, indent=4))
