@@ -161,6 +161,37 @@ class Deck:
         n = random.randint(0, len(self.data)-1)
         return self.data[n]
 
+    def main_menu(self):
+        """
+        Build a menu for this deck
+
+        A menu should have at least one option: to view a random
+        card. Other menu options must be added based upon the contents
+        of the ``self.topics`` dictionary. The result will be an ordered
+        container of dictionaries.
+        """
+        result = []
+        if self.numbered == True:
+            result.append({
+                'character' : DEFAULT_NUMBERED_MENU_CHAR,
+                'prompt' : "To view a card by ordinal number, press \'" +\
+                           f"{DEFAULT_NUMBERED_MENU_CHAR}\'"
+            })
+        result.append({
+            'character' : DEFAULT_RANDOM_MENU_CHAR,
+            'prompt' : "To view a random card, press \'" +\
+                       f"{DEFAULT_RANDOM_MENU_CHAR}\'"
+        })
+        if len(self.topics) > 0:
+            for name, hashtable in self.topics.items():
+                topic_prompt = f"To view a list of {hashtable['prompt']}, " +\
+                               f"press \'{hashtable['character']}\'"
+                result.append({
+                    'character' : hashtable['character'],
+                    'prompt' : topic_prompt
+                })
+        return result
+
 def do_loop(stdscr, cards):
     result = 0
     while(result != ord('q')):
