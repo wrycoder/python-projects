@@ -4,6 +4,7 @@ import json
 
 COLONIES = '''
 {
+  "name" : "Colony",
   "data" : [
       { "title" : "Connecticut",
         "capital" : "New Haven & Hartford"
@@ -51,6 +52,7 @@ COLONIES = '''
   ],
   "topics" : [{
      "tobacco" : {
+        "character" : "t",
         "prompt" : "Colonies that Farmed Tobacco",
         "detail" : ["{card['title']} was a tobacco-farming colony"],
         "members" : ["North Carolina", "Virginia", "Maryland"]
@@ -61,6 +63,7 @@ COLONIES = '''
 
 SCIENTISTS = '''
 {
+  "name" : "Scientist",
   "data" : [
     {
       "title" : "Marie Curie",
