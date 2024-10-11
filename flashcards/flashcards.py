@@ -91,10 +91,41 @@ class Deck:
         """Get a specific card"""
         return self.data[key]
 
-    def display_all(self):
-        result = ""
+    def display_all(self, for_topic: str=None):
+        """
+        Show all cards, or cards on a certain topic
+
+        Parameters:
+            for_topic:      the topic all of these cards have in common
+        """
+        result = []
         for card in self.data:
-            result += card.display(self.display_template)
+            if for_topic is None:
+                result += card.display(self.display_template)
+            elif for_topic in self.topics:
+                members = self.topics[for_topic]['members']
+                if card.title in members:
+                    result += card.display(
+                        self.display_template +
+                        self.topics[for_topic]['detail'])
         return result
 
+def do_loop(stdscr, cards):
+    result = 0
+    while(result != ord('q')):
+        stdscr.clear()
+        stdscr.refresh()
+        curses.curs_set(0)
+        height, width = stdscr.getmaxyx()
+        paging_win = curses.newwin(height - 1, width - 1, 0, 0)
+        result = stdscr.getch()
 
+if __name__ == "__main__":
+    try:
+        with open(sys.argv[1]) as sourcefile:
+            cards = Deck('flashcards', sourcefile.read())
+    except:
+        print("ERROR: please specify a source file for the data")
+        quit()
+
+    curses.wrapper(do_loop, cards)
