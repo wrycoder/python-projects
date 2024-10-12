@@ -79,6 +79,54 @@ SCIENTISTS = '''
   ]
 }
 '''
+class ConfigTest(unittest.TestCase):
+    duplicate_card_config = '''
+    {
+      "name" : "Comedian",
+      "data" : [
+        {
+          "title" : "Shecky Greene"
+        },
+        {
+          "title" : "Eddie Murphy"
+        },
+        {
+          "title" : "Don Rickles"
+        },
+        {
+          "title" : "Shecky Greene"
+        }
+      ],
+      "display_template" : [],
+      "numbered" : true
+    }
+    '''
+    unpermitted_char_config = '''
+    {
+      "name" : "Restaurant",
+      "data" : [
+        {
+          "title" : "Garden on the Green"
+        }
+      ],
+      "display_template" : [],
+      "topics" : [{
+        "reservations" : {
+          "character" : "r",
+          "prompt" : "Restaurants that Require Reservations",
+          "detail" : ["You need a reservation to eat at {card['title']}"],
+          "members" : ["Garden on the Green"]
+        }
+      }]
+    }
+    '''
+    def test_reserved_chars(self):
+        with self.assertRaises(ConfigurationError):
+            restaurants = Deck(self.unpermitted_char_config)
+
+    def test_duplicate_cards(self):
+        with self.assertRaises(ConfigurationError):
+            comedians = Deck(self.duplicate_card_config)
 
 class DeckTest(unittest.TestCase):
     def test_load_deck(self):
