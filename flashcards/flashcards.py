@@ -91,25 +91,43 @@ class Deck:
         """
         try:
             js_data = json.loads(data)
+        except(json.decoder.JSONDecodeError) as json_ex:
+            raise ConfigurationError(f"Configuration data could not be parsed: {data}")
+        try:
             self.deck_name = js_data['name']
             self.display_template = js_data['display_template']
             raw_data = js_data['data']
-            self.data = []
-            self.topics = {}
-            for item in raw_data:
-                self.data.append(Card(item.pop('title'), **item))
-            if 'topics' in js_data:
-                topic_list = js_data['topics']
-                for item in topic_list:
-                    self.topics.update(item)
             try:
                 self.numbered = js_data['numbered']
             except:
                 self.numbered = False
+            self.data = []
+            self.topics = {}
+            for item in raw_data:
+                next_title = item['title']
+                for existing_card in self.data:
+                    existing_title = existing_card['title']
+                    if existing_title == next_title:
+                        raise ConfigurationError(f"Duplicate card: {next_title}")
+                self.data.append(Card(item.pop('title'), **item))
+            if 'topics' in js_data:
+                topic_list = js_data['topics']
+                for item in topic_list:
+                    for table in item.values():
+                        menu_char = table['character']
+                        if menu_char == DEFAULT_RANDOM_MENU_CHAR:
+                            raise ConfigurationError(
+                                f"The character \'{DEFAULT_RANDOM_MENU_CHAR}\' " \
+                                "is reserved for the system menu."
+                            )
+                        if self.numbered is True and menu_char == DEFAULT_NUMBERED_MENU_CHAR:
+                            raise ConfigurationError(
+                                f"The character \'{DEFAULT_NUMBERED_MENU_CHAR}\' " \
+                                "is reserved for the system menu."
+                            )
+                    self.topics.update(item)
         except(KeyError) as key_ex:
             raise ConfigurationError(f"System misconfigured: {str(key_ex)}")
-        except(json.decoder.JSONDecodeError) as json_ex:
-            raise ConfigurationError(f"Invalid configuration data: {data}")
 
     def get_item(self, number):
         if self.numbered == False:
@@ -201,9 +219,10 @@ def do_loop(stdscr, cards):
         height, width = stdscr.getmaxyx()
         paging_win = curses.newwin(height - 1, width - 1, 0, 0)
         y_index = 0
-        for line in cards.display_all():
-            stdscr.addstr(y_index, 0, line)
-            y_index += 1
+        menu = cards.main_menu()
+#        for line in cards.display_all():
+#            stdscr.addstr(y_index, 0, line)
+#            y_index += 1
         stdscr.addstr(y_index, 0, 'Press q to quit')
         stdscr.refresh()
         result = stdscr.getch()
