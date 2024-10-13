@@ -12,6 +12,7 @@ DEFAULT_MAIN_MENU_CHAR      = 'm'
 MAIN_MENU_LEVEL             = 0
 CARD_DISPLAY_LEVEL          = 1
 TOPIC_DISPLAY_LEVEL         = 2
+NUMBER_INPUT_LEVEL          = 3
 
 class ConfigurationError(Exception):
     def __init__(self, message):
@@ -48,7 +49,7 @@ class Card:
         else:
             return self.title
 
-    def display(self, template, topics={}):
+    def display(self, template, topics={}, number=None):
         """
         Show this card, using fixed text with markup to be replaced by
         properties of the current subject. The markup syntax for these
@@ -61,10 +62,13 @@ class Card:
                         element)
             topics:     dictionary of related topics, which may or
                         may not contain the subject of the current card
+            number:     the ordinal position of this card in the deck
         """
         result = []
         for line in template:
             new_line = re.sub(r'\{card\[', '{self[', line)
+            if len(result) == 0 and number != None:
+                new_line = f"{number}. " + new_line
             result.append(eval('f"' + new_line + '"'))
         if len(topics) > 0:
             for (topic, table) in topics.items():
@@ -160,18 +164,23 @@ class Deck:
             for_topic:      the topic all of these cards have in common
         """
         result = []
-        for card in self.data:
+        for i in range(len(self.data)):
+            card = self.data[i]
+            if self.numbered:
+                num = i + 1
+            else:
+                num = None
             if for_topic is None:
                 result += card.display(
                     self.display_template,
-                    self.topics
+                    self.topics, num
                 )
             elif for_topic in self.topics:
                 members = self.topics[for_topic]['members']
                 if card.title in members:
                     result += card.display(
                         self.display_template,
-                        self.topics
+                        self.topics, num
                     )
         return result
 
@@ -227,10 +236,15 @@ def do_loop(stdscr, deck):
                           '\': main menu;  ' + default_prompt
     chosen_card = None
     while(True):
+        # The main loop is broken into three parts:
+        # 1) display the right screen;
+        # 2) get input; and
+        # 3) decide what to do with the input
         stdscr.clear()
         main_window.clear()
         prompt_bar.clear()
         y_index = 0
+        # 1) DISPLAY...
         if deck.current_menu_level == MAIN_MENU_LEVEL:
             for menu_item in deck.main_menu():
                 main_window.addstr(y_index, 0, menu_item["prompt"])
@@ -239,22 +253,74 @@ def do_loop(stdscr, deck):
                 y_index += 1
             screen_utils.center(default_prompt, 0, screen_width, prompt_bar)
         elif deck.current_menu_level == CARD_DISPLAY_LEVEL:
-            for line in chosen_card.display(deck.display_template):
+            if deck.numbered:
+                num = deck.data.index(chosen_card) + 1
+            else:
+                num = None
+            for line in chosen_card.display(deck.display_template, deck.topics, num):
                 screen_utils.center(line, y_index, screen_width, main_window)
                 y_index += 1
             screen_utils.center(card_display_prompt, 0, screen_width, prompt_bar)
+        elif deck.current_menu_level == TOPIC_DISPLAY_LEVEL:
+            screen_utils.center("You have chosen a topic. Congratulations.", 0,
+                                 screen_width, main_window)
+            screen_utils.center(card_display_prompt, 0, screen_width, prompt_bar)
+            deck.current_menu_level = MAIN_MENU_LEVEL
+        elif deck.current_menu_level == NUMBER_INPUT_LEVEL:
+            screen_utils.center("You are about to choose a number. Congratulations.", 0,
+                                 screen_width, main_window)
+            screen_utils.center(card_display_prompt, 0, screen_width, prompt_bar)
         else:
             screen_utils.center("UNDER CONSTRUCTION", 0, screen_width, main_window)
-            screen_utils.center(default_prompt, 0, screen_width, prompt_bar)
+            screen_utils.center(card_display_prompt, 0, screen_width, prompt_bar)
+            deck.current_menu_level = MAIN_MENU_LEVEL
         main_window.refresh()
         prompt_bar.refresh()
-        char1 = prompt_bar.getch()
+        # 2) GET INPUT
+        if deck.current_menu_level == NUMBER_INPUT_LEVEL:
+            number_prompt = "Enter the number: "
+            stdscr.clear()
+            stdscr.addstr(
+                (screen_height // 2),
+                (screen_width // 2) - (len(number_prompt) // 2),
+                number_prompt, curses.color_pair(screen_utils.MENU_STYLE))
+            curses.curs_set(2)
+            curses.echo()
+            stdscr.refresh()
+            key = stdscr.getstr(
+                (screen_height // 2),
+                (screen_width // 2) + (len(number_prompt) // 2)
+            ).decode("utf-8")
+            curses.curs_set(0)
+            if (int(key) > deck.data.__len__()) or (int(key) < 1):
+                error_prompt = "You can only enter a number between 1 and " +\
+                               f"{deck.data.__len__()}"
+                stdscr.addstr(
+                    (screen_height // 2),
+                    (screen_width // 2) - (len(error_prompt) // 2),
+                    error_prompt, curses.color_pair(screen_utils.MENU_STYLE))
+                screen_utils.center("Press any key to continue...",
+                        (screen_height - 2), screen_width, stdscr)
+                stdscr.getch()
+                continue
+            else:
+                chosen_card = deck.choose_card(int(key))
+                deck.current_menu_level = CARD_DISPLAY_LEVEL
+                continue
+        else:
+            char1 = prompt_bar.getch()
+        # 3) DECIDE WHAT TO DO WITH INPUT
         if char1 == 27: # ESC key...
             break
         elif deck.current_menu_level == MAIN_MENU_LEVEL:
             if char1 == ord(DEFAULT_RANDOM_MENU_CHAR):
                 chosen_card = deck.random_card()
                 continue
+            elif char1 == ord(DEFAULT_NUMBERED_MENU_CHAR):
+                if deck.numbered:
+                    deck.current_menu_level = NUMBER_INPUT_LEVEL
+                else:
+                    continue
         elif deck.current_menu_level == CARD_DISPLAY_LEVEL:
             if char1 == ord(DEFAULT_MAIN_MENU_CHAR):
                 deck.current_menu_level = MAIN_MENU_LEVEL
