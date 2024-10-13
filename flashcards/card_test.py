@@ -1,5 +1,5 @@
 import unittest, re
-from flashcards import Card, Deck, ConfigurationError, CardEncoder
+from flashcards import *
 import json
 
 COLONIES = '''
