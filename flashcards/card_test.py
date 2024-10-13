@@ -150,10 +150,11 @@ class DeckTest(unittest.TestCase):
             "Incorrect capital for colony"
         )
 
-    def test_display_all(self):
+    def test_list(self):
         scientists = Deck(SCIENTISTS)
         self.assertEqual(len(scientists), 1, "Incorrect number of cards")
-        sample_text = '\n'.join(scientists.display_all())
+        curie_cards = scientists.list()[0]
+        sample_text = '\n'.join(curie_cards.display(scientists.display_template))
         self.assertTrue(
             re.match(r'^All About Marie Curie.*', sample_text) != None,
             "Title of test card not found"
@@ -165,18 +166,19 @@ class DeckTest(unittest.TestCase):
         birthplace = re.findall(r'.+Warsaw.+', sample_text, re.MULTILINE)
         self.assertEqual(len(birthplace), 1, "Birthplace not found in deck display")
 
-    def test_display_all_filtered(self):
+    def test_list_filtered(self):
+        total_tobacconists = 3
         colonies = Deck(COLONIES)
         self.assertEqual(len(colonies), 13, "Incorrect number of cards")
-        tobacconists = colonies.display_all(for_topic='tobacco')
-        self.assertEqual( len(tobacconists), 9,
-                          "There should be 3 lines of text for each "\
-                          "of the 3 tobacco-producing colonies")
+        tobacconists = colonies.list(for_topic='tobacco')
+        self.assertEqual(len(tobacconists), 3, "Incorrect number of cards")
         js_data = json.loads(COLONIES)
         detail_string = js_data['topics'][0]['tobacco']['detail'][0]
-        sample_member = js_data['topics'][0]['tobacco']['members'][0]
-        formatted_string = re.sub(r'\{card\[\'title\'\]\}', sample_member, detail_string)
-        self.assertTrue(formatted_string in tobacconists)
+        sample_member_name = js_data['topics'][0]['tobacco']['members'][0]
+        formatted_string = re.sub(r'\{card\[\'title\'\]\}', sample_member_name, detail_string)
+        sample_member = colonies[sample_member_name]
+        output = sample_member.display(colonies.display_template, colonies.topics)
+        self.assertTrue(formatted_string in output)
 
     def test_random_card(self):
         colonies = Deck(COLONIES)
