@@ -213,6 +213,19 @@ class Deck:
                 })
         return result
 
+    def find_topic(self, prompt_char: str):
+        """
+        Find the topic for a given prompt character
+
+        Parameters:
+
+            prompt_char:        one-character symbol representing the topic
+        """
+        for name, hashtable in self.topics.items():
+            if hashtable['character'] == prompt_char:
+                return name
+        return None
+
 def do_loop(stdscr, deck):
     curses.curs_set(0)
     curses.start_color()
