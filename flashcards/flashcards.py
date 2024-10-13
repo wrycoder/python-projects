@@ -132,12 +132,11 @@ class Deck:
                     self.topics.update(item)
         except(KeyError) as key_ex:
             raise ConfigurationError(f"System misconfigured: {str(key_ex)}")
+        self.current_menu_level = MAIN_MENU_LEVEL
 
-    def get_item(self, number):
-        if self.numbered == False:
-            raise ConfigurationError(f"You cannot access cards by number")
-        else:
-            return self.data[number - 1]
+    def choose_card(self, number):
+        self.current_menu_level = CARD_DISPLAY_LEVEL
+        return self.data[number - 1]
 
     def __len__(self):
         """The number of cards in this deck"""
@@ -181,7 +180,7 @@ class Deck:
         Pick a card at random
         """
         n = random.randint(0, len(self.data)-1)
-        return self.data[n]
+        return self.choose_card(n)
 
     def main_menu(self):
         """
