@@ -6,8 +6,12 @@
 
 import json, re, sys, random, curses, screen_utils
 
-DEFAULT_RANDOM_MENU_CHAR = 'r'
-DEFAULT_NUMBERED_MENU_CHAR = 'n'
+DEFAULT_RANDOM_MENU_CHAR    = 'r'
+DEFAULT_NUMBERED_MENU_CHAR  = 'n'
+DEFAULT_MAIN_MENU_CHAR      = 'm'
+MAIN_MENU_LEVEL             = 0
+CARD_DISPLAY_LEVEL          = 1
+TOPIC_DISPLAY_LEVEL         = 2
 
 class ConfigurationError(Exception):
     def __init__(self, message):
