@@ -244,10 +244,10 @@ class DeckTest(unittest.TestCase):
         '''
         muppets = Deck(numbered_deck_json_string)
         menu = muppets.main_menu()
-        self.assertEqual(len(menu), 2, "Sesame Street Characters menu should have two options")
+        self.assertEqual(len(menu), 2, "Menu should have two options")
         colonies = Deck(COLONIES)
         menu = colonies.main_menu()
-        self.assertEqual(len(menu), 2, "Colonies menu should have two options")
+        self.assertEqual(len(menu), 3, "Menu should have three options")
 
     def test_choose_card(self):
         colonies = Deck(COLONIES)
