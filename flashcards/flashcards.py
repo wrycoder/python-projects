@@ -213,28 +213,59 @@ class Deck:
                 })
         return result
 
-def do_loop(stdscr, cards):
-    result = 0
-    while(result != ord('q')):
+def do_loop(stdscr, deck):
+    curses.curs_set(0)
+    curses.start_color()
+    curses.init_pair(screen_utils.TITLE_STYLE, curses.COLOR_CYAN, curses.COLOR_BLACK)
+    curses.init_pair(screen_utils.MENU_STYLE, curses.COLOR_YELLOW, curses.COLOR_BLACK)
+    curses.init_pair(screen_utils.TEXT_STYLE, curses.COLOR_WHITE, curses.COLOR_BLACK)
+    screen_height, screen_width = stdscr.getmaxyx()
+    main_window = curses.newwin(screen_height - 2, screen_width - 1, 0, 0)
+    prompt_bar = curses.newwin(1, screen_width - 1, screen_height - 2, 0)
+    default_prompt = 'press the [ESC] key to quit'
+    card_display_prompt = '\'' + DEFAULT_MAIN_MENU_CHAR + \
+                          '\': main menu;  ' + default_prompt
+    chosen_card = None
+    while(True):
         stdscr.clear()
-        stdscr.refresh()
-        curses.curs_set(0)
-        height, width = stdscr.getmaxyx()
-        paging_win = curses.newwin(height - 1, width - 1, 0, 0)
+        main_window.clear()
+        prompt_bar.clear()
         y_index = 0
-        menu = cards.main_menu()
-#        for line in cards.display_all():
-#            stdscr.addstr(y_index, 0, line)
-#            y_index += 1
-        stdscr.addstr(y_index, 0, 'Press q to quit')
-        stdscr.refresh()
-        result = stdscr.getch()
+        if deck.current_menu_level == MAIN_MENU_LEVEL:
+            for menu_item in deck.main_menu():
+                main_window.addstr(y_index, 0, menu_item["prompt"])
+                screen_utils.center(menu_item["prompt"], y_index,
+                                    screen_width, main_window)
+                y_index += 1
+            screen_utils.center(default_prompt, 0, screen_width, prompt_bar)
+        elif deck.current_menu_level == CARD_DISPLAY_LEVEL:
+            for line in chosen_card.display(deck.display_template):
+                screen_utils.center(line, y_index, screen_width, main_window)
+                y_index += 1
+            screen_utils.center(card_display_prompt, 0, screen_width, prompt_bar)
+        else:
+            screen_utils.center("UNDER CONSTRUCTION", 0, screen_width, main_window)
+            screen_utils.center(default_prompt, 0, screen_width, prompt_bar)
+        main_window.refresh()
+        prompt_bar.refresh()
+        char1 = prompt_bar.getch()
+        if char1 == 27: # ESC key...
+            break
+        elif deck.current_menu_level == MAIN_MENU_LEVEL:
+            if char1 == ord(DEFAULT_RANDOM_MENU_CHAR):
+                chosen_card = deck.random_card()
+                continue
+        elif deck.current_menu_level == CARD_DISPLAY_LEVEL:
+            if char1 == ord(DEFAULT_MAIN_MENU_CHAR):
+                deck.current_menu_level = MAIN_MENU_LEVEL
+        else:
+            deck.current_menu_level = 99
 
 if __name__ == "__main__":
     try:
         with open(sys.argv[1]) as sourcefile:
             cards = Deck(sourcefile.read())
-    except(KeyError):
+    except(IndexError):
         print("ERROR: please specify a source file for the data")
         quit()
     except(Exception) as cfg_ex:
