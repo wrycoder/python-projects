@@ -51,12 +51,18 @@ COLONIES = '''
     "The capital of {card['title']} was {card['capital']}"
   ],
   "topics" : [{
-     "tobacco" : {
-        "character" : "t",
-        "prompt" : "Colonies that Farmed Tobacco",
-        "detail" : ["{card['title']} was a tobacco-farming colony"],
-        "members" : ["North Carolina", "Virginia", "Maryland"]
-     }
+    "tobacco" : {
+      "character" : "t",
+      "prompt" : "Colonies that farmed tobacco",
+      "detail" : ["{card['title']} was a tobacco-farming colony"],
+      "members" : ["North Carolina", "Virginia", "Maryland"]
+    },
+    "royals" : {
+      "character" : "k",
+      "prompt" : "Colonies that were subject to the King of England",
+      "detail" : ["{card['title']} was one of the Royal Colonies, subject to the King of England"],
+      "members" : ["Virginia", "New Hampshire", "New York", "New Jersey", "North Carolina", "South Carolina", "Georgia"]
+    }
   }]
 }
 '''
