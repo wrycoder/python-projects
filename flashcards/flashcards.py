@@ -13,6 +13,7 @@ MAIN_MENU_LEVEL             = 0
 CARD_DISPLAY_LEVEL          = 1
 TOPIC_DISPLAY_LEVEL         = 2
 NUMBER_INPUT_LEVEL          = 3
+TOPIC_INPUT_LEVEL           = 4
 
 class ConfigurationError(Exception):
     def __init__(self, message):
