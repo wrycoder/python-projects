@@ -209,13 +209,11 @@ class DeckTest(unittest.TestCase):
         }
         '''
         hosts = Deck(numbered_json_string)
-        card = hosts.get_item(2)
+        card = hosts.choose_card(2)
         self.assertEqual(card.title, 'Ryan Seacrest', "Incorrect card for given number")
-        with self.assertRaises(ConfigurationError):
-          colonies = Deck(COLONIES)
-          card = colonies.get_item(2)
-          tv_witches = Deck(numbered_false_json_string)
-          card = tv_witches.get_item(2)
+        self.assertTrue(hosts.numbered, "List should be numbered")
+        witches = Deck(numbered_false_json_string)
+        self.assertFalse(witches.numbered, "List should not be numbered")
 
     def test_main_menu(self):
         scientists = Deck(SCIENTISTS)
@@ -242,6 +240,16 @@ class DeckTest(unittest.TestCase):
         colonies = Deck(COLONIES)
         menu = colonies.main_menu()
         self.assertEqual(len(menu), 2, "Colonies menu should have two options")
+
+    def test_choose_card(self):
+        colonies = Deck(COLONIES)
+        card = colonies.choose_card(2)
+        self.assertEqual(card['title'], "Delaware", "method should return correct card")
+        self.assertEqual(
+            colonies.current_menu_level,
+            CARD_DISPLAY_LEVEL,
+            "Incorrect menu level for chosen card"
+        )
 
 class CardTest(unittest.TestCase):
     def test_display_card(self):
