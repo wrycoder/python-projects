@@ -266,14 +266,14 @@ def do_loop(stdscr, deck):
                 y_index += 1
             screen_utils.center(card_display_prompt, 0, screen_width, prompt_bar)
         elif deck.current_menu_level == TOPIC_DISPLAY_LEVEL:
-            screen_utils.center("You have chosen a topic. Congratulations.", 0,
-                                 screen_width, main_window)
+            for card in chosen_cards:
+                for line in card.display(deck.display_template, deck.topics):
+                    screen_utils.center(line, y_index, screen_width, main_window)
+                    y_index += 1
             screen_utils.center(card_display_prompt, 0, screen_width, prompt_bar)
-            deck.current_menu_level = MAIN_MENU_LEVEL
+            deck.current_menu_level = CARD_DISPLAY_LEVEL
         elif deck.current_menu_level == NUMBER_INPUT_LEVEL:
-            screen_utils.center("You are about to choose a number. Congratulations.", 0,
-                                 screen_width, main_window)
-            screen_utils.center(card_display_prompt, 0, screen_width, prompt_bar)
+            pass
         else:
             screen_utils.center("UNDER CONSTRUCTION", 0, screen_width, main_window)
             screen_utils.center(card_display_prompt, 0, screen_width, prompt_bar)
@@ -325,6 +325,11 @@ def do_loop(stdscr, deck):
                     deck.current_menu_level = NUMBER_INPUT_LEVEL
                 else:
                     continue
+            else:
+                chosen_topic = deck.find_topic(chr(char1))
+                chosen_cards = deck.list(for_topic=chosen_topic)
+                deck.current_menu_level = TOPIC_DISPLAY_LEVEL
+                continue
         elif deck.current_menu_level == CARD_DISPLAY_LEVEL:
             if char1 == ord(DEFAULT_MAIN_MENU_CHAR):
                 deck.current_menu_level = MAIN_MENU_LEVEL
