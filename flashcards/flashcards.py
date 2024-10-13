@@ -157,7 +157,7 @@ class Deck:
                 count += 1
         raise CardNotFoundError(f"Card not found for key '{key}'")
 
-    def display_all(self, for_topic: str=None):
+    def list(self, for_topic: str=None):
         """
         Show all cards, or cards on a certain topic
 
@@ -167,22 +167,12 @@ class Deck:
         result = []
         for i in range(len(self.data)):
             card = self.data[i]
-            if self.numbered:
-                num = i + 1
-            else:
-                num = None
             if for_topic is None:
-                result += card.display(
-                    self.display_template,
-                    self.topics, num
-                )
+                result.append(card)
             elif for_topic in self.topics:
                 members = self.topics[for_topic]['members']
                 if card.title in members:
-                    result += card.display(
-                        self.display_template,
-                        self.topics, num
-                    )
+                    result.append(card)
         return result
 
     def random_card(self):
