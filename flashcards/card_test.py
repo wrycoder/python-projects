@@ -259,6 +259,11 @@ class DeckTest(unittest.TestCase):
             "Incorrect menu level for chosen card"
         )
 
+    def test_find_topic(self):
+        colonies = Deck(COLONIES)
+        self.assertEqual(colonies.find_topic('t'), 'tobacco',
+            "Should be able to find topic by prompt character")
+
 class CardTest(unittest.TestCase):
     def test_display_card(self):
         js_data = json.loads(SCIENTISTS)
