@@ -321,20 +321,23 @@ def do_loop(stdscr, deck):
                 (screen_width // 2) + (len(number_prompt) // 2)
             ).decode("utf-8")
             curses.curs_set(0)
-            if (int(key) > deck.data.__len__()) or (int(key) < 1):
-                error_prompt = "You can only enter a number between 1 and " +\
-                               f"{deck.data.__len__()}"
-                stdscr.addstr(
-                    (screen_height // 2),
-                    (screen_width // 2) - (len(error_prompt) // 2),
-                    error_prompt, curses.color_pair(screen_utils.MENU_STYLE))
-                screen_utils.center("Press any key to continue...",
-                        (screen_height - 2), screen_width, stdscr)
-                stdscr.getch()
-                continue
-            else:
-                chosen_card = deck.choose_card(int(key))
-                deck.current_menu_level = CARD_DISPLAY_LEVEL
+            try:
+                if (int(key) > deck.data.__len__()) or (int(key) < 1):
+                    error_prompt = "You can only enter a number between 1 and " +\
+                                   f"{deck.data.__len__()}"
+                    stdscr.addstr(
+                        (screen_height // 2),
+                        (screen_width // 2) - (len(error_prompt) // 2),
+                        error_prompt, curses.color_pair(screen_utils.MENU_STYLE))
+                    screen_utils.center("Press any key to continue...",
+                            (screen_height - 2), screen_width, stdscr)
+                    stdscr.getch()
+                    continue
+                else:
+                    chosen_card = deck.choose_card(int(key))
+                    deck.current_menu_level = CARD_DISPLAY_LEVEL
+                    continue
+            except(ValueError):
                 continue
         else:
             char1 = prompt_bar.getch()
