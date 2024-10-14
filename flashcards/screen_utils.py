@@ -26,7 +26,7 @@ def center(text, y_index, x_width, scr_object, *, color=0, mode=curses.A_NORMAL)
         text:       the text to be displayed
         y_index:    vertical line in display
         x_width:    length of each line in display
-        stdscr:     display object
+        scr_object: display object
         color:      curses constant specifying a color
         mode:       curses constant specifying font style
     """
@@ -43,6 +43,22 @@ def center(text, y_index, x_width, scr_object, *, color=0, mode=curses.A_NORMAL)
         # curses needs to advance the cursor position as it prints.
         # We'll just assume that our data will fit.
         pass
+
+def draw_separator(y_index, length, width, scr_object, *, color=0, mode=curses.A_NORMAL) -> None:
+    """
+    Draw a centered, separating line, usually between elements of a list
+
+    Parameters:
+        y_index:    vertical line in display
+        length:     number of characters to draw
+        width:      horizontal length of line
+        scr_object: display object
+        color:      curses constant specifying a color
+        mode:       curses constant specifying a style
+    """
+    starting_point = (width // 2) - (length // 2)
+    for i in range(starting_point, starting_point + length):
+        scr_object.addch(y_index, i, curses.ACS_HLINE)
 
 class PaginatorException(Exception):
     def __init__(self, msg=DEFAULT_MSG):
