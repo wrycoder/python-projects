@@ -64,7 +64,8 @@ def draw_separator(y_index, length, width, scr_object, *, color=MENU_STYLE, mode
     """
     starting_point = (width // 2) - (length // 2)
     for i in range(starting_point, starting_point + length):
-        scr_object.addch(y_index, i, curses.ACS_HLINE)
+        scr_object.addch(y_index, i, curses.ACS_HLINE,
+                         curses.color_pair(color) | mode)
 
 class PaginatorException(Exception):
     def __init__(self, msg=DEFAULT_MSG):
