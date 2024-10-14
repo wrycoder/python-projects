@@ -1,9 +1,76 @@
-#
-# flashcards.py
-#
-# A configurable learning tool.
-#
+"""
+a configurable learning tool
 
+Displays a series of flashcards--screens with information about a
+given subject. Users can view the cards one at a time, either
+randomly or by entering the number of a specific card. Cards
+can also be viewed in groups, based on selected topics.
+
+All the information is defined in a JSON-formatted text file,
+which must be specified on the command line.
+
+CONFIGURATION
+-------------
+
+The JSON file that defines your deck of flashcards needs to
+contain one parent dictionary with at least three child entries.
+The first required entry is a simple string...
+
+  "name" : (a string value)
+
+...which serves as the overall name for your flashcard collection.
+
+The second required entry is an array of child dictionaries...
+
+  "data" : [ (an array of dictionaries) ]
+
+...where you define various properties for each one of your cards.
+You can define as many properties as you want, for as many cards as you
+need, as long as each key in each dictionary is a string and each value
+in each dictionary is a JSON data primitive. There's only one required
+key in all of these child dictionaries--`title`. It's the string that
+the system will use to identify the card.
+
+The third and final required entry in your parent dictionary is an
+array of strings...
+
+  "display_template" : (an array of strings)
+
+...in which each string is a line of text that will be displayed
+when your card is viewed. The strings can have replacement tokens, of
+the form `{card['property']}`. When the system calls the card's `display()`
+method, these tokens will be replaced with the properties you defined in the
+dictionary for the card.
+
+For a basic example of a flashcards configuration file, see `planets.json`.
+
+ADVANCED CONFIGURATION
+----------------------
+
+The same properties can sometimes be shared by multiple flashcards in a
+given deck. A collection of U.S. presidents, for example, will have several
+presidents who were Republicans and several other presidents who were
+Democrats. You might want to view all of these cards at the same time.
+But how? The answer is in yet another (optional) configuration element in
+the JSON dictionary...
+
+  "topics" : [ (an array of dictionaries) ]
+
+...where you define each topic that multiple cards have in common.
+
+Now here's where things get a little more complicated. The key in each dictionary
+is a simple string, identifying the topic. But the value in each dictionary is
+yet another dictionary, with four required entries:
+
+  "character" : (a single character, identifying a menu option for this topic)
+  "prompt" :    (a string containing the text for the description in the menu)
+  "detail" :    (a string containing text to be appended to the output when
+                 the card is displayed. Replacement tokens can be used here.)
+  "members" :   (an array of strings, containing the `title` properties of the
+                 cards that have this topic in common.)
+
+For an example of an advanced flashcards configuration file, see `colonies.json`.
+"""
 import json, re, sys, random, curses, screen_utils
 from screen_utils import Paginator, PaginatorException, \
     PAGINATION_DONE_MSG, SeparatorMarker
@@ -27,14 +94,34 @@ class CardNotFoundError(Exception):
 
 class Card:
     """
-    A single flash card
+    A single flashcard
 
-    Parameters:
-        title:          the name of the subject of this card
-        kwargs:         dictionary containing details about the subject
+    Attributes
+    ----------
+    details : dict
+        The properties to be displayed on this flashcard. There is
+        only one required key, `title`, which serves as the subject of
+        the card.
+    title : str
+        Name of the subject covered by this card.
+
+    Methods
+    -------
+    display(template: list, topics: dict={}, number: int=None)
+        Get an ordered list of strings, each one of which is a line
+        of text with details about the specific card. The `topics`
+        dictionary contains information about various topics this
+        card has in common with other cards in the deck. The `number` is
+        a 1-indexed integer identifying this card's position in
+        the deck.
     """
     def __init__(self, title: str, **kwargs):
-        """Initialize the Card object"""
+        """Initialize the Card object
+
+        Parameters:
+            title:          the name of the subject of this card
+            kwargs:         dictionary containing details about the subject
+        """
         self.details = {}
         self.title = title
         for k, v in kwargs.items():
@@ -52,10 +139,10 @@ class Card:
         else:
             return self.title
 
-    def display(self, template, topics={}, number=None):
+    def display(self, template, topics={}, number=None) -> list:
         """
         Show this card, using fixed text with markup to be replaced by
-        properties of the current subject. The markup syntax for these
+        properties of the current subject. The markup syntax for the
         replaced values takes the form ``{card['property']}``, where
         each *property* is a detail about the subject.
 
@@ -66,6 +153,8 @@ class Card:
             topics:     dictionary of related topics, which may or
                         may not contain the subject of the current card
             number:     the ordinal position of this card in the deck
+
+        Returns:        a list containing lines of text
         """
         result = []
         for line in template:
@@ -92,11 +181,53 @@ class CardEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 class Deck:
-    """A collection of flash cards"""
+    """
+    A collection of flashcards
+
+    Attributes
+    ----------
+    deck_name : str
+        The name of this deck
+    display_template : list
+        A container of strings consisting of text with replacement tokens
+    numbered : bool
+        Indicates whether the cards in this deck are accessible by number
+    data : list
+        An ordered container of Card objects
+    topics : dict
+        An optional dictionary of topics that multiple cards have in common.
+        The keys in this dictionary are the names of the topics. Each value
+        is a child dictionary, which specifies the four standard properties of
+        the given topic: `character`, `prompt`, `detail`, and `members`.
+    current_menu_level : int
+        An integer specifying the level of the main control loop. Possible
+        values include MAIN_MENU_LEVEL, CARD_DISPLAY_LEVEL, TOPIC_DISPLAY_LEVEL,
+        NUMBER_INPUT_LEVEL, and TOPIC_INPUT_LEVEL.
+
+    Methods
+    -------
+    choose_card(number: int)
+        Pick a card using a 1-indexed value
+
+    find_topic(prompt_char: chr)
+        Find the topic for a given prompt character
+
+    list(for_topic: str=None)
+        Get a list of all cards, or only those matching the specified topic
+
+    main_menu()
+        Get an ordered container of menu options. Each menu option is
+        a dictionary with two keys: ``character`` (for the character a user
+        must enter) and ``prompt`` (for the label the user will see on
+        the menu). Every menu will have at least one option (``r``, to view
+        a random card). Other menu options will be added based upon the contents
+        of the ``self.topics`` dictionary.
+
+    random_card()
+        Pick a card at random.
+    """
     def __init__(self, data: str):
         """
-        Initialize the deck
-
         Parameters:
             data:           data in JSON format
         """
@@ -141,7 +272,13 @@ class Deck:
             raise ConfigurationError(f"System misconfigured: {str(key_ex)}")
         self.current_menu_level = MAIN_MENU_LEVEL
 
-    def choose_card(self, number):
+    def choose_card(self, number: int):
+        """
+        Choose a card by a 1-indexed ordinal number.
+
+        Parameters:
+            number:             the 1-indexed position of the card
+        """
         self.current_menu_level = CARD_DISPLAY_LEVEL
         return self.data[number - 1]
 
@@ -190,8 +327,9 @@ class Deck:
 
         A menu should have at least one option: to view a random
         card. Other menu options must be added based upon the contents
-        of the ``self.topics`` dictionary. The result will be an ordered
-        container of dictionaries.
+        of the ``self.topics`` dictionary.
+
+        Returns:    an ordered container of dictionaries.
         """
         result = []
         if self.numbered == True:
@@ -229,6 +367,13 @@ class Deck:
         return None
 
 def do_loop(stdscr, deck):
+    """
+    The main loop is broken into three parts: 1) displaying the right screen;
+    2) getting input; and 3) deciding what to do with the input.
+
+    Parameters:
+        deck:           ``Deck`` object containing the cards to be displayed
+    """
     curses.curs_set(0)
     curses.start_color()
     curses.init_pair(screen_utils.TITLE_STYLE, curses.COLOR_CYAN, curses.COLOR_BLACK)
@@ -242,10 +387,6 @@ def do_loop(stdscr, deck):
                           '\': main menu;  ' + default_prompt
     chosen_card = None
     while(True):
-        # The main loop is broken into three parts:
-        # 1) display the right screen;
-        # 2) get input; and
-        # 3) decide what to do with the input
         stdscr.clear()
         main_window.clear()
         prompt_bar.clear()
