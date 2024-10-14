@@ -176,15 +176,19 @@ class Paginator:
         prompt = curses.newwin(1, window_width, window_height, 0)
         y_index = 0
         for line in data:
-            if self.centered == True:
-                text_midpoint = len(line[:window_width]) // 2
-                line_midpoint = window_width // 2
-                pad.addstr(y_index,
-                    line_midpoint - text_midpoint,
-                    line[:window_width]
-                )
+            if line.__class__.__name__ == "SeparatorMarker":
+                draw_separator(y_index, (window_width // 5) , window_width, pad,
+                                color=line.color, mode=line.mode)
             else:
-                pad.addstr(y_index, 0, line[:window_width])
+                if self.centered == True:
+                    text_midpoint = len(line[:window_width]) // 2
+                    line_midpoint = window_width // 2
+                    pad.addstr(y_index,
+                        line_midpoint - text_midpoint,
+                        line[:window_width]
+                    )
+                else:
+                    pad.addstr(y_index, 0, line[:window_width])
             y_index += 1
         pad.refresh(0,0, VERTICAL_MARGIN, HORIZONTAL_MARGIN,
                     (window_height - 1), (window_width - 1))
