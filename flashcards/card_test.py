@@ -263,6 +263,9 @@ class DeckTest(unittest.TestCase):
         colonies = Deck(COLONIES)
         self.assertEqual(colonies.find_topic('t'), 'tobacco',
             "Should be able to find topic by prompt character")
+        self.assertTrue(colonies.find_topic('z') == None,
+            "Search on undefined character should return None"
+        )
 
 class CardTest(unittest.TestCase):
     def test_display_card(self):
