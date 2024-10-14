@@ -340,9 +340,10 @@ def do_loop(stdscr, deck):
                     continue
             else:
                 chosen_topic = deck.find_topic(chr(char1))
+                if chosen_topic == None:
+                    continue
                 chosen_cards = deck.list(for_topic=chosen_topic)
                 deck.current_menu_level = TOPIC_DISPLAY_LEVEL
-                continue
         elif deck.current_menu_level == CARD_DISPLAY_LEVEL:
             if char1 == ord(DEFAULT_MAIN_MENU_CHAR):
                 deck.current_menu_level = MAIN_MENU_LEVEL

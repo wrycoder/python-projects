@@ -13,6 +13,7 @@ DEFAULT_MSG             = "Unspecified paginator error"
 MISSING_SOURCE_MSG      = "Source document not found"
 WRONG_FORMAT_MSG        = "Source document needs to be plain text, "\
                           "with .txt extension"
+PAGINATION_DONE_MSG     = "User finished paging"
 
 TITLE_STYLE             = 1
 MENU_STYLE              = 2
@@ -144,15 +145,15 @@ class Paginator:
             raise PaginatorException(MISSING_SOURCE_MSG)
         return text
 
-    def paginate(self, stdscr, /, data):
+    def paginate(self, scr_obj, /, data):
         """
         Display a multi-page document using a pad and a window
 
         Parameters:
-            stdscr:         display object
+            scr_obj:        display object
             data:           iterable container of text to be displayed
         """
-        scr_height, scr_width = stdscr.getmaxyx()
+        scr_height, scr_width = scr_obj.getmaxyx()
         window_height = scr_height - VERTICAL_MARGIN
         window_width = scr_width - HORIZONTAL_MARGIN
         curses.curs_set(0)
@@ -201,8 +202,8 @@ class Paginator:
                     if current_page < total_pages - 1:
                         current_page += 1
                         if current_page == total_pages - 1:
-                            stdscr.erase()
-                            stdscr.refresh()
+                            scr_obj.erase()
+                            scr_obj.refresh()
                         pad.refresh(
                             ((current_page * window_height) - VERTICAL_MARGIN),
                             0,
@@ -213,9 +214,9 @@ class Paginator:
                     else:
                         continue
                 case self.bwd_char:
-                    stdscr.erase()
-                    stdscr.refresh()
                     if current_page > 0:
+                        scr_obj.erase()
+                        scr_obj.refresh()
                         current_page -= 1
                         pad.refresh(
                             (current_page * window_height),
