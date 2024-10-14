@@ -252,32 +252,44 @@ def do_loop(stdscr, deck):
         y_index = 0
         # 1) DISPLAY...
         if deck.current_menu_level == MAIN_MENU_LEVEL:
-            for menu_item in deck.main_menu():
-                main_window.addstr(y_index, 0, menu_item["prompt"])
+            menu_contents = deck.main_menu()
+            menu_height = len(menu_contents)
+            y_index = (screen_height // 2) - (menu_height // 2)
+            for menu_item in menu_contents:
                 screen_utils.center(menu_item["prompt"], y_index,
-                                    screen_width, main_window)
+                                    screen_width, main_window,
+                                    color=screen_utils.TITLE_STYLE,
+                                    mode=curses.A_BOLD)
                 y_index += 1
-            screen_utils.center(default_prompt, 0, screen_width, prompt_bar)
+            screen_utils.center(default_prompt, 0, screen_width, prompt_bar,
+                                color=screen_utils.MENU_STYLE, mode=curses.A_BOLD)
         elif deck.current_menu_level == CARD_DISPLAY_LEVEL:
             if deck.numbered:
                 num = deck.data.index(chosen_card) + 1
             else:
                 num = None
-            for line in chosen_card.display(deck.display_template, deck.topics, num):
+            card_contents = chosen_card.display(deck.display_template,
+                                                deck.topics, num)
+            y_index = (screen_height // 2) - (len(card_contents) // 2)
+            for line in card_contents:
                 screen_utils.center(line, y_index, screen_width, main_window)
                 y_index += 1
-            screen_utils.center(card_display_prompt, 0, screen_width, prompt_bar)
+            screen_utils.center(card_display_prompt, 0, screen_width, prompt_bar,
+                                color=screen_utils.MENU_STYLE, mode=curses.A_BOLD)
         elif deck.current_menu_level == TOPIC_DISPLAY_LEVEL:
             lines = []
             p = Paginator(  centered = True,
                             quit_prompt = f"{DEFAULT_MAIN_MENU_CHAR}: main menu",
-                            quit_char = 'm')
+                            quit_char = 'm', prompt_color=screen_utils.MENU_STYLE,
+                            prompt_mode=curses.A_BOLD)
             for card in chosen_cards:
                 for line in card.display(deck.display_template, deck.topics):
                     lines.append(line)
                     y_index += 1
-                if len(chosen_cards) > 1 and chosen_cards.index(card) < (len(chosen_cards) - 1):
-                    lines.append("* * *")
+                if len(chosen_cards) > 1 and \
+                    chosen_cards.index(card) < (len(chosen_cards) - 1):
+                    lines.append(SeparatorMarker(color=screen_utils.MENU_STYLE,
+                                                 mode=curses.A_BOLD))
                     y_index += 1
             try:
                 stdscr.refresh()
