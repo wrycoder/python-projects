@@ -5,6 +5,8 @@
 #
 
 import json, re, sys, random, curses, screen_utils
+from screen_utils import Paginator, PaginatorException, \
+    PAGINATION_DONE_MSG
 
 DEFAULT_RANDOM_MENU_CHAR    = 'r'
 DEFAULT_NUMBERED_MENU_CHAR  = 'n'
@@ -266,15 +268,23 @@ def do_loop(stdscr, deck):
                 y_index += 1
             screen_utils.center(card_display_prompt, 0, screen_width, prompt_bar)
         elif deck.current_menu_level == TOPIC_DISPLAY_LEVEL:
+            lines = []
+            p = Paginator(  centered = True,
+                            quit_prompt = f"{DEFAULT_MAIN_MENU_CHAR}: main menu",
+                            quit_char = 'm')
             for card in chosen_cards:
                 for line in card.display(deck.display_template, deck.topics):
-                    screen_utils.center(line, y_index, screen_width, main_window)
+                    lines.append(line)
                     y_index += 1
                 if len(chosen_cards) > 1 and chosen_cards.index(card) < (len(chosen_cards) - 1):
-                    screen_utils.draw_separator(y_index, 10, screen_width, main_window)
+                    lines.append("* * *")
                     y_index += 1
-            screen_utils.center(card_display_prompt, 0, screen_width, prompt_bar)
-            deck.current_menu_level = CARD_DISPLAY_LEVEL
+            try:
+                stdscr.refresh()
+                p.paginate(stdscr, lines)
+            except(PaginatorException):
+                deck.current_menu_level = MAIN_MENU_LEVEL
+                continue
         elif deck.current_menu_level == NUMBER_INPUT_LEVEL:
             pass
         else:
