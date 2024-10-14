@@ -6,7 +6,7 @@
 
 import json, re, sys, random, curses, screen_utils
 from screen_utils import Paginator, PaginatorException, \
-    PAGINATION_DONE_MSG
+    PAGINATION_DONE_MSG, SeparatorMarker
 
 DEFAULT_RANDOM_MENU_CHAR    = 'r'
 DEFAULT_NUMBERED_MENU_CHAR  = 'n'
