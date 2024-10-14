@@ -45,7 +45,12 @@ def center(text, y_index, x_width, scr_object, *, color=0, mode=curses.A_NORMAL)
         # We'll just assume that our data will fit.
         pass
 
-def draw_separator(y_index, length, width, scr_object, *, color=0, mode=curses.A_NORMAL) -> None:
+class SeparatorMarker:
+    def __init__(self, *, color=0, mode=curses.A_NORMAL):
+        self.color = color
+        self.mode = mode
+
+def draw_separator(y_index, length, width, scr_object, *, color=MENU_STYLE, mode=curses.A_NORMAL) -> None:
     """
     Draw a centered, separating line, usually between elements of a list
 
