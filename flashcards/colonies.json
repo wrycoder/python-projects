@@ -1,0 +1,62 @@
+{
+  "name" : "Colony",
+  "data" : [
+      { "title" : "Connecticut",
+        "capital" : "New Haven & Hartford"
+      },
+      { "title" : "Delaware",
+        "capital" : "New Castle"
+      },
+      { "title" : "Georgia",
+        "capital" : "Savannah"
+      },
+      { "title" : "Maryland",
+        "capital" : "Annapolis"
+      },
+      { "title" : "Massachusetts",
+        "capital" : "Boston"
+      },
+      { "title" : "New Hampshire",
+        "capital" : "Portsmouth"
+      },
+      { "title" : "New Jersey",
+        "capital" : "Elizabeth"
+      },
+      { "title" : "New York",
+        "capital" : "New York"
+      },
+      { "title" : "North Carolina",
+        "capital" : "New Bern"
+      },
+      { "title" : "Pennsylvania",
+        "capital" : "Philadelphia"
+      },
+      { "title" : "Rhode Island",
+        "capital" : "Newport & Providence"
+      },
+      { "title" : "South Carolina",
+        "capital" : "Charleston"
+      },
+      { "title" : "Virginia",
+        "capital" : "Williamsburg"
+      }
+  ],
+  "display_template" : [
+    "All about the {card['title']} Colony",
+    "The capital of {card['title']} was {card['capital']}"
+  ],
+  "topics" : [{
+    "tobacco" : {
+      "character" : "t",
+      "prompt" : "Colonies that farmed tobacco",
+      "detail" : ["{card['title']} was a tobacco-farming colony"],
+      "members" : ["North Carolina", "Virginia", "Maryland"]
+    },
+    "royals" : {
+      "character" : "k",
+      "prompt" : "Colonies that were subject to the King of England",
+      "detail" : ["{card['title']} was one of the Royal Colonies, subject to the King of England"],
+      "members" : ["Virginia", "New Hampshire", "New York", "New Jersey", "North Carolina", "South Carolina", "Georgia"]
+    }
+  }]
+}

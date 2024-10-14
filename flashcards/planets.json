@@ -1,0 +1,51 @@
+{
+  "name" : "Planets",
+  "data" : [
+    {
+      "title" : "Mercury",
+      "nickname" : "The Swift Planet",
+      "distance" : 0.39
+    },
+    {
+      "title" : "Venus",
+      "nickname" : "The Morning Star and Evening Star",
+      "distance" : 0.72
+    },
+    {
+      "title" : "Earth",
+      "nickname" : "Gaia",
+      "distance" : 1.0
+    },
+    {
+      "title" : "Mars",
+      "nickname" : "The Red Planet",
+      "distance" : 1.52
+    },
+    {
+      "title" : "Jupiter",
+      "nickname" : "The Gas Giant",
+      "distance" : 5.2
+    },
+    {
+      "title" : "Saturn",
+      "nickname" : "The Ringed Planet",
+      "distance" : 9.54
+    },
+    {
+      "title" : "Uranus",
+      "nickname" : "The Bulls-Eye Planet",
+      "distance" : 19.2
+    },
+    {
+      "title" : "Neptune",
+      "nickname" : "The Blue Giant",
+      "distance" : 30.06
+    }
+  ],
+  "display_template" : [
+    "{card['title']}",
+    " - known as {card['nickname']}",
+    " - is {card['distance']} astronomical units away from the Sun"
+  ],
+  "numbered" : true
+}
