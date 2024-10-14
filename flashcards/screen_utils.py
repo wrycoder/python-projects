@@ -83,11 +83,14 @@ class Paginator:
         bwd_char:           character that says user wants previous page
         quit_prompt:        tells user how to exit
         quit_char:          character that says user wants to exit
+        prompt_color:       default prompt color
+        prompt_mode:        default prompt style
     """
     def __init__(self, wait_on_error=False, centered=False,
                 fwd_prompt=DEFAULT_FWD_PROMPT, fwd_char=DEFAULT_FWD_CHAR,
                 bwd_prompt=DEFAULT_BWD_PROMPT, bwd_char=DEFAULT_BWD_CHAR,
-                quit_prompt=DEFAULT_QUIT_PROMPT, quit_char=DEFAULT_QUIT_CHAR):
+                quit_prompt=DEFAULT_QUIT_PROMPT, quit_char=DEFAULT_QUIT_CHAR,
+                prompt_color=0, prompt_mode=curses.A_NORMAL):
         self.wait_on_error = wait_on_error
         self.centered = centered
         self.fwd_prompt = fwd_prompt
@@ -96,6 +99,8 @@ class Paginator:
         self.bwd_char = ord(bwd_char)
         self.quit_prompt = quit_prompt
         self.quit_char = ord(quit_char)
+        self.prompt_color = prompt_color
+        self.prompt_mode = prompt_mode
 
     def handle_error(self, stdscr, error_message):
         """
