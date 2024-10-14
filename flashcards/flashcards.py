@@ -270,6 +270,9 @@ def do_loop(stdscr, deck):
                 for line in card.display(deck.display_template, deck.topics):
                     screen_utils.center(line, y_index, screen_width, main_window)
                     y_index += 1
+                if len(chosen_cards) > 1 and chosen_cards.index(card) < (len(chosen_cards) - 1):
+                    screen_utils.draw_separator(y_index, 10, screen_width, main_window)
+                    y_index += 1
             screen_utils.center(card_display_prompt, 0, screen_width, prompt_bar)
             deck.current_menu_level = CARD_DISPLAY_LEVEL
         elif deck.current_menu_level == NUMBER_INPUT_LEVEL:
