@@ -45,7 +45,7 @@ class TestPaginator(unittest.TestCase):
         data = []
         line_length = 500
         total_lines = 500
-        filename = '/home/ubuntu/python-src/test.txt'
+        filename = 'paginator-test-output.txt'
         for y in range(0, total_lines):
             data.append('')
             for x in range(0, (line_length - 1)):
@@ -60,7 +60,7 @@ class TestPaginator(unittest.TestCase):
             self.assertIn(data[3], result)
         finally:
             curses.endwin()
-            os.remove('test.txt')
+            os.remove(filename)
 
     def test_two_pages(self):
         p = Paginator()
