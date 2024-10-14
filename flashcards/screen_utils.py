@@ -228,7 +228,7 @@ class Paginator:
                     else:
                         continue
                 case self.quit_char:
-                    break
+                    raise PaginatorException(PAGINATION_DONE_MSG)
                 case _:
                     continue
         curses.curs_set(1)

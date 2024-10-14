@@ -80,6 +80,5 @@ class TestPaginator(unittest.TestCase):
         finally:
             curses.endwin()
 
-
 if __name__ == '__main__':
     unittest.main()

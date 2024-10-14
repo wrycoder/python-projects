@@ -134,9 +134,9 @@ class Paginator:
                     else:
                         continue
                 case self.bwd_char:
-                    stdscr.erase()
-                    stdscr.refresh()
                     if current_page > 0:
+                        stdscr.erase()
+                        stdscr.refresh()
                         current_page -= 1
                         pad.refresh(
                             (current_page * window_height),
