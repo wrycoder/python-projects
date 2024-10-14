@@ -209,7 +209,8 @@ class Paginator:
             p_height, p_width = prompt.getmaxyx()
             p_midpoint = int(p_width / 2)
             x_position = p_midpoint - half_length_of_message
-            prompt.addstr(0, x_position, menu_message)
+            prompt.addstr(0, x_position, menu_message,
+                          curses.color_pair(self.prompt_color) | self.prompt_mode)
             prompt.refresh()
             action = prompt.getch()
             match action:
