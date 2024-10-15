@@ -19,7 +19,11 @@ TITLE_STYLE             = 1
 MENU_STYLE              = 2
 TEXT_STYLE              = 3
 
-def center(text, y_index, x_width, scr_object, *, color=0, mode=curses.A_NORMAL) -> None:
+CENTERED                = 10
+LEFT_ALIGNED            = 11
+RIGHT_ALIGNED           = 12
+
+def show_text(text, y_index, x_width, scr_object, *, alignment=CENTERED, color=0, mode=curses.A_NORMAL) -> None:
     """
     Center the text horizontally, at the specified vertical position (y_index)
 
@@ -28,16 +32,29 @@ def center(text, y_index, x_width, scr_object, *, color=0, mode=curses.A_NORMAL)
         y_index:    vertical line in display
         x_width:    length of each line in display
         scr_object: display object
+        alignment:  position of text within line
         color:      curses constant specifying a color
         mode:       curses constant specifying font style
     """
     x_index = 0
-    fmtstring = "{:^" + str(x_width) + "s}"
+    padding_width = (x_width // 7)
     attrs = curses.color_pair(color) | mode
     try:
-        scr_object.addstr(  y_index, x_index,
-                            fmtstring.format(text)[:x_width],
-                            attrs)
+        if alignment == CENTERED:
+            fmtstring = "{:^" + str(x_width) + "s}"
+            scr_object.addstr(  y_index, x_index,
+                                fmtstring.format(text)[:x_width],
+                                attrs)
+        elif alignment == LEFT_ALIGNED:
+            fmtstring = "{:" + str(padding_width) + "s}"
+            scr_object.addstr(  y_index, x_index,
+                                fmtstring.format(' ') + text[:x_width],
+                                attrs)
+        else:
+            fmtstring = "{:>" + str(padding_width) + "s}"
+            scr_object.addstr(  y_index, x_index,
+                                fmtstring.format(text)[:x_width],
+                                attrs)
     except curses.error:
         # The size of the display (scr_object) is unknown outside this module.
         # It's a potentially hazardous situation, because
