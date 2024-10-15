@@ -34,7 +34,7 @@ the system will use to identify the card.
 The third and final required entry in your parent dictionary is an
 array of strings...
 
-  "display_template" : (an array of strings)
+  "display_template" : [ (an array of strings) ]
 
 ...in which each string is a line of text that will be displayed
 when your card is viewed. The strings can have replacement tokens, of
