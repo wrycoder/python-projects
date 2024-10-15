@@ -397,12 +397,13 @@ def do_loop(stdscr, deck):
             menu_height = len(menu_contents)
             y_index = (screen_height // 2) - (menu_height // 2)
             for menu_item in menu_contents:
-                screen_utils.center(menu_item["prompt"], y_index,
+                screen_utils.show_text(menu_item["prompt"], y_index,
                                     screen_width, main_window,
+                                    alignment=screen_utils.CENTERED,
                                     color=screen_utils.TITLE_STYLE,
                                     mode=curses.A_BOLD)
                 y_index += 1
-            screen_utils.center(default_prompt, 0, screen_width, prompt_bar,
+            screen_utils.show_text(default_prompt, 0, screen_width, prompt_bar,
                                 color=screen_utils.MENU_STYLE, mode=curses.A_BOLD)
         elif deck.current_menu_level == CARD_DISPLAY_LEVEL:
             if deck.numbered:
@@ -413,9 +414,10 @@ def do_loop(stdscr, deck):
                                                 deck.topics, num)
             y_index = (screen_height // 2) - (len(card_contents) // 2)
             for line in card_contents:
-                screen_utils.center(line, y_index, screen_width, main_window)
+                screen_utils.show_text( line, y_index, screen_width, main_window,
+                                        alignment=screen_utils.LEFT_ALIGNED)
                 y_index += 1
-            screen_utils.center(card_display_prompt, 0, screen_width, prompt_bar,
+            screen_utils.show_text(card_display_prompt, 0, screen_width, prompt_bar,
                                 color=screen_utils.MENU_STYLE, mode=curses.A_BOLD)
         elif deck.current_menu_level == TOPIC_DISPLAY_LEVEL:
             lines = []
