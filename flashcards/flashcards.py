@@ -64,8 +64,9 @@ yet another dictionary, with four required entries:
 
   "character" : (a single character, identifying a menu option for this topic)
   "prompt" :    (a string containing the text for the description in the menu)
-  "detail" :    (a string containing text to be appended to the output when
-                 the card is displayed. Replacement tokens can be used here.)
+  "detail" :    [ (an array of strings containing text to be appended to
+                   the output when the card is displayed. Replacement tokens
+                   can be used here.) ]
   "members" :   (an array of strings, containing the `title` properties of the
                  cards that have this topic in common.)
 

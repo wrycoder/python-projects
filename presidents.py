@@ -1,5 +1,4 @@
-import fileinput
-import curses
+import fileinput, curses, json
 from paginator import Paginator
 
 prompt = """
@@ -140,6 +139,15 @@ class President:
         center(self[1], y_index, x_width, stdscr)
         y_index += 1
         center(self[2], y_index, x_width, stdscr)
+
+class PresidentEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, President):
+            output = {  "title" : obj.name,
+                        "sworn_in" : obj.sworn_in,
+                        "pronouns" : obj.pronouns }
+            return output
+        return json.JSONEncoder.default(self, obj)
 
 def for_year(year: int) -> President:
     """Find out who was president in the given year."""
