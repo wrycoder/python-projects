@@ -430,13 +430,16 @@ def do_loop(stdscr, deck):
             y_index = (screen_height // 2) - (len(card_contents) // 2)
             for line in card_contents:
                 screen_utils.show_text( line, y_index, screen_width, main_window,
-                                        alignment=screen_utils.LEFT_ALIGNED)
+                                        alignment=screen_utils.LEFT_ALIGNED,
+                                        left_padding=block_padding(card_contents,
+                                            screen_width)
+                                        )
                 y_index += 1
             screen_utils.show_text(card_display_prompt, 0, screen_width, prompt_bar,
                                 color=screen_utils.MENU_STYLE, mode=curses.A_BOLD)
         elif deck.current_menu_level == TOPIC_DISPLAY_LEVEL:
             lines = []
-            p = Paginator(  centered = True,
+            p = Paginator(  centered = False,
                             quit_prompt = f"{DEFAULT_MAIN_MENU_CHAR}: main menu",
                             quit_char = 'm', prompt_color=screen_utils.MENU_STYLE,
                             prompt_mode=curses.A_BOLD)
@@ -449,6 +452,7 @@ def do_loop(stdscr, deck):
                     lines.append(SeparatorMarker(color=screen_utils.MENU_STYLE,
                                                  mode=curses.A_BOLD))
                     y_index += 1
+            p.left_padding = block_padding(lines, screen_width)
             try:
                 stdscr.refresh()
                 p.paginate(stdscr, lines)

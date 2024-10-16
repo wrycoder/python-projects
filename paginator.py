@@ -31,6 +31,7 @@ class Paginator:
         self.bwd_char = ord(bwd_char)
         self.quit_prompt = quit_prompt
         self.quit_char = ord(quit_char)
+        self.left_padding = 0
 
     def handle_error(self, stdscr, error_message):
         curses.savetty()
@@ -93,7 +94,7 @@ class Paginator:
                     line[:window_width]
                 )
             else:
-                pad.addstr(y_index, 0, line[:window_width])
+                pad.addstr(y_index, self.left_padding, line[:window_width])
             y_index += 1
         pad.refresh(0,0, VERTICAL_MARGIN, HORIZONTAL_MARGIN,
                     (window_height - 1), (window_width - 1))

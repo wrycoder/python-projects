@@ -23,7 +23,8 @@ CENTERED                = 10
 LEFT_ALIGNED            = 11
 RIGHT_ALIGNED           = 12
 
-def show_text(text, y_index, x_width, scr_object, *, alignment=CENTERED, color=0, mode=curses.A_NORMAL) -> None:
+def show_text(text, y_index, x_width, scr_object, *, alignment=CENTERED,
+              left_padding=None, color=0, mode=curses.A_NORMAL) -> None:
     """
     Center the text horizontally, at the specified vertical position (y_index)
 
@@ -46,6 +47,8 @@ def show_text(text, y_index, x_width, scr_object, *, alignment=CENTERED, color=0
                                 fmtstring.format(text)[:x_width],
                                 attrs)
         elif alignment == LEFT_ALIGNED:
+            if left_padding != None:
+                padding_width = left_padding
             fmtstring = "{:" + str(padding_width) + "s}"
             scr_object.addstr(  y_index, x_index,
                                 fmtstring.format(' ') + text[:x_width],
@@ -118,6 +121,7 @@ class Paginator:
         self.quit_char = ord(quit_char)
         self.prompt_color = prompt_color
         self.prompt_mode = prompt_mode
+        self.left_padding = 0
 
     def handle_error(self, stdscr, error_message):
         """
@@ -205,7 +209,7 @@ class Paginator:
                         line[:window_width]
                     )
                 else:
-                    pad.addstr(y_index, 0, line[:window_width])
+                    pad.addstr(y_index, self.left_padding, line[:window_width])
             y_index += 1
         pad.refresh(0,0, VERTICAL_MARGIN, HORIZONTAL_MARGIN,
                     (window_height - 1), (window_width - 1))
