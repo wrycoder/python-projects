@@ -465,6 +465,11 @@ def do_loop(stdscr, deck):
             screen_utils.center("UNDER CONSTRUCTION", 0, screen_width, main_window)
             screen_utils.center(card_display_prompt, 0, screen_width, prompt_bar)
             deck.current_menu_level = MAIN_MENU_LEVEL
+        main_window.border()
+        main_window.addstr(0,
+                          (screen_width // 2) - (len(deck.deck_name) // 2),
+                          deck.deck_name,
+                          curses.A_BOLD)
         main_window.refresh()
         prompt_bar.refresh()
         # 2) GET INPUT
