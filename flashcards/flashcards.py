@@ -366,12 +366,27 @@ class Deck:
                 return name
         return None
 
+def block_padding(text: list, x_width: int):
+    """
+    When several lines of text are displayed as a block, left-aligned,
+    calculate a general padding value for the whole block. Ignore separators.
+
+    Parameters:
+        text:           ordered container of text that is about to be
+                        displayed
+        x_width:        total width of the display window
+    """
+    text_only = [x for x in text if(type(x) == str)]
+    longest_line = sorted(text_only, key=lambda x: len(x), reverse=True)[0]
+    return (x_width // 2) - (len(longest_line) // 2)
+
 def do_loop(stdscr, deck):
     """
     The main loop is broken into three parts: 1) displaying the right screen;
     2) getting input; and 3) deciding what to do with the input.
 
     Parameters:
+        stdscr:         handle to curses viewport
         deck:           ``Deck`` object containing the cards to be displayed
     """
     curses.curs_set(0)
