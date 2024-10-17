@@ -42,6 +42,16 @@ the form `{card['property']}`. When the system calls the card's `display()`
 method, these tokens will be replaced with the properties you defined in the
 dictionary for the card.
 
+There's also one optional entry you can make in your parent dictionary,
+which you can use to make the system automatically assign a number to
+each card:
+
+  "numbered" : ( true|false )
+
+If the "numbered" key is present, and set to `true`, the deck will have
+a numerical key that can be used to access specific cards. The first
+key is `1`.
+
 For a basic example of a flashcards configuration file, see `planets.json`.
 
 ADVANCED CONFIGURATION
