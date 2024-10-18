@@ -313,7 +313,7 @@ class Deck:
         Parameters:
             number:             the 1-indexed position of the card
         """
-        self.current_menu_level = CARD_DISPLAY_LEVEL
+        self.current_menu_level = CARD_FRONT_DISPLAY_LEVEL
         return self.data[number - 1]
 
     def __len__(self):
@@ -346,6 +346,7 @@ class Deck:
                 members = self.topics[for_topic]['members']
                 if card.title in members:
                     result.append(card)
+        self.current_menu_level = TOPIC_DISPLAY_LEVEL
         return result
 
     def random_card(self):
