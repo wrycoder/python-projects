@@ -1,13 +1,21 @@
 """
-a configurable learning tool
+a configurable learning tool for help with memorization
 
 Displays a series of flashcards--screens with information about a
 given subject. Users can view the cards one at a time, either
 randomly or by entering the number of a specific card. Cards
 can also be viewed in groups, based on selected topics.
 
-All the information is defined in a JSON-formatted text file,
-which must be specified on the command line.
+If you choose to view a single card, you'll initially see
+just a hint about its contents. This hint is like the "front"
+of the card, designed to spur your memory. Press the forward
+slash key (/) to flip the card over and see all the details
+about its subject.
+
+All `flashcards` information is defined in a JSON-formatted text file,
+which must be specified on the command line:
+
+   `$ python flashcards.py [source-file.json]`
 
 CONFIGURATION
 -------------
@@ -50,7 +58,7 @@ each card:
 
 If the "numbered" key is present, and set to `true`, the deck will have
 a numerical key that can be used to access specific cards. The first
-key is `1`.
+key is `1`. By default, the deck is unnumbered.
 
 For a basic example of a flashcards configuration file, see `planets.json`.
 
@@ -58,9 +66,9 @@ ADVANCED CONFIGURATION
 ----------------------
 
 The same properties can sometimes be shared by multiple flashcards in a
-given deck. A collection of U.S. presidents, for example, will have several
-presidents who were Republicans and several other presidents who were
-Democrats. You might want to view all of these cards at the same time.
+given deck. A collection of United States presidents, for example, will
+have several presidents who were Republicans and several other presidents
+who were Democrats. You might want to view all of these cards at the same time.
 But how? The answer is in yet another (optional) configuration element in
 the JSON dictionary...
 
@@ -69,7 +77,7 @@ the JSON dictionary...
 ...where you define each topic that multiple cards have in common.
 
 Now here's where things get a little more complicated. The key in each dictionary
-is a simple string, identifying the topic. But the value in each dictionary is
+is a simple string to identify the topic. But the value in each dictionary is
 yet another dictionary, with four required entries:
 
   "character" : (a single character, identifying a menu option for this topic)
