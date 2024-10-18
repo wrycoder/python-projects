@@ -493,7 +493,7 @@ def do_loop(stdscr, deck):
                                             screen_width)
                                         )
                 y_index += 1
-            screen_utils.show_text(card_display_prompt, 0, screen_width, prompt_bar,
+            screen_utils.show_text(deck.prompt_text(), 0, screen_width, prompt_bar,
                                 color=screen_utils.MENU_STYLE, mode=curses.A_BOLD)
         elif deck.current_menu_level == TOPIC_DISPLAY_LEVEL:
             lines = []
@@ -521,7 +521,7 @@ def do_loop(stdscr, deck):
             pass
         else:
             screen_utils.center("UNDER CONSTRUCTION", 0, screen_width, main_window)
-            screen_utils.center(card_display_prompt, 0, screen_width, prompt_bar)
+            screen_utils.center(deck.prompt_text(), 0, screen_width, prompt_bar)
             deck.current_menu_level = MAIN_MENU_LEVEL
         main_window.border()
         main_window.addstr(0,
@@ -560,7 +560,6 @@ def do_loop(stdscr, deck):
                     continue
                 else:
                     chosen_card = deck.choose_card(int(key))
-                    deck.current_menu_level = CARD_DISPLAY_LEVEL
                     continue
             except(ValueError):
                 continue
