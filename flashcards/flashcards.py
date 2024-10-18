@@ -401,6 +401,25 @@ class Deck:
                 return name
         return None
 
+    def prompt_text(self):
+        """Get context-sensitive prompt"""
+        if self.current_menu_level == MAIN_MENU_LEVEL:
+            return DEFAULT_PROMPT
+        elif (self.current_menu_level == CARD_FRONT_DISPLAY_LEVEL):
+            return '\'' + DEFAULT_MAIN_MENU_CHAR + \
+                          '\': main menu;  ' + \
+                          '\'' + DEFAULT_TOGGLE_CHAR + \
+                          '\': view back of card; ' + \
+                          DEFAULT_PROMPT
+        elif (self.current_menu_level == CARD_BACK_DISPLAY_LEVEL):
+            return '\'' + DEFAULT_MAIN_MENU_CHAR + \
+                          '\': main menu;  ' + \
+                          '\'' + DEFAULT_TOGGLE_CHAR + \
+                          '\': view front of card; ' + \
+                          DEFAULT_PROMPT
+        else:
+            return DEFAULT_PROMPT
+
 def block_padding(text: list, x_width: int):
     """
     When several lines of text are displayed as a block, left-aligned,
