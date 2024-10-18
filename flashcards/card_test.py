@@ -292,8 +292,6 @@ class DeckTest(unittest.TestCase):
         front_char_pos = prompt.index('front of card')
         self.assertTrue(front_char_pos < len(prompt),
                        "incorrect card-level display prompt for card back")
-        colonies.current_menu_level = TOPIC_DISPLAY_LEVEL
-        prompt = colonies.prompt_text()
 
 class CardTest(unittest.TestCase):
     def test_display_card(self):
