@@ -163,7 +163,7 @@ class Card:
         else:
             return self.title
 
-    def display(self, template, topics={}, number=None) -> list:
+    def display(self, template, topics={}, number=None, front=False) -> list:
         """
         Show this card, using fixed text with markup to be replaced by
         properties of the current subject. The markup syntax for the
@@ -177,23 +177,30 @@ class Card:
             topics:     dictionary of related topics, which may or
                         may not contain the subject of the current card
             number:     the ordinal position of this card in the deck
+            front:      boolean value to indicate front or back of card
 
         Returns:        a list containing lines of text
         """
         result = []
-        for line in template:
+        if front == False:
+            for line in template:
+                new_line = re.sub(r'\{card\[', '{self[', line)
+                if len(result) == 0 and number != None:
+                    new_line = f"{number}. " + new_line
+                result.append(eval('f"' + new_line + '"'))
+            if len(topics) > 0:
+                for (topic, table) in topics.items():
+                    members = table['members']
+                    if self.title in members:
+                        topic_template = table['detail']
+                        for topic_line in topic_template:
+                            new_topic_line = re.sub(r'\{card\[', '{self[', topic_line)
+                            result.append(eval('f"' + new_topic_line + '"'))
+        else:
+            line = random.choice(template).replace(
+                           "{card['title']}", "???")
             new_line = re.sub(r'\{card\[', '{self[', line)
-            if len(result) == 0 and number != None:
-                new_line = f"{number}. " + new_line
             result.append(eval('f"' + new_line + '"'))
-        if len(topics) > 0:
-            for (topic, table) in topics.items():
-                members = table['members']
-                if self.title in members:
-                    topic_template = table['detail']
-                    for topic_line in topic_template:
-                        new_topic_line = re.sub(r'\{card\[', '{self[', topic_line)
-                        result.append(eval('f"' + new_topic_line + '"'))
         return result
 
 class CardEncoder(json.JSONEncoder):
