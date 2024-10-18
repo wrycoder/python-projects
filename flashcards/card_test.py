@@ -264,7 +264,7 @@ class DeckTest(unittest.TestCase):
         self.assertEqual(card['title'], "Delaware", "method should return correct card")
         self.assertEqual(
             colonies.current_menu_level,
-            CARD_DISPLAY_LEVEL,
+            CARD_FRONT_DISPLAY_LEVEL,
             "Incorrect menu level for chosen card"
         )
 
@@ -275,6 +275,25 @@ class DeckTest(unittest.TestCase):
         self.assertTrue(colonies.find_topic('z') == None,
             "Search on undefined character should return None"
         )
+
+    def test_prompt(self):
+        colonies = Deck(COLONIES)
+        colonies.current_menu_level = MAIN_MENU_LEVEL
+        prompt = colonies.prompt_text()
+        self.assertEqual(prompt.index(DEFAULT_PROMPT), 0,
+                        "Main menu prompt should match DEFAULT_PROMPT")
+        colonies.current_menu_level = CARD_FRONT_DISPLAY_LEVEL
+        prompt = colonies.prompt_text()
+        back_char_pos = prompt.index('back of card')
+        self.assertTrue(back_char_pos < len(prompt),
+                        "incorrect card-level display prompt for card front")
+        colonies.current_menu_level = CARD_BACK_DISPLAY_LEVEL
+        prompt = colonies.prompt_text()
+        front_char_pos = prompt.index('front of card')
+        self.assertTrue(front_char_pos < len(prompt),
+                       "incorrect card-level display prompt for card back")
+        colonies.current_menu_level = TOPIC_DISPLAY_LEVEL
+        prompt = colonies.prompt_text()
 
 class CardTest(unittest.TestCase):
     def test_display_card(self):
