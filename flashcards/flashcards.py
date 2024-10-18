@@ -200,6 +200,8 @@ class Card:
             line = random.choice(template).replace(
                            "{card['title']}", "???")
             new_line = re.sub(r'\{card\[', '{self[', line)
+            if len(result) == 0 and number != None:
+                new_line = f"{number}. " + new_line
             result.append(eval('f"' + new_line + '"'))
         return result
 
