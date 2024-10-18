@@ -191,6 +191,8 @@ class DeckTest(unittest.TestCase):
         colonies = Deck(COLONIES)
         card = colonies.random_card()
         self.assertEqual(type(card), type(colonies['Massachusetts']))
+        self.assertEqual(colonies.current_menu_level, CARD_FRONT_DISPLAY_LEVEL,
+                        "current_menu_level for random card should be FRONT_DISPLAY")
 
     def test_numbered_card(self):
         numbered_json_string = '''
