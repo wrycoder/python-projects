@@ -583,7 +583,14 @@ def do_loop(stdscr, deck):
                     continue
                 chosen_cards = deck.list(for_topic=chosen_topic)
                 deck.current_menu_level = TOPIC_DISPLAY_LEVEL
-        elif deck.current_menu_level == CARD_DISPLAY_LEVEL:
+        elif char1 == ord(DEFAULT_TOGGLE_CHAR):
+            if deck.current_menu_level == CARD_FRONT_DISPLAY_LEVEL:
+                deck.current_menu_level = CARD_BACK_DISPLAY_LEVEL
+            else:
+                deck.current_menu_level = CARD_FRONT_DISPLAY_LEVEL
+            continue
+        elif (deck.current_menu_level == CARD_FRONT_DISPLAY_LEVEL) or \
+             (deck.current_menu_level == CARD_BACK_DISPLAY_LEVEL):
             if char1 == ord(DEFAULT_MAIN_MENU_CHAR):
                 deck.current_menu_level = MAIN_MENU_LEVEL
         else:
