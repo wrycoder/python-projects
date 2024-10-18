@@ -451,9 +451,6 @@ def do_loop(stdscr, deck):
     screen_height, screen_width = stdscr.getmaxyx()
     main_window = curses.newwin(screen_height - 2, screen_width - 1, 0, 0)
     prompt_bar = curses.newwin(1, screen_width - 1, screen_height - 2, 0)
-    default_prompt = 'press the [ESC] key to quit'
-    card_display_prompt = '\'' + DEFAULT_MAIN_MENU_CHAR + \
-                          '\': main menu;  ' + default_prompt
     chosen_card = None
     while(True):
         stdscr.clear()
@@ -472,15 +469,22 @@ def do_loop(stdscr, deck):
                                     color=screen_utils.TITLE_STYLE,
                                     mode=curses.A_BOLD)
                 y_index += 1
-            screen_utils.show_text(default_prompt, 0, screen_width, prompt_bar,
+            screen_utils.show_text(deck.prompt_text(), 0, screen_width, prompt_bar,
                                 color=screen_utils.MENU_STYLE, mode=curses.A_BOLD)
-        elif deck.current_menu_level == CARD_DISPLAY_LEVEL:
+        elif (deck.current_menu_level == CARD_FRONT_DISPLAY_LEVEL) or \
+             (deck.current_menu_level == CARD_BACK_DISPLAY_LEVEL):
             if deck.numbered:
                 num = deck.data.index(chosen_card) + 1
             else:
                 num = None
-            card_contents = chosen_card.display(deck.display_template,
-                                                deck.topics, num)
+            if deck.current_menu_level == CARD_FRONT_DISPLAY_LEVEL:
+                card_contents = chosen_card.display(deck.display_template,
+                                                    deck.topics, num,
+                                                    front=True)
+            else:
+                card_contents = chosen_card.display(deck.display_template,
+                                                    deck.topics, num,
+                                                    front=False)
             y_index = (screen_height // 2) - (len(card_contents) // 2)
             for line in card_contents:
                 screen_utils.show_text( line, y_index, screen_width, main_window,
