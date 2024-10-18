@@ -129,13 +129,15 @@ class Card:
 
     Methods
     -------
-    display(template: list, topics: dict={}, number: int=None)
+    display(template: list, topics: dict={}, number: int=None,
+            front: bool=False)
         Get an ordered list of strings, each one of which is a line
         of text with details about the specific card. The `topics`
         dictionary contains information about various topics this
         card has in common with other cards in the deck. The `number` is
         a 1-indexed integer identifying this card's position in
-        the deck.
+        the deck. `front` identifies which side of the card you
+        want to view.
     """
     def __init__(self, title: str, **kwargs):
         """Initialize the Card object
