@@ -316,6 +316,29 @@ class CardTest(unittest.TestCase):
         )
         self.assertEqual(len(birth_year), 1, "Birth year not found in card display")
 
+    def test_display_card_front_or_back(self):
+        js_data = json.loads(COLONIES)
+        delaware = Card(
+            js_data['data'][1]['title'],
+            capital=js_data['data'][1]['capital']
+        )
+        self.assertEqual(
+            delaware['capital'],
+            js_data['data'][1]['capital'],
+            "Incorrect value for specified key"
+        )
+        sample_text = '\n'.join(delaware.display(
+                            js_data['display_template'],
+                            front=True))
+        with self.assertRaises(ValueError):
+            colony_name = sample_text.index(delaware['title'])
+        sample_text = '\n'.join(delaware.display(
+                            js_data['display_template'],
+                            front=False))
+        colony_name_position = sample_text.index(delaware['title'])
+        self.assertTrue(colony_name_position < len(sample_text),
+                        "display with 'front=False' should include card title")
+
 if __name__ == "__main__":
     unittest.main()
 
