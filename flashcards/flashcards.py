@@ -256,6 +256,9 @@ class Deck:
 
     random_card()
         Pick a card at random.
+
+    prompt_text()
+        Get context-sensitive wording for the prompt at the bottom of the screen
     """
     def __init__(self, data: str):
         """
