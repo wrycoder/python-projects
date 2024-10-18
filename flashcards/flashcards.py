@@ -85,8 +85,8 @@ yet another dictionary, with four required entries:
   "detail" :    [ (an array of strings containing text to be appended to
                    the output when the card is displayed. Replacement tokens
                    can be used here.) ]
-  "members" :   (an array of strings, containing the `title` properties of the
-                 cards that have this topic in common.)
+  "members" :   [ (an array of strings, containing the `title` properties of the
+                 cards that have this topic in common.) ]
 
 For an example of an advanced flashcards configuration file, see `colonies.json`.
 """
@@ -97,11 +97,14 @@ from screen_utils import Paginator, PaginatorException, \
 DEFAULT_RANDOM_MENU_CHAR    = 'r'
 DEFAULT_NUMBERED_MENU_CHAR  = 'n'
 DEFAULT_MAIN_MENU_CHAR      = 'm'
+DEFAULT_TOGGLE_CHAR         = '/'
 MAIN_MENU_LEVEL             = 0
-CARD_DISPLAY_LEVEL          = 1
-TOPIC_DISPLAY_LEVEL         = 2
-NUMBER_INPUT_LEVEL          = 3
-TOPIC_INPUT_LEVEL           = 4
+CARD_FRONT_DISPLAY_LEVEL    = 1
+CARD_BACK_DISPLAY_LEVEL     = 2
+TOPIC_DISPLAY_LEVEL         = 3
+NUMBER_INPUT_LEVEL          = 4
+TOPIC_INPUT_LEVEL           = 5
+DEFAULT_PROMPT              = 'press the [ESC] key to quit'
 
 class ConfigurationError(Exception):
     def __init__(self, message):
