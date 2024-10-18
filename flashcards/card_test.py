@@ -160,11 +160,18 @@ class DeckTest(unittest.TestCase):
             "Title of test card not found"
         )
         birth_year = re.findall(r'.+1867.+', sample_text, re.MULTILINE)
-        self.assertEqual(len(birth_year), 1, "Birth year not found in deck display")
+        self.assertEqual(len(birth_year), 1,
+                        "Birth year not found in deck display")
         death_year = re.findall(r'.+1934\.', sample_text, re.MULTILINE)
-        self.assertEqual(len(death_year), 1, "Death year not found in deck display")
+        self.assertEqual(len(death_year), 1,
+                        "Death year not found in deck display")
         birthplace = re.findall(r'.+Warsaw.+', sample_text, re.MULTILINE)
-        self.assertEqual(len(birthplace), 1, "Birthplace not found in deck display")
+        self.assertEqual(len(birthplace), 1,
+                        "Birthplace not found in deck display")
+        self.assertEqual(
+            scientists.current_menu_level,
+            TOPIC_DISPLAY_LEVEL,
+            "list() should set current_menu_level to TOPIC_DISPLAY_LEVEL")
 
     def test_list_filtered(self):
         total_tobacconists = 3
