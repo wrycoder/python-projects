@@ -1,4 +1,4 @@
-import sys
+import sys, curses
 from .flashcards import Deck, do_loop
 
 try:
