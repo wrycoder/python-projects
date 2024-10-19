@@ -62,7 +62,7 @@ If the `"numbered"` key is present, and set to `true`, the deck will have
 a numerical key that can be used to access specific cards. The first
 key is `1`. By default, the deck is unnumbered.
 
-For a basic example of a flashcards configuration file, see `planets.json`.
+For a basic example of a flashcards configuration file, see [`planets.json`](https://github.com/wrycoder/python-projects/blob/master/flashcards/planets.json).
 
 ADVANCED CONFIGURATION
 ----------------------
@@ -90,4 +90,4 @@ yet another dictionary, with four required entries:
   `"members" :`   [ *(an array of strings, containing the `title` properties of the\
                  cards that have this topic in common.)* ]\
 \
-For an example of an advanced flashcards configuration file, see `colonies.json`.
+For an example of an advanced flashcards configuration file, see [`colonies.json`](https://github.com/wrycoder/python-projects/blob/master/flashcards/colonies.json).
