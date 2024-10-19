@@ -1,0 +1,20 @@
+[project]
+name = "flashcards-json"
+version = "1.0.0"
+authors = [
+  { name="Michael Toulouse", email="deryankee@gmail.com" },
+]
+description = "A configurable learning tool"
+readme = "README.md"
+requires-python = ">=3.12"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Environment :: Console :: Curses",
+    "Intended Audience :: Education",
+]
+
+[project.urls]
+Homepage = "https://github.com/wrycoder/python-projects/tree/master/flashcards"
+Issues = "https://github.com/wrycoder/python-projects/issues"
