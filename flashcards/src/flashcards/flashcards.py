@@ -90,9 +90,8 @@ yet another dictionary, with four required entries:
 
 For an example of an advanced flashcards configuration file, see `colonies.json`.
 """
-import json, re, sys, random, curses, screen_utils
-from screen_utils import Paginator, PaginatorException, \
-    PAGINATION_DONE_MSG, SeparatorMarker
+import json, re, sys, random, curses
+from .screen_utils import *
 
 DEFAULT_RANDOM_MENU_CHAR    = 'r'
 DEFAULT_NUMBERED_MENU_CHAR  = 'n'
