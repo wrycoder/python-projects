@@ -446,9 +446,9 @@ def do_loop(stdscr, deck):
     """
     curses.curs_set(0)
     curses.start_color()
-    curses.init_pair(screen_utils.TITLE_STYLE, curses.COLOR_CYAN, curses.COLOR_BLACK)
-    curses.init_pair(screen_utils.MENU_STYLE, curses.COLOR_YELLOW, curses.COLOR_BLACK)
-    curses.init_pair(screen_utils.TEXT_STYLE, curses.COLOR_WHITE, curses.COLOR_BLACK)
+    curses.init_pair(TITLE_STYLE, curses.COLOR_CYAN, curses.COLOR_BLACK)
+    curses.init_pair(MENU_STYLE, curses.COLOR_YELLOW, curses.COLOR_BLACK)
+    curses.init_pair(TEXT_STYLE, curses.COLOR_WHITE, curses.COLOR_BLACK)
     screen_height, screen_width = stdscr.getmaxyx()
     main_window = curses.newwin(screen_height - 2, screen_width - 1, 0, 0)
     prompt_bar = curses.newwin(1, screen_width - 1, screen_height - 2, 0)
@@ -464,14 +464,14 @@ def do_loop(stdscr, deck):
             menu_height = len(menu_contents)
             y_index = (screen_height // 2) - (menu_height // 2)
             for menu_item in menu_contents:
-                screen_utils.show_text(menu_item["prompt"], y_index,
+                show_text(menu_item["prompt"], y_index,
                                     screen_width, main_window,
-                                    alignment=screen_utils.CENTERED,
-                                    color=screen_utils.TITLE_STYLE,
+                                    alignment=CENTERED,
+                                    color=TITLE_STYLE,
                                     mode=curses.A_BOLD)
                 y_index += 1
-            screen_utils.show_text(deck.prompt_text(), 0, screen_width, prompt_bar,
-                                color=screen_utils.MENU_STYLE, mode=curses.A_BOLD)
+            show_text(deck.prompt_text(), 0, screen_width, prompt_bar,
+                                color=MENU_STYLE, mode=curses.A_BOLD)
         elif (deck.current_menu_level == CARD_FRONT_DISPLAY_LEVEL) or \
              (deck.current_menu_level == CARD_BACK_DISPLAY_LEVEL):
             if deck.numbered:
@@ -488,19 +488,19 @@ def do_loop(stdscr, deck):
                                                     front=False)
             y_index = (screen_height // 2) - (len(card_contents) // 2)
             for line in card_contents:
-                screen_utils.show_text( line, y_index, screen_width, main_window,
-                                        alignment=screen_utils.LEFT_ALIGNED,
+                show_text( line, y_index, screen_width, main_window,
+                                        alignment=LEFT_ALIGNED,
                                         left_padding=block_padding(card_contents,
                                             screen_width)
                                         )
                 y_index += 1
-            screen_utils.show_text(deck.prompt_text(), 0, screen_width, prompt_bar,
-                                color=screen_utils.MENU_STYLE, mode=curses.A_BOLD)
+            show_text(deck.prompt_text(), 0, screen_width, prompt_bar,
+                                color=MENU_STYLE, mode=curses.A_BOLD)
         elif deck.current_menu_level == TOPIC_DISPLAY_LEVEL:
             lines = []
             p = Paginator(  centered = False,
                             quit_prompt = f"{DEFAULT_MAIN_MENU_CHAR}: main menu",
-                            quit_char = 'm', prompt_color=screen_utils.MENU_STYLE,
+                            quit_char = 'm', prompt_color=MENU_STYLE,
                             prompt_mode=curses.A_BOLD)
             for card in chosen_cards:
                 for line in card.display(deck.display_template, deck.topics):
@@ -508,7 +508,7 @@ def do_loop(stdscr, deck):
                     y_index += 1
                 if len(chosen_cards) > 1 and \
                     chosen_cards.index(card) < (len(chosen_cards) - 1):
-                    lines.append(SeparatorMarker(color=screen_utils.MENU_STYLE,
+                    lines.append(SeparatorMarker(color=MENU_STYLE,
                                                  mode=curses.A_BOLD))
                     y_index += 1
             p.left_padding = block_padding(lines, screen_width)
@@ -521,8 +521,8 @@ def do_loop(stdscr, deck):
         elif deck.current_menu_level == NUMBER_INPUT_LEVEL:
             pass
         else:
-            screen_utils.center("UNDER CONSTRUCTION", 0, screen_width, main_window)
-            screen_utils.center(deck.prompt_text(), 0, screen_width, prompt_bar)
+            center("UNDER CONSTRUCTION", 0, screen_width, main_window)
+            center(deck.prompt_text(), 0, screen_width, prompt_bar)
             deck.current_menu_level = MAIN_MENU_LEVEL
         main_window.border()
         main_window.addstr(0,
@@ -538,7 +538,7 @@ def do_loop(stdscr, deck):
             stdscr.addstr(
                 (screen_height // 2),
                 (screen_width // 2) - (len(number_prompt) // 2),
-                number_prompt, curses.color_pair(screen_utils.MENU_STYLE))
+                number_prompt, curses.color_pair(MENU_STYLE))
             curses.curs_set(2)
             curses.echo()
             stdscr.refresh()
@@ -554,8 +554,8 @@ def do_loop(stdscr, deck):
                     stdscr.addstr(
                         (screen_height // 2),
                         (screen_width // 2) - (len(error_prompt) // 2),
-                        error_prompt, curses.color_pair(screen_utils.MENU_STYLE))
-                    screen_utils.show_text("Press any key to continue...",
+                        error_prompt, curses.color_pair(MENU_STYLE))
+                    show_text("Press any key to continue...",
                             (screen_height - 2), screen_width, stdscr)
                     stdscr.getch()
                     continue
