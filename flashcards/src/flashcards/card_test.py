@@ -1,6 +1,6 @@
-import unittest, re
+import unittest, re, json
+import flashcards
 from flashcards import *
-import json
 
 COLONIES = '''
 {
