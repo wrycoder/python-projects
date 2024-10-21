@@ -1,6 +1,6 @@
 [project]
 name = "flashcards-json"
-version = "1.0.8"
+version = "1.0.9"
 authors = [
   { name="Michael Toulouse", email="deryankee@gmail.com" },
 ]
