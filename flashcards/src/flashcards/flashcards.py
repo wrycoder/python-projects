@@ -187,6 +187,10 @@ class Card:
         """
         result = []
         if front == False:
+            if number != None:
+                result.append(f"{number}. " + self.title.upper())
+            else:
+                result.append(self.title.upper())
             for line in template:
                 new_line = re.sub(r'\{card\[', '{self[', line)
                 if len(result) == 0 and number != None:
