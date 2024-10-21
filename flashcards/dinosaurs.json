@@ -1,0 +1,133 @@
+{
+  "name" : "DINOSAURS",
+  "data" : [
+    {
+      "title" : "Coelophysis bauri",
+      "diet" : "carnivorous",
+      "size" : "3 meters",
+      "stance" : "bipedal",
+      "distinction" : "from one of the earliest known dinosaur genera"
+    },
+    {
+      "title" : "Plateosaurus engelhardti",
+      "diet" : "herbivorous",
+      "size" : "10 meters",
+      "stance" : "quadrupedal",
+      "distinction" : "also known as the 'Swabian lindworm'"
+    },
+    {
+      "title" : "Allosaurus fragilis",
+      "diet" : "carnivorous",
+      "size" : "9 meters",
+      "stance" : "bipedal",
+      "distinction" : "was long thought to be unique for its concave vertebrae"
+    },
+    {
+      "title" : "Apatosaurus excelsus",
+      "diet" : "herbivorous",
+      "size" : "22 meters",
+      "stance" : "quadrupedal",
+      "distinction" : "its tail may have been used as a whip, or as a sensory organ"
+    },
+    {
+      "title" : "Barosaurus lentus",
+      "diet" : "herbivorous",
+      "size" : "45 meters",
+      "stance" : "quadrupedal",
+      "distinction" : "its name is derived from the Greek words for 'heavy' and 'lizard.'"
+    },
+    {
+      "title" : "Camarasaurus lentus",
+      "diet" : "herbivorous",
+      "size" : "15 meters",
+      "stance" : "quadrupedal",
+      "distinction" : "has hollow chambers, known as pleurocels, in its cervical vertebrae"
+    },
+    {
+      "title" : "Camptosaurus dispar",
+      "diet" : "herbivorous",
+      "size" : "5 meters",
+      "stance" : "bipedal",
+      "distinction" : "was initially called 'Camptonotus' (a name that had already been assigned to a cricket)"
+    },
+    {
+      "title" : "Diplodocus longus",
+      "diet" : "herbivorous",
+      "size" : "25 meters",
+      "stance" : "quadrupedal",
+      "distinction" : "named for the double-beamed chevron bones in the underside of its tail"
+    },
+    {
+      "title" : "Mamenchisaurus hochuanensis",
+      "diet" : "herbivorous",
+      "size" : "26 meters",
+      "stance" : "quadrupedal",
+      "distinction" : "known for its remarkably long neck"
+    },
+    {
+      "title" : "Ornitholestes hermanni",
+      "diet" : "carnivorous",
+      "size" : "2 meters",
+      "stance" : "bipedal",
+      "distinction" : "its specific name honors Adam Hermann, a preparator at the American Museum of Natural History"
+    },
+    {
+      "title" : "Stegosaurus stenops",
+      "diet" : "herbivorous",
+      "size" : "7 meters",
+      "stance" : "quadrupedal",
+      "distinction" : "known for kite-shaped plates along its back and spikes on its tail"
+    },
+    {
+      "title" : "Albertosaurus libratus",
+      "diet" : "carnivorous",
+      "size" : "9 meters",
+      "stance" : "bipedal",
+      "distinction" : "its genus is named for the Canadian province of Alberta"
+    },
+    {
+      "title" : "Anatotitan copei",
+      "diet" : "herbivorous",
+      "size" : "12 meters",
+      "stance" : "quadrupedal (facultative bipedal)",
+      "distinction" : "exhibits one of the most striking examples of the 'duckbill' snout, common to hadrosaurs"
+    },
+    {
+      "title" : "Ankylosaurus magniventris",
+      "diet" : "herbivorous",
+      "size" : "8 meters",
+      "stance" : "quadrupedal",
+      "distinction" : "its specific name means 'great belly.'"
+    }
+  ],
+  "display_template" : [
+    "- {card['title']} was a {card['stance']} dinosaur",
+    "- Some specimens grew to be {card['size']} long",
+    "- The {card['title']} was {card['diet']}",
+    "- {card['distinction']}"
+  ],
+  "numbered" : false,
+  "topics" : [{
+    "triassic" : {
+      "character" : "t",
+      "prompt" : "Triassic period dinosaurs",
+      "detail" : ["- lived in the Triassic period (251 - 201 million years ago)"],
+      "members" : ["Coelophysis bauri"]
+    },
+    "jurassic" : {
+      "character" : "j",
+      "prompt" : "Jurassic period dinosaurs",
+      "detail" : ["- lived in the Jurassic period (201 - 145 million years ago)"],
+      "members" : ["Plateosaurus engelhardti","Allosaurus fragilis","Apatosaurus excelsus",
+                  "Barosaurus lentus","Camarasaurus lentus","Camptosaurus dispar",
+                  "Diplodocus longus","Mamenchisaurus hochuanensis","Ornitholestes hermanni",
+                  "Stegosaurus stenops"]
+    },
+    "cretaceous" : {
+      "character" : "c",
+      "prompt" : "Cretaceous period dinosaurs",
+      "detail" : ["- lived in the Cretaceous period (145 - 66 million years ago)"],
+      "members" : ["Albertosaurus libratus","Anatotitan copei","Ankylosaurus magniventris"]
+    }
+  }]
+}
