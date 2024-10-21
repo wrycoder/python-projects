@@ -213,6 +213,19 @@ class Card:
             result.append(eval('f"' + new_line + '"'))
         return result
 
+    def title_bar(self, ordinal: int=None) -> str:
+        """
+        Get the title of this card, in upper case and centered in the display.
+
+        Parameter:
+            ordinal:    the 1-based ordinal position of this card in a deck
+        """
+        if ordinal == None:
+            format_string = 'f"{self.title.upper()}"'
+        else:
+            format_string = 'f"{ordinal}. {self.title.upper()}"'
+        return eval(format_string)
+
 class CardEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, Card):
