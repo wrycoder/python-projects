@@ -1,6 +1,6 @@
 [project]
 name = "flashcards-json"
-version = "1.0.4"
+version = "1.0.8"
 authors = [
   { name="Michael Toulouse", email="deryankee@gmail.com" },
 ]
@@ -25,3 +25,4 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/flashcards"]
+sources = ["src/flashcards"]

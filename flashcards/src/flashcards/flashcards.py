@@ -91,7 +91,7 @@ yet another dictionary, with four required entries:
 For an example of an advanced flashcards configuration file, see `colonies.json`.
 """
 import json, re, sys, random, curses
-from .screen_utils import *
+from screen_utils import *
 
 DEFAULT_RANDOM_MENU_CHAR    = 'r'
 DEFAULT_NUMBERED_MENU_CHAR  = 'n'
