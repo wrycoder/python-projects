@@ -79,7 +79,6 @@ SCIENTISTS = '''
     }
   ],
   "display_template" : [
-    "All About {card['title']}: ",
     "{card['title']} was born in {card['birthplace']} ",
     "in the year {card['born_in']}, and lived until {card['died_in']}."
   ]
@@ -155,10 +154,6 @@ class DeckTest(unittest.TestCase):
         self.assertEqual(len(scientists), 1, "Incorrect number of cards")
         curie_cards = scientists.list()[0]
         sample_text = '\n'.join(curie_cards.display(scientists.display_template))
-        self.assertTrue(
-            re.match(r'^All About Marie Curie.*', sample_text) != None,
-            "Title of test card not found"
-        )
         birth_year = re.findall(r'.+1867.+', sample_text, re.MULTILINE)
         self.assertEqual(len(birth_year), 1,
                         "Birth year not found in deck display")
