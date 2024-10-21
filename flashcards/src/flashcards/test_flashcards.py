@@ -334,6 +334,37 @@ class CardTest(unittest.TestCase):
         self.assertTrue(colony_name_position < len(sample_text),
                         "display with 'front=False' should include card title")
 
+    def test_title_bar(self):
+        js_data = json.loads(SCIENTISTS)
+        test_title = js_data['data'][0]['title']
+        test_index = 7
+        test_card = Card(
+            test_title,
+            birthplace=js_data['data'][0]['birthplace'],
+            born_in=js_data['data'][0]['born_in'],
+            died_in=js_data['data'][0]['died_in']
+        )
+        self.assertEqual(
+            test_card.title_bar(),
+            test_title.upper(),
+            "title_bar() should return title in uppercase"
+        )
+        sample_text = '\n'.join(test_card.display(
+                            js_data['display_template'],
+                            front=False))
+        title_bar_position = sample_text.index(test_title.upper())
+        self.assertTrue(title_bar_position < len(sample_text),
+                        "title bar should be displayed on back of card")
+        sample_text = '\n'.join(test_card.display(
+                            js_data['display_template'],
+                            number=test_index,
+                            front=False))
+        print(sample_text)
+        title_bar_position = sample_text.index(str(test_index) + ". " + test_title.upper())
+        self.assertTrue(title_bar_position < len(sample_text),
+                        "title bar should be displayed with number on back of card")
+
+
 if __name__ == "__main__":
     unittest.main()
 
