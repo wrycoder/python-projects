@@ -137,6 +137,11 @@ class Card:
         a 1-indexed integer identifying this card's position in
         the deck. `front` identifies which side of the card you
         want to view.
+
+    title_bar(ordinal: int=0)
+        Get the title bar, centered and in upper case. The `ordinal`
+        parameter contains the 1-based index value of this card in
+        a numbered list.
     """
     def __init__(self, title: str, **kwargs):
         """Initialize the Card object
